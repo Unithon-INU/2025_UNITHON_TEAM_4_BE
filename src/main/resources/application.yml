@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name=: backend
+
+  jpa:
+    properties:
+      hibernate.hibernate.show_sql: true
+      hibernate.hibernate.format_sql: true
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+  datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+
+springdoc:
+  api-docs.path: /v3/api-docs
+  swagger-ui.path: /swagger-ui/index.html
