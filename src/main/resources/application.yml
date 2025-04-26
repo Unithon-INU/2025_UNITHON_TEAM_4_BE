@@ -10,7 +10,7 @@ spring:
       hibernate.hibernate.show_sql: true
       hibernate.hibernate.format_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
 
   datasource:
@@ -21,3 +21,7 @@ spring:
 springdoc:
   api-docs.path: /v3/api-docs
   swagger-ui.path: /swagger-ui/index.html
+
+jwt:
+  expiration: 86400000
+  secret: RElBUllfQU5EX0NPTU1VTklUWV9QUk9KRUNUX0RBV05BUllfQURNSU5fU0VDUkVUX0tFWQ==

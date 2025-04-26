@@ -1,4 +1,4 @@
-package inu.unithon.backend.domain.user.entity;
+package inu.unithon.backend.domain.member.entity;
 
 import inu.unithon.backend.domain.post.entity.Post;
 import inu.unithon.backend.global.entity.BaseEntity;
@@ -11,27 +11,31 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class User extends BaseEntity {
+public class Member extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String username;
+  private String name;
   private String profileImageUrl;
   private String email;
   private String password;
   private String phone;
 
-  @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.LAZY)
+  @Enumerated(EnumType.STRING)
+  private Role role;
+
+  @OneToMany(mappedBy = "member" , cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.LAZY)
   private List<Post> posts;
 
   @Builder
-  public User(String username, String profileImageUrl, String email, String password, String phone) {
-    this.username = username;
+  public Member(String name, String profileImageUrl, String email, String password, String phone, Role role) {
+    this.name = name;
     this.profileImageUrl = profileImageUrl;
     this.email = email;
     this.password = password;
     this.phone = phone;
+    this.role = role;
   }
 }
