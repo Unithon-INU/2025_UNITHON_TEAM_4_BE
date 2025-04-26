@@ -1,6 +1,6 @@
 package inu.unithon.backend.domain.post.entity;
 
-import inu.unithon.backend.domain.user.entity.User;
+import inu.unithon.backend.domain.member.entity.Member;
 import inu.unithon.backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +24,7 @@ public class Post extends BaseEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(nullable = false)
-  private User user;
+  private Member member;
 
 
 }
