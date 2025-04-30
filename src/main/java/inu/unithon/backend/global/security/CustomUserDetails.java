@@ -30,7 +30,7 @@ public class CustomUserDetails implements UserDetails {
 
   @Override
   public String getUsername() {
-    return member.getName(); // 로그인 ID
+    return member.getEmail(); // 로그인 ID
   }
 
   public Role getRole() {
