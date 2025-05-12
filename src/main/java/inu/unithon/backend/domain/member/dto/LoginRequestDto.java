@@ -1,4 +1,4 @@
-package inu.unithon.backend.domain.member.dto;
+ package inu.unithon.backend.domain.member.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

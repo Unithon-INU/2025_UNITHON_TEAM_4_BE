@@ -27,3 +27,6 @@ springdoc:
 jwt:
   expiration: 86400000
   secret: RElBUllfQU5EX0NPTU1VTklUWV9QUk9KRUNUX0RBV05BUllfQURNSU5fU0VDUkVUX0tFWQ==
+
+tourapi:
+  service-key: 8c7Q2qxqvcp6FPGfDWyvzuBvDZ4pwEiIWswuB5LwnfI%2B7CE7FIwjKX6sjk6MoqORyUnjDzkzlBbOnbl3rGKmww%3D%3D
