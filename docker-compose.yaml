@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: backend
+    container_name: uni-backend
     ports:
       - "8080:8080"
     env_file:
@@ -20,12 +20,12 @@ services:
 
   mysql:
     hostname: mysql
-    container_name: mysql
+    container_name: uni-mysql
     image: mysql:latest
     env_file:
       - .env
     ports:
-      - "3306:3306"
+      - "3311:3306"
     volumes:
       - db_mysql:/var/lib/mysql
     healthcheck:

@@ -33,6 +33,6 @@ public class SwaggerConfig {
     return new Info()
       .title("API Test")
       .description("Backend Swagger")
-      .version("1.0.0");
+      .version("1.6.4");
   }
 }

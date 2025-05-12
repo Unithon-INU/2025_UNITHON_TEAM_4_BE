@@ -4,8 +4,8 @@ import inu.unithon.backend.domain.member.dto.LoginRequestDto;
 import inu.unithon.backend.domain.member.dto.SignupRequestDto;
 import inu.unithon.backend.domain.member.entity.Member;
 import inu.unithon.backend.domain.member.repository.MemberRepository;
-import inu.unithon.backend.global.exception.EmailAlreadyExistsException;
-import inu.unithon.backend.global.security.CustomUserDetails;
+import inu.unithon.backend.global.exception.CustomException;
+import inu.unithon.backend.domain.member.entity.CustomUserDetails;
 import inu.unithon.backend.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +13,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static inu.unithon.backend.global.exception.ErrorCode.EMAIL_DUPLICATED;
+import static inu.unithon.backend.global.exception.ErrorCode.USER_NOT_FOUND;
 
 @Service
 @Transactional(readOnly=true)
@@ -26,7 +29,7 @@ public class MemberService {
   @Transactional
   public void signUp(SignupRequestDto requestDto) {
 
-    if (memberRepository.existsByEmail(requestDto.getEmail())) throw new EmailAlreadyExistsException("이메일이 이미 존재합니다");
+    validateEmail(requestDto.getEmail());
 
     Member member = Member.builder()
       .name(requestDto.getName())
@@ -51,7 +54,7 @@ public class MemberService {
     // 인증이 성공하면 JWT 토큰을 생성하여 반환
     CustomUserDetails userDetails = memberRepository.findByEmail(requestDto.getEmail())
       .map(CustomUserDetails::new)
-      .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다"));
+      .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
 
     return jwtTokenProvider.generateToken(userDetails);
   }
@@ -59,5 +62,9 @@ public class MemberService {
   private void validate(Member member){
     // 유저 검증 로직
     // 추후 추가
+  }
+
+  private void validateEmail(String email){
+    if (memberRepository.existsByEmail(email)) throw new CustomException(EMAIL_DUPLICATED);
   }
 }

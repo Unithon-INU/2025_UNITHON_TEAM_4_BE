@@ -1,5 +1,6 @@
-package inu.unithon.backend.global.security;
+package inu.unithon.backend.domain.member.service;
 
+import inu.unithon.backend.domain.member.entity.CustomUserDetails;
 import inu.unithon.backend.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
