@@ -1,7 +1,5 @@
-package inu.unithon.backend.global.security;
+package inu.unithon.backend.domain.member.entity;
 
-import inu.unithon.backend.domain.member.entity.Member;
-import inu.unithon.backend.domain.member.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

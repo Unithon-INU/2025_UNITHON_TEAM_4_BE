@@ -1,7 +1,7 @@
 package inu.unithon.backend.global.security.jwt;
 
-import inu.unithon.backend.global.security.CustomUserDetails;
-import inu.unithon.backend.global.security.CustomUserDetailsService;
+import inu.unithon.backend.domain.member.entity.CustomUserDetails;
+import inu.unithon.backend.domain.member.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

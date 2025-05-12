@@ -1,6 +1,6 @@
 package inu.unithon.backend.global.security.jwt;
 
-import inu.unithon.backend.global.security.CustomUserDetails;
+import inu.unithon.backend.domain.member.entity.CustomUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
