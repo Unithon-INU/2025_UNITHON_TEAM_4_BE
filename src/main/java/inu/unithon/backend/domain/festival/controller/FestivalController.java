@@ -1,6 +1,6 @@
 package inu.unithon.backend.festival.controller;
 
-import inu.unithon.backend.festival.dto.FestivalResponseWrapper;
+import inu.unithon.backend.festival.dto.FestivalResponseDto;
 import inu.unithon.backend.festival.service.FestivalService;
 import inu.unithon.backend.global.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class FestivalController {
             @RequestParam(defaultValue = "10") String numOfRows,
             @RequestParam(defaultValue = "1") String pageNo
     ) {
-        FestivalResponseWrapper response = festivalService.getFestivalList(lang, areaCode);
+        FestivalResponseDto response = festivalService.getFestivalList(lang, areaCode, numOfRows, pageNo);
         return ResponseEntity.ok(ResponseDto.success(response));
     }
 }

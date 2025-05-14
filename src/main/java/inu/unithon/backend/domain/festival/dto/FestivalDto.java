@@ -2,18 +2,24 @@ package inu.unithon.backend.festival.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.util.*;
 
 @Getter
 @NoArgsConstructor
 public class FestivalDto {
-    private String title;
     private String addr1;
+    private String addr2;
+    private String areacode;
+    private String contentid;
+    private String contenttypeid;
+    private String createdtime;
     private String firstimage;
+    private String firstimage2;
     private String mapx;
     private String mapy;
-    private string contentid;
-    private String contenttypeid;
-    private String firstimage2;
     private String modifiedtime;
     private String tel;
+    private String title;
+    private String zipcode;
+    private List<FestivalDto> item;  // 중첩된 item 지원
 }
