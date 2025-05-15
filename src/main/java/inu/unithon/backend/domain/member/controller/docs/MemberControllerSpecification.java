@@ -1,21 +1,34 @@
 package inu.unithon.backend.domain.member.controller.docs;
 
-import inu.unithon.backend.domain.member.dto.LoginRequestDto;
-import inu.unithon.backend.domain.member.dto.SignupRequestDto;
+import inu.unithon.backend.domain.member.dto.request.UpdatePasswordRequestDto;
+import inu.unithon.backend.domain.member.dto.request.UpdateProfileRequestDto;
+import inu.unithon.backend.domain.member.dto.response.MyProfileResponseDto;
+import inu.unithon.backend.domain.member.dto.request.ProfileRequestDto;
+import inu.unithon.backend.domain.member.dto.response.ProfileResponseDto;
+import inu.unithon.backend.domain.member.entity.CustomUserDetails;
 import inu.unithon.backend.global.response.ResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
 
-// todo : MemberController Swagger 문서화
-@Tag(name = "users", description = "회원 API")
+// todo : AuthController Swagger 문서화
+@Tag(name = "users", description = "Users API")
 public interface MemberControllerSpecification {
 
-  @PostMapping("/signup")
-  ResponseEntity<ResponseDto<Void>> signUp(@Valid @RequestBody SignupRequestDto requestDto);
+  // todo : 프로필 조회(my)
+  ResponseEntity<ResponseDto<MyProfileResponseDto>> myProfile(@AuthenticationPrincipal CustomUserDetails userDetails);
 
-  @PostMapping("/login")
-  ResponseEntity<ResponseDto<String>> login(@Valid @RequestBody LoginRequestDto requestDto);
+  // todo : 프로필 조회(other)
+  ResponseEntity<ResponseDto<ProfileResponseDto>> profile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody ProfileRequestDto requestDto);
+
+  // todo : 프로필 수정
+  ResponseEntity<ResponseDto<MyProfileResponseDto>> updateProfile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody UpdateProfileRequestDto requestDto);
+
+  // todo : 회원 탈퇴
+  ResponseEntity<ResponseDto<Void>> deleteProfile(@AuthenticationPrincipal CustomUserDetails userDetails);
+
+  // todo : 비밀번호 수정
+  ResponseEntity<ResponseDto<Void>> updatePassword(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody UpdatePasswordRequestDto requestDto);
 }

@@ -1,4 +1,4 @@
-package inu.unithon.backend.domain.member.dto;
+package inu.unithon.backend.domain.member.dto.request;
 
 import inu.unithon.backend.domain.member.entity.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,15 +8,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Schema(description = "회원 가입 DTO")
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Schema(description = "회원 가입 DTO")
 public class SignupRequestDto {
 
   @Schema(
