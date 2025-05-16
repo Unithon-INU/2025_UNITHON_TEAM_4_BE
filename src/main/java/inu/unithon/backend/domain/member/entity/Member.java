@@ -1,5 +1,7 @@
 package inu.unithon.backend.domain.member.entity;
 
+import inu.unithon.backend.domain.member.dto.request.UpdateProfileRequestDto;
+import inu.unithon.backend.domain.member.dto.response.ProfileResponseDto;
 import inu.unithon.backend.domain.post.entity.Post;
 import inu.unithon.backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -37,5 +39,17 @@ public class Member extends BaseEntity {
     this.password = password;
     this.phone = phone;
     this.role = role;
+  }
+
+  public void updateMember(String name, String profileImageUrl, String email, String phone, Role role) {
+    this.name = name;
+    this.profileImageUrl = profileImageUrl;
+    this.email = email;
+    this.phone = phone;
+    this.role = role;
+  }
+
+  public void updatePassword(String password) {
+    this.password = password;
   }
 }

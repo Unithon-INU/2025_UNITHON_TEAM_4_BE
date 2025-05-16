@@ -1,70 +1,45 @@
 package inu.unithon.backend.domain.member.service;
 
-import inu.unithon.backend.domain.member.dto.LoginRequestDto;
-import inu.unithon.backend.domain.member.dto.SignupRequestDto;
-import inu.unithon.backend.domain.member.entity.Member;
-import inu.unithon.backend.domain.member.repository.MemberRepository;
-import inu.unithon.backend.global.exception.CustomException;
-import inu.unithon.backend.domain.member.entity.CustomUserDetails;
-import inu.unithon.backend.global.security.jwt.JwtTokenProvider;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import inu.unithon.backend.domain.member.dto.request.UpdatePasswordRequestDto;
+import inu.unithon.backend.domain.member.dto.request.UpdateProfileRequestDto;
+import inu.unithon.backend.domain.member.dto.response.MyProfileResponseDto;
+import inu.unithon.backend.domain.member.dto.response.ProfileResponseDto;
 
-import static inu.unithon.backend.global.exception.ErrorCode.EMAIL_DUPLICATED;
-import static inu.unithon.backend.global.exception.ErrorCode.USER_NOT_FOUND;
+public interface MemberService {
 
-@Service
-@Transactional(readOnly=true)
-@RequiredArgsConstructor
-public class MemberService {
-  private final MemberRepository memberRepository;
-  private final AuthenticationManager authenticationManager;
-  private final JwtTokenProvider jwtTokenProvider;
-  private final PasswordEncoder passwordEncoder;
+  /**
+   * 자신의 프로필 조회
+   * @param id
+   * @return MyProfileResponseDto
+   */
+  MyProfileResponseDto getMyProfile(Long id);
 
-  @Transactional
-  public void signUp(SignupRequestDto requestDto) {
+  /**
+   * 남의 프로필 조회
+   * @param myId
+   * @param id
+   * @return ProfileResponseDto
+   */
+  ProfileResponseDto getProfile(Long myId, Long id);
 
-    validateEmail(requestDto.getEmail());
+  /**
+   * 프로필 업데이트
+   * @param id
+   * @param profileRequestDto
+   * @return MyProfileResponseDto
+   */
+  MyProfileResponseDto updateProfile(Long id, UpdateProfileRequestDto profileRequestDto);
 
-    Member member = Member.builder()
-      .name(requestDto.getName())
-      .profileImageUrl(requestDto.getProfileImageUrl())
-      .email(requestDto.getEmail())
-      .password(passwordEncoder.encode(requestDto.getPassword()))
-      .phone(requestDto.getPhone())
-      .role(requestDto.getRole())
-      .build();
+  /**
+   * 회원 탈퇴
+   * @param id
+   */
+  void deleteProfile(Long id);
 
-    // 미완성 로직
-    validate(member);
-    memberRepository.save(member);
-  }
-
-  public String login(LoginRequestDto requestDto) {
-    UsernamePasswordAuthenticationToken authenticationToken =
-      new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword());
-
-    authenticationManager.authenticate(authenticationToken);
-
-    // 인증이 성공하면 JWT 토큰을 생성하여 반환
-    CustomUserDetails userDetails = memberRepository.findByEmail(requestDto.getEmail())
-      .map(CustomUserDetails::new)
-      .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
-
-    return jwtTokenProvider.generateToken(userDetails);
-  }
-
-  private void validate(Member member){
-    // 유저 검증 로직
-    // 추후 추가
-  }
-
-  private void validateEmail(String email){
-    if (memberRepository.existsByEmail(email)) throw new CustomException(EMAIL_DUPLICATED);
-  }
+  /**
+   * 비밀번호 변경
+   * @param id
+   * @param requestDto
+   */
+  void updatePassword(Long id, UpdatePasswordRequestDto requestDto);
 }
