@@ -73,11 +73,22 @@ jobs:
 
       # Mysql 컨테이너 실행
       - name: mysql run new container
-        run: sudo docker run -d --name mysql --network app-network -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DATABASE=uni-mysql -p 3306:3306 mysql:latest
+        run: |
+          sudo docker run -d --name mysql --network app-network \
+            -e MYSQL_ROOT_PASSWORD=1234 \
+            -e MYSQL_DATABASE=uni-mysql \
+            -p 3306:3306 mysql:latest
 
       # 3. 최신 이미지를 컨테이너화하여 실행시킵니다
       - name: docker run new container
-        run: sudo docker run --network app-network --name 2025_unithon_team_4_be-backend --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/2025_unithon_team_4_be-backend
+        run: |
+          sudo docker run --network app-network --name 2025_unithon_team_4_be-backend --rm -d -p 8080:8080 \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e TOUR_API_KEY=${{ secrets.TOUR_API_KEY }} \
+            -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/backend-mysql \
+            -e SPRING_DATASOURCE_USERNAME=root \
+            -e SPRING_DATASOURCE_PASSWORD=1234 \
+            ${{ secrets.DOCKERHUB_USERNAME }}/2025_unithon_team_4_be-backend
 
       # 4. 미사용 이미지를 정리합니다
       - name: delete old docker image
