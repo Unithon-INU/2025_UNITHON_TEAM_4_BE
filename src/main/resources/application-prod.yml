@@ -7,10 +7,10 @@ spring:
   config:
     import: optional:file:.env[.properties]
 
+  profiles:
+    include: prod
+
   jpa:
-    properties:
-      hibernate.hibernate.show_sql: true
-      hibernate.hibernate.format_sql: true
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
@@ -32,4 +32,4 @@ jwt:
 
 logging:
   level:
-    root: DEBUG
+    root: INFO
