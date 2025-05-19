@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: backend
+  config:
+    import: optional:file:.env[.properties]
+
+  profiles:
+    include: prod
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+  datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui.path: /swagger-ui/index.html
+
+jwt:
+  expiration: 86400000
+  secret: ${JWT_SECRET}
+
+logging:
+  level:
+    root: INFO
