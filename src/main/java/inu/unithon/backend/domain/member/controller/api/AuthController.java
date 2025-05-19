@@ -33,4 +33,5 @@ public class AuthController implements AuthControllerSpecification {
       .status(HttpStatus.OK)
       .body(ResponseDto.success("유저 로그인 성공", token));
   }
+
 }
