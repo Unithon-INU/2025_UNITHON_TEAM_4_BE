@@ -4,21 +4,19 @@ server:
 spring:
   application:
     name: backend
-  config:
-    import: optional:file:.env[.properties]
+
+  profiles:
+    include: prod
 
   jpa:
-    properties:
-      hibernate.hibernate.show_sql: true
-      hibernate.hibernate.format_sql: true
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
 
   datasource:
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://mysql:3306/backend-mysql
+    username: root
+    password: 1234
 
 springdoc:
   api-docs:
@@ -28,7 +26,7 @@ springdoc:
 
 jwt:
   expiration: 86400000
-  secret: ${JWT_SECRET}
+  secret: RElBUllfQU5EX0NPTU1VTklUWV9QUk9KRUNUX0RBV05BUllfQURNSU5fU0VDUkVUX0tFWQ==
 
 logging:
   level:
