@@ -41,5 +41,4 @@ out/
 *DS_Store
 
 *.env
-src/main/resources/application-prod.yml
 docker-compose.yaml
