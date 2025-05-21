@@ -24,9 +24,11 @@ jobs:
         touch ./src/main/resources/application.yml
     - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
 
+    - uses: actions/checkout@v3
     - name: Create docker-compose.yml
       run: |
-        echo "${{ secrets.DOCKER_COMPOSE }}" > /root/docker-compose.yml
+        touch ./docker-compose.yml
+        echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
 
 
       # 1. Java 21 세팅
