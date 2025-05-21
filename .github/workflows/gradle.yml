@@ -70,6 +70,9 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Create docker-compose.yml
+        run: echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yml
+
       # 1. 최신 이미지를 풀받습니다
       - name: docker pull
         run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/2025_unithon_team_4_be-backend
