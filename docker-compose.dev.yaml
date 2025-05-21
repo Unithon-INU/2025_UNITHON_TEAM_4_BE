@@ -8,8 +8,6 @@ services:
     container_name: uni-backend
     ports:
       - "8080:8080"
-    env_file:
-      - .env
     environment:
       SPRING_DATASOURCE_URL: ${MYSQL_URL}
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USERNAME}
@@ -22,14 +20,13 @@ services:
 
   mysql:
     hostname: mysql
-    container_name: uni-mysql
+    container_name: mysql
     image: mysql:latest
-    env_file:
-      - .env
     environment:
       SPRING_DATASOURCE_URL: ${MYSQL_URL}
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_DATASOURCE_HOST:
     ports:
       - "3306:3306"
     volumes:
