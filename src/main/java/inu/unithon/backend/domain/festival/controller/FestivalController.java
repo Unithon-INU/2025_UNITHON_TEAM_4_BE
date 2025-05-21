@@ -14,14 +14,32 @@ public class FestivalController {
 
     private final FestivalService festivalService;
 
-    @GetMapping("/{lang}/area")
+    @GetMapping("/list")
     public ResponseEntity<ResponseDto<?>> getFestivalByArea(
-            @PathVariable String lang,
-            @RequestParam(required = false) String areaCode,
+            @RequestParam(defaultValue = "kor") String lang,
             @RequestParam(defaultValue = "10") String numOfRows,
-            @RequestParam(defaultValue = "1") String pageNo
+            @RequestParam(defaultValue = "1") String pageNo,
+            @RequestParam(defaultValue = "20250501") String eventStartDate,
+            @RequestParam(required = false) String areaCode
     ) {
-        FestivalResponseDto response = festivalService.getFestivalList(lang, areaCode, numOfRows, pageNo);
+        FestivalResponseDto response = festivalService.getFestivalList(lang, numOfRows, pageNo, eventStartDate, areaCode);
         return ResponseEntity.ok(ResponseDto.success(response));
     }
+    @GetMapping("/info")
+    public ResponseEntity<ResponseDto<?>> getFestivalInfo(
+            @RequestParam(defaultValue = "kor") String lang,
+            @RequestParam String contentId
+    ) {
+        FestivalResponseDto response = festivalService.getFestivalInfo(lang, contentId);
+        return ResponseEntity.ok(ResponseDto.success(response));
+    }
+//    @GetMapping("/search")
+//    public ResponseEntity<ResponseDto<?>> searchFestival(
+//            @RequestParam(defaultValue = "kor") String lang,
+//            @RequestParam String keyword
+//    ) {
+//        FestivalResponseDto response = festivalService.searchFestival(lang, keyword);
+//        return ResponseEntity.ok(ResponseDto.success(response));
+//    }
 }
+
