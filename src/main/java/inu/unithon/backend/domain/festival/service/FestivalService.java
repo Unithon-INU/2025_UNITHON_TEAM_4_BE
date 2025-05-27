@@ -68,17 +68,16 @@ public class FestivalService {
                 .queryParam("firstImageYN", "Y")
                 .queryParam("addrinfoYN", "Y")
                 .queryParam("mapinfoYN", "Y")
-                .queryParam("overviewYN", "Y")
-        .build(false);
+                .queryParam("overviewYN", "Y");
 
 
 
-//        // Get the encoded URL but don't encode the service key again
-////        String finalUrl = String.valueOf(builder.build(false));
-//        System.out.println("📡 인텔리제이 요청 URL: " + finalUrl);
-//        logger.info("📡 도커 요청 URL: {}", finalUrl);
+        // Get the encoded URL but don't encode the service key again
+        String finalUrl = String.valueOf(builder.build(false));
+        System.out.println("📡 인텔리제이 요청 URL: " + finalUrl);
+        logger.info("📡 도커 요청 URL: {}", finalUrl);
 
-        return restTemplate.getForObject(builder.toUri(), FestivalResponseDto.class);
+        return restTemplate.getForObject(finalUrl, FestivalResponseDto.class);
     }
 
     private String getServiceName(String lang) {
