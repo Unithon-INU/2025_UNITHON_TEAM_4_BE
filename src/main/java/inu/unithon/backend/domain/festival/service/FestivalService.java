@@ -1,22 +1,17 @@
-package inu.unithon.backend.festival.service;
+package inu.unithon.backend.domain.festival.service;
 
-import inu.unithon.backend.festival.dto.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.net.URI;
-import java.util.Optional;
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-
-
-
-
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -25,63 +20,59 @@ public class FestivalService {
     private static final Logger logger = LoggerFactory.getLogger(FestivalService.class);
 
     @Value("${tourapi.service-key}")
-    private String encodedServiceKey;
+    private String rawServiceKey; // 반드시 인코딩되지 않은 원본 키
 
     private final RestTemplate restTemplate;
 
     public FestivalResponseDto getFestivalList(String lang, String numOfRows, String pageNo, String eventStartDate, String areaCode) {
         String serviceName = getServiceName(lang);
-        String baseUrl = "http://apis.data.go.kr/B551011";
-        String servicePath = serviceName + "/searchFestival1";
+        String baseUrl = "http://apis.data.go.kr/B551011" + serviceName + "/searchFestival1";
 
-        // Use UriComponentsBuilder to properly handle the URL encoding
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl + servicePath)
-                .queryParam("serviceKey", encodedServiceKey)
-                .queryParam("MobileApp", "UnithonApp")
-                .queryParam("MobileOS", "ETC")
-                .queryParam("arrange", "A")
-                .queryParam("listYN", "Y")
-                .queryParam("_type", "json")
-                .queryParam("numOfRows", numOfRows)
-                .queryParam("pageNo", pageNo)
-                .queryParam("eventStartDate", eventStartDate) // 축제가 5월에 껴있는거 다 가지고 오는 param
-                .queryParam("areaCode", areaCode);
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("serviceKey", rawServiceKey);
+        params.put("MobileApp", "UnithonApp");
+        params.put("MobileOS", "ETC");
+        params.put("arrange", "A");
+        params.put("listYN", "Y");
+        params.put("_type", "json");
+        params.put("numOfRows", numOfRows);
+        params.put("pageNo", pageNo);
+        params.put("eventStartDate", eventStartDate);
+        params.put("areaCode", areaCode);
 
+        String finalUrl = buildTourApiUrl(baseUrl, params);
+        logger.info("📡 [Info] 최종 URL: {}", finalUrl);
 
-        // Get the encoded URL but don't encode the service key again
-        String finalUrl = builder.build(false).toUriString();
-        System.out.println(" 최종url URL: " + finalUrl);
-        logger.info("url.toString() URL: {}", finalUrl.toString());
+        String rawResponse = restTemplate.getForObject(finalUrl, String.class);
+        logger.info("📜 [Info] Raw API 응답: {}", rawResponse);
 
         return restTemplate.getForObject(finalUrl, FestivalResponseDto.class);
+
     }
+
     public FestivalResponseDto getFestivalInfo(String lang, String contentId) {
-        //festival list 에서 가져온 축제들 리스트중에 상세정보를 알고싶을때 활용하는 api
         String serviceName = getServiceName(lang);
-        String baseUrl = "http://apis.data.go.kr/B551011";
-        String servicePath = serviceName + "/detailCommon1";
+        String baseUrl = "http://apis.data.go.kr/B551011" + serviceName + "/detailCommon1";
 
-        // Use UriComponentsBuilder to properly handle the URL encoding
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl + servicePath)
-                .queryParam("serviceKey", encodedServiceKey)
-                .queryParam("MobileApp", "UnithonApp")
-                .queryParam("MobileOS", "ETC")
-                .queryParam("contentId", contentId)
-                .queryParam("_type", "json")
-                .queryParam("defaultYN", "Y")
-                .queryParam("firstImageYN", "Y")
-                .queryParam("addrinfoYN", "Y")
-                .queryParam("mapinfoYN", "Y")
-                .queryParam("overviewYN", "Y");
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("serviceKey", rawServiceKey);
+        params.put("MobileApp", "UnithonApp");
+        params.put("MobileOS", "ETC");
+        params.put("contentId", contentId);
+        params.put("_type", "json");
+        params.put("defaultYN", "Y");
+        params.put("firstImageYN", "Y");
+        params.put("addrinfoYN", "Y");
+        params.put("mapinfoYN", "Y");
+        params.put("overviewYN", "Y");
 
+        String finalUrl = buildTourApiUrl(baseUrl, params);
+        logger.info("📡 [Info] 최종 URL: {}", finalUrl);
 
+        String rawResponse = restTemplate.getForObject(finalUrl, String.class);
+        logger.info("📜 [Info] Raw API 응답: {}", rawResponse);
 
-        // Get the encoded URL but don't encode the service key again
-        String finalUrl = builder.build(false).toUriString();
-        System.out.println(" 최종url URL: " + finalUrl);
-        logger.info("url.toString() URL: {}", finalUrl.toString());
-
-        return restTemplate.getForObject(finalUrl.toString(), FestivalResponseDto.class);
+        return restTemplate.getForObject(finalUrl, FestivalResponseDto.class);
     }
 
     private String getServiceName(String lang) {
@@ -94,5 +85,25 @@ public class FestivalService {
             case "ger" -> "/GerService1";
             default -> "/KorService1";
         };
-    } //어떤 언어로 요청했는지에 따라 서비스 이름을 다르게 설정하는 메서드
+    }
+
+    private String buildTourApiUrl(String baseUrl, Map<String, String> params) {
+        StringBuilder urlBuilder = new StringBuilder(baseUrl);
+        boolean isFirst = true;
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (entry.getValue() == null || entry.getValue().isEmpty()) continue;
+
+            String key = URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8);
+            String value = URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8);
+
+            urlBuilder.append(isFirst ? "?" : "&")
+                    .append(key)
+                    .append("=")
+                    .append(value);
+            isFirst = false;
+        }
+
+        return urlBuilder.toString();
+    }
 }

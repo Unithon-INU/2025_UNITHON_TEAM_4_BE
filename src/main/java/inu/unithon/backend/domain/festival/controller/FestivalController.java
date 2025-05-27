@@ -1,7 +1,7 @@
-package inu.unithon.backend.festival.controller;
+package inu.unithon.backend.domain.festival.controller;
 
-import inu.unithon.backend.festival.dto.FestivalResponseDto;
-import inu.unithon.backend.festival.service.FestivalService;
+import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.service.FestivalService;
 import inu.unithon.backend.global.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

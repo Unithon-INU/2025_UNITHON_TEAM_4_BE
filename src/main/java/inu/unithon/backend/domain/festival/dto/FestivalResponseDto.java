@@ -1,4 +1,5 @@
-package inu.unithon.backend.festival.dto;
+package inu.unithon.backend.domain.festival.dto;
+
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
