@@ -1,7 +1,7 @@
-package inu.unithon.backend.domain.member.service;
+package inu.unithon.backend.domain.auth.service;
 
-import inu.unithon.backend.domain.member.dto.request.LoginRequestDto;
-import inu.unithon.backend.domain.member.dto.request.SignupRequestDto;
+import inu.unithon.backend.domain.auth.dto.request.LoginRequestDto;
+import inu.unithon.backend.domain.auth.dto.request.SignupRequestDto;
 import inu.unithon.backend.domain.member.entity.Member;
 import inu.unithon.backend.domain.member.repository.MemberRepository;
 import inu.unithon.backend.global.exception.CustomException;

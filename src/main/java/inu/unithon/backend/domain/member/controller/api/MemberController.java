@@ -23,7 +23,7 @@ public class MemberController implements MemberControllerSpecification {
 
   private final MemberService memberService;
 
-  @GetMapping("/profile")
+  @GetMapping()
   public ResponseEntity<ResponseDto<MyProfileResponseDto>> myProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
 
     return ResponseEntity
@@ -31,14 +31,14 @@ public class MemberController implements MemberControllerSpecification {
       .body(ResponseDto.success("프로필 조회 성공", memberService.getMyProfile(userDetails.getMember().getId())));
   }
 
-  @PostMapping("/profile")
+  @PostMapping()
   public ResponseEntity<ResponseDto<ProfileResponseDto>> profile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody ProfileRequestDto requestDto) {
     return ResponseEntity
       .status(HttpStatus.OK)
       .body(ResponseDto.success("프로필 조회 성공", memberService.getProfile(userDetails.getMember().getId(), requestDto.getId())));
   }
 
-  @PatchMapping("/profile")
+  @PatchMapping()
   public ResponseEntity<ResponseDto<MyProfileResponseDto>> updateProfile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody UpdateProfileRequestDto requestDto) {
     return ResponseEntity
       .status(HttpStatus.OK)
@@ -54,7 +54,7 @@ public class MemberController implements MemberControllerSpecification {
 
   }
 
-  @PatchMapping("/profile/pw")
+  @PatchMapping("/pw")
   public ResponseEntity<ResponseDto<Void>> updatePassword(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody UpdatePasswordRequestDto requestDto){
     memberService.updatePassword(userDetails.getMember().getId(), requestDto);
     return ResponseEntity
