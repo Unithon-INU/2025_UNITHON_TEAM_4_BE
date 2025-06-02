@@ -19,7 +19,7 @@ public class FestivalController {
             @RequestParam(defaultValue = "kor") String lang,
             @RequestParam(defaultValue = "10") String numOfRows,
             @RequestParam(defaultValue = "1") String pageNo,
-            @RequestParam(defaultValue = "20250501") String eventStartDate,
+            @RequestParam(defaultValue = "20250601") String eventStartDate,
             @RequestParam(required = false) String areaCode
     ) {
         FestivalResponseDto response = festivalService.getFestivalList(lang, numOfRows, pageNo, eventStartDate, areaCode);
@@ -33,13 +33,22 @@ public class FestivalController {
         FestivalResponseDto response = festivalService.getFestivalInfo(lang, contentId);
         return ResponseEntity.ok(ResponseDto.success(response));
     }
-//    @GetMapping("/search")
-//    public ResponseEntity<ResponseDto<?>> searchFestival(
-//            @RequestParam(defaultValue = "kor") String lang,
-//            @RequestParam String keyword
-//    ) {
-//        FestivalResponseDto response = festivalService.searchFestival(lang, keyword);
-//        return ResponseEntity.ok(ResponseDto.success(response));
-//    }
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDto<?>> searchFestival(
+            @RequestParam(defaultValue = "kor") String lang,
+            @RequestParam String keyword
+    ) {
+        FestivalResponseDto response = festivalService.getSearchFestival(lang, keyword);
+        return ResponseEntity.ok(ResponseDto.success(response));
+    }
+    @GetMapping("/detailInfo")
+    public ResponseEntity<ResponseDto<?>> getFestivalDetailInfo(
+            @RequestParam(defaultValue = "kor") String lang,
+            @RequestParam String contentId,
+            @RequestParam String contentTypeId
+    ) {
+        FestivalResponseDto response = festivalService.getFestivalDetailInfo(lang, contentId, contentTypeId);
+        return ResponseEntity.ok(ResponseDto.success(response));
+    }
 }
 
