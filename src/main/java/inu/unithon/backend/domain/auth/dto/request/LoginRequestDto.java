@@ -1,4 +1,4 @@
-package inu.unithon.backend.domain.member.dto.request;
+package inu.unithon.backend.domain.auth.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
