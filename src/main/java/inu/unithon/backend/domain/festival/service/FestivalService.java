@@ -132,6 +132,35 @@ public class FestivalService {
         }
     }
 
+    public FestivalResponseDto getFestivalDetailInfo(String lang, String contentId, String contentTypeId) {
+        try {
+            String serviceName = getServiceName(lang);
+            String baseUrl = "http://apis.data.go.kr/B551011/";
+            String servicePath = serviceName + "/detailIntro1";
+
+            // URL 수동 구성
+            String url = baseUrl + servicePath
+                    + "?serviceKey=" + encodedServiceKey
+                    + "&MobileApp=UnithonApp"
+                    + "&MobileOS=ETC"
+                    + "&contentId=" + contentId
+                    + "&contentTypeId=" + contentTypeId
+                    + "&_type=json";
+
+            logger.info("📡 도커 요청 URL: {}", url);
+
+            // URI 객체로 변환하여 요청
+            URI uri = new URI(url);
+            String jsonString = restTemplate.getForObject(uri, String.class);
+
+            // JSON 문자열을 FestivalResponseDto 객체로 변환
+            return objectMapper.readValue(jsonString, FestivalResponseDto.class);
+
+        } catch (Exception e) {
+            logger.error("축제 상세정보 조회 중 오류 발생: ", e);
+            throw new RuntimeException("축제 상세정보 조회 실패", e);
+        }
+    }
 
     private String getServiceName(String lang) {
         return switch (lang.toLowerCase()) {
