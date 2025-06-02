@@ -1,9 +1,8 @@
-package inu.unithon.backend.domain.member.controller.api;
-import inu.unithon.backend.domain.member.controller.docs.AuthControllerSpecification;
-import inu.unithon.backend.domain.member.dto.request.LoginRequestDto;
-import inu.unithon.backend.domain.member.dto.request.SignupRequestDto;
-import inu.unithon.backend.domain.member.service.AuthService;
-import inu.unithon.backend.domain.member.service.AuthServiceImpl;
+package inu.unithon.backend.domain.auth.controller.api;
+import inu.unithon.backend.domain.auth.controller.docs.AuthControllerSpecification;
+import inu.unithon.backend.domain.auth.dto.request.LoginRequestDto;
+import inu.unithon.backend.domain.auth.dto.request.SignupRequestDto;
+import inu.unithon.backend.domain.auth.service.AuthService;
 import inu.unithon.backend.global.response.ResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController implements AuthControllerSpecification {
 
   private final AuthService authService;
