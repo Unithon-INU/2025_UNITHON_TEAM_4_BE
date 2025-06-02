@@ -1,4 +1,4 @@
-### 개발 서버 ###
+# dev
 
 server:
   port: 8080
@@ -14,7 +14,7 @@ spring:
       hibernate.hibernate.show_sql: true
       hibernate.hibernate.format_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database-platform: org.hibernate.dialect.MySQLDialect
 
   datasource:

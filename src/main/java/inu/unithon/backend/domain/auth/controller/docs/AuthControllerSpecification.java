@@ -1,7 +1,7 @@
-package inu.unithon.backend.domain.member.controller.docs;
+package inu.unithon.backend.domain.auth.controller.docs;
 
-import inu.unithon.backend.domain.member.dto.request.LoginRequestDto;
-import inu.unithon.backend.domain.member.dto.request.SignupRequestDto;
+import inu.unithon.backend.domain.auth.dto.request.LoginRequestDto;
+import inu.unithon.backend.domain.auth.dto.request.SignupRequestDto;
 import inu.unithon.backend.global.response.ResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

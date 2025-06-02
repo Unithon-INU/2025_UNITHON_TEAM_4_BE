@@ -42,4 +42,4 @@ out/
 
 *.env
 src/main/resources/application-prod.yml
-docker-compose.yaml
+docker-compose.prod.yaml
