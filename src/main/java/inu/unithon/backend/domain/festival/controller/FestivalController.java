@@ -41,6 +41,7 @@ public class FestivalController {
         FestivalResponseDto response = festivalService.getSearchFestival(lang, keyword);
         return ResponseEntity.ok(ResponseDto.success(response));
     }
+
     @GetMapping("/detailInfo")
     public ResponseEntity<ResponseDto<?>> getFestivalDetailInfo(
             @RequestParam(defaultValue = "kor") String lang,
@@ -48,6 +49,16 @@ public class FestivalController {
             @RequestParam String contentTypeId
     ) {
         FestivalResponseDto response = festivalService.getFestivalDetailInfo(lang, contentId, contentTypeId);
+        return ResponseEntity.ok(ResponseDto.success(response));
+    }
+
+    @GetMapping("/detailIntro")
+    public ResponseEntity<ResponseDto<?>> getFestivalDetailIntro(
+            @RequestParam(defaultValue = "kor") String lang,
+            @RequestParam String contentId,
+            @RequestParam String contentTypeId
+    ) {
+        FestivalResponseDto response = festivalService.getFestivalDetailIntro(lang, contentId, contentTypeId);
         return ResponseEntity.ok(ResponseDto.success(response));
     }
 }
