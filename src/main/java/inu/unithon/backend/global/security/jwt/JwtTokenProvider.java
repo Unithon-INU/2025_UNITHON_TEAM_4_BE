@@ -3,6 +3,7 @@ package inu.unithon.backend.global.security.jwt;
 import inu.unithon.backend.domain.member.entity.CustomUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
+@Slf4j
 @Component
 public class JwtTokenProvider {
 

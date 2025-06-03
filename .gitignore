@@ -36,6 +36,13 @@ out/
 ### VS Code ###
 .vscode/
 
+### OS Files ###
+.DS_Store
+*DS_Store
+
 *.env
+src/main/resources/application-prod.yml
+docker-compose.prod.yaml
+
 docker-compose.yaml
 application.yml
