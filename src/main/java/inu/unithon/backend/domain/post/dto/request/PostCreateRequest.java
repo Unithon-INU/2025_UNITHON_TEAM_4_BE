@@ -34,8 +34,7 @@ public class PostCreateRequest {
   private String thumbnailUrl;
 
   @Schema(
-    description = "이미지 Url",
-    example = "www.wwww.io"
+    description = "이미지 Url"
   )
   private List<ImageDto> images;
 }
