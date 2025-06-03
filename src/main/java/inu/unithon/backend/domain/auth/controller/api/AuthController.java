@@ -1,4 +1,5 @@
 package inu.unithon.backend.domain.auth.controller.api;
+
 import inu.unithon.backend.domain.auth.controller.docs.AuthControllerSpecification;
 import inu.unithon.backend.domain.auth.dto.request.LoginRequestDto;
 import inu.unithon.backend.domain.auth.dto.request.SignupRequestDto;
@@ -22,7 +23,7 @@ public class AuthController implements AuthControllerSpecification {
     authService.signUp(requestDto);
     return ResponseEntity
       .status(HttpStatus.CREATED)
-      .body(ResponseDto.success("유저 등록 성공", null));
+      .body(ResponseDto.success("유저 등록 성공"));
   }
 
   @PostMapping("/login")

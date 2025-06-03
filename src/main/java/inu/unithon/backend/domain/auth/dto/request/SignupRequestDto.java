@@ -21,8 +21,6 @@ public class SignupRequestDto {
   @NotBlank(message = "이름은 필수 입력 값입니다.")
   private String name;
 
-  private String profileImageUrl;
-
   @Schema(
     description = "이메일",
     example = "qwer@naver.com"
@@ -39,14 +37,6 @@ public class SignupRequestDto {
   // @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$")
   @Size(min = 8, max = 20, message = "비밀번호는 8자 이상 20자 이하로 입력해주세요.")
   private String password;
-
-  @Schema(
-    description = "전화 번호",
-    example = "01012340783"
-  )
-  @NotBlank(message = "전화번호는 필수입니다.")
-  @Pattern(regexp = "^\\d{10,11}$", message = "전화번호는 숫자만 10~11자리로 입력해주세요.")
-  private String phone;
 
   @Schema(
     description = "사용자/어드민",
