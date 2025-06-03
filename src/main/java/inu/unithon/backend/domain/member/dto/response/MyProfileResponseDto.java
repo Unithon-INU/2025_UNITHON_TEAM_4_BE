@@ -9,13 +9,11 @@ public class MyProfileResponseDto {
   private String name;
   private String profileImageUrl;
   private String email;
-  private String phone;
 
   @Builder
-  public MyProfileResponseDto(String name, String profileImageUrl, String email, String phone) {
+  public MyProfileResponseDto(String name, String profileImageUrl, String email) {
     this.name = name;
     this.profileImageUrl = profileImageUrl;
     this.email = email;
-    this.phone = phone;
   }
 }

@@ -27,6 +27,7 @@ public class MemberServiceImpl implements MemberService{
   private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
 
+  @Override
   @Transactional(readOnly = true)
   public MyProfileResponseDto getMyProfile(Long id) {
     Member member = getMember(id);
@@ -36,10 +37,10 @@ public class MemberServiceImpl implements MemberService{
       .name(member.getName())
       .profileImageUrl(member.getProfileImageUrl())
       .email(member.getEmail())
-      .phone(member.getPhone())
       .build();
   }
 
+  @Override
   @Transactional(readOnly = true)
   public ProfileResponseDto getProfile(Long myId, Long id) {
     Member member = getMember(id);
@@ -54,6 +55,7 @@ public class MemberServiceImpl implements MemberService{
   }
 
   // FIXME : 프로필 수정 -> 마지막에 로그아웃 시켜야됨
+  @Override
   public MyProfileResponseDto updateProfile(Long id, UpdateProfileRequestDto profileRequestDto) {
 
     Member member = getMember(id);
@@ -68,7 +70,6 @@ public class MemberServiceImpl implements MemberService{
       profileRequestDto.getName(),
       profileRequestDto.getEmail(),
       profileRequestDto.getProfileImageUrl(),
-      profileRequestDto.getPhone(),
       profileRequestDto.getRole());
     log.info("updateProfile : {}", id);
 
@@ -76,10 +77,10 @@ public class MemberServiceImpl implements MemberService{
       .name(member.getName())
       .profileImageUrl(member.getProfileImageUrl())
       .email(member.getEmail())
-      .phone(member.getPhone())
       .build();
   }
 
+  @Override
   public void deleteProfile(Long id) {
 
     log.info("deleteProfile : {}", id);
@@ -87,6 +88,7 @@ public class MemberServiceImpl implements MemberService{
   }
 
   // FIXME : 비밀번호 수정 -> 마지막에 로그아웃 시켜야됨
+  @Override
   public void updatePassword(Long id, UpdatePasswordRequestDto requestDto) {
 
     String oldPassword = requestDto.getOldPassword();
@@ -103,7 +105,8 @@ public class MemberServiceImpl implements MemberService{
     member.updatePassword(passwordEncoder.encode(newPassword));
   }
 
-  private Member getMember(Long id) {
+  @Override
+  public Member getMember(Long id) {
     return memberRepository.findById(id)
       .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
   }

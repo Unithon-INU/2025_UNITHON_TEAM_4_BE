@@ -25,6 +25,12 @@ public class AuthServiceImpl implements AuthService{
   private final JwtTokenProvider jwtTokenProvider;
   private final PasswordEncoder passwordEncoder;
 
+  /**
+   * Profile Image Url Default value
+   */
+  private final String profileImageUrl = "https://default.image/profile.png";
+
+  @Override
   public void signUp(SignupRequestDto requestDto) {
 
     validateEmail(requestDto.getEmail());
@@ -32,10 +38,9 @@ public class AuthServiceImpl implements AuthService{
 
     Member member = Member.builder()
       .name(requestDto.getName())
-      .profileImageUrl(requestDto.getProfileImageUrl())
+      .profileImageUrl(profileImageUrl)
       .email(requestDto.getEmail())
       .password(passwordEncoder.encode(requestDto.getPassword()))
-      .phone(requestDto.getPhone())
       .role(requestDto.getRole())
       .build();
 
@@ -44,6 +49,7 @@ public class AuthServiceImpl implements AuthService{
     memberRepository.save(member);
   }
 
+  @Override
   @Transactional(readOnly = true)
   public String login(LoginRequestDto requestDto) {
     UsernamePasswordAuthenticationToken authenticationToken =
@@ -59,6 +65,7 @@ public class AuthServiceImpl implements AuthService{
     return jwtTokenProvider.generateToken(userDetails);
   }
 
+  @Override
   // todo : 로그아웃 기능 구현
   public void logout(String token) {}
 
