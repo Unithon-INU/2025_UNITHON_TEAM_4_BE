@@ -4,6 +4,7 @@ import inu.unithon.backend.domain.member.dto.request.UpdatePasswordRequestDto;
 import inu.unithon.backend.domain.member.dto.request.UpdateProfileRequestDto;
 import inu.unithon.backend.domain.member.dto.response.MyProfileResponseDto;
 import inu.unithon.backend.domain.member.dto.response.ProfileResponseDto;
+import inu.unithon.backend.domain.member.entity.Member;
 
 public interface MemberService {
 
@@ -42,4 +43,6 @@ public interface MemberService {
    * @param requestDto
    */
   void updatePassword(Long id, UpdatePasswordRequestDto requestDto);
+
+  Member getMember(Long id);
 }

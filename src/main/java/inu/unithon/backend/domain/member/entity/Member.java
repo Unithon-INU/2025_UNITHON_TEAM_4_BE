@@ -18,12 +18,10 @@ public class Member extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
   private String name;
   private String profileImageUrl;
   private String email;
   private String password;
-  private String phone;
 
   @Enumerated(EnumType.STRING)
   private Role role;
@@ -32,20 +30,18 @@ public class Member extends BaseEntity {
   private List<Post> posts;
 
   @Builder
-  public Member(String name, String profileImageUrl, String email, String password, String phone, Role role) {
+  public Member(String name, String profileImageUrl, String email, String password, Role role) {
     this.name = name;
     this.profileImageUrl = profileImageUrl;
     this.email = email;
     this.password = password;
-    this.phone = phone;
     this.role = role;
   }
 
-  public void updateMember(String name, String profileImageUrl, String email, String phone, Role role) {
+  public void updateMember(String name, String profileImageUrl, String email, Role role) {
     this.name = name;
     this.profileImageUrl = profileImageUrl;
     this.email = email;
-    this.phone = phone;
     this.role = role;
   }
 

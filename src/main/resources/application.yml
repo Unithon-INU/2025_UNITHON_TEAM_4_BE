@@ -1,16 +1,23 @@
+# dev
+
 server:
   port: 8080
 
 spring:
   application:
-    name=: backend
+    name: backend
+  config:
+    import: optional:file:.env[.properties]
+  docker:
+    compose:
+      file: docker-compose.dev.yaml
 
   jpa:
     properties:
       hibernate.hibernate.show_sql: true
       hibernate.hibernate.format_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database-platform: org.hibernate.dialect.MySQLDialect
 
   datasource:
@@ -26,7 +33,7 @@ springdoc:
 
 jwt:
   expiration: 86400000
-  secret: RElBUllfQU5EX0NPTU1VTklUWV9QUk9KRUNUX0RBV05BUllfQURNSU5fU0VDUkVUX0tFWQ==
+  secret: ${JWT_SECRET}
 
 logging:
   level:

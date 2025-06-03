@@ -43,6 +43,3 @@ out/
 *.env
 src/main/resources/application-prod.yml
 docker-compose.prod.yaml
-
-docker-compose.yaml
-application.yml
