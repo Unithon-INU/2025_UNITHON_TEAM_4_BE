@@ -1,0 +1,46 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uni-backend
+    ports:
+      - "8080:8080"
+    environment:
+      JWT_SECRET: "RElBUllfQU5EX0NPTU1VTklUWV9QUk9KRUNUX0RBV05BUllfQURNSU5fU0VDUkVUX0tFWQ=="
+      TOUR_API_KEY: "8c7Q2qxqvcp6FPGfDWyvzuBvDZ4pwEiIWswuB5LwnfI%2B7CE7FIwjKX6sjk6MoqORyUnjDzkzlBbOnbl3rGKmww%3D%3D"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/backend-mysql"
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "1234"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:latest
+    container_name: uni-mysql
+    hostname: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"           # ✅ 이거만 설정
+      MYSQL_DATABASE: "backend-mysql"       # ✅ 이거는 스프링이 사용할 DB
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p1234"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    networks:
+      - app-network
+
+volumes:
+  db_mysql:
+
+networks:
+  app-network:
+    driver: bridge
