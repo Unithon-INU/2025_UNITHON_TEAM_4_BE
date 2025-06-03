@@ -1,6 +1,6 @@
 package inu.unithon.backend.domain.festival.controller;
 
-import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.dto.*;
 import inu.unithon.backend.domain.festival.service.FestivalService;
 import inu.unithon.backend.global.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +48,7 @@ public class FestivalController {
             @RequestParam String contentId,
             @RequestParam String contentTypeId
     ) {
-        FestivalResponseDto response = festivalService.getFestivalDetailInfo(lang, contentId, contentTypeId);
+        FestivalInfoResponseDto response = festivalService.getFestivalDetailInfo(lang, contentId, contentTypeId);
         return ResponseEntity.ok(ResponseDto.success(response));
     }
 
@@ -58,7 +58,7 @@ public class FestivalController {
             @RequestParam String contentId,
             @RequestParam String contentTypeId
     ) {
-        FestivalResponseDto response = festivalService.getFestivalDetailIntro(lang, contentId, contentTypeId);
+        FestivalIntroResponseDto response = festivalService.getFestivalDetailIntro(lang, contentId, contentTypeId);
         return ResponseEntity.ok(ResponseDto.success(response));
     }
 }

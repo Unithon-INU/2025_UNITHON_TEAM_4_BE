@@ -21,5 +21,6 @@ public class FestivalDto {
     private String tel;
     private String title;
     private String zipcode;
+    private String overview;
     private List<FestivalDto> item;  // 중첩된 item 지원
 }

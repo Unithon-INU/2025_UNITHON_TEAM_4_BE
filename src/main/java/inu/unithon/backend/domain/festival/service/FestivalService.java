@@ -1,6 +1,6 @@
 package inu.unithon.backend.domain.festival.service;
 
-import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -132,7 +132,7 @@ public class FestivalService {
         }
     }
 
-    public FestivalResponseDto getFestivalDetailIntro(String lang, String contentId, String contentTypeId) {
+    public FestivalIntroResponseDto getFestivalDetailIntro(String lang, String contentId, String contentTypeId) {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
@@ -154,7 +154,7 @@ public class FestivalService {
             String jsonString = restTemplate.getForObject(uri, String.class);
 
             // JSON 문자열을 FestivalResponseDto 객체로 변환
-            return objectMapper.readValue(jsonString, FestivalResponseDto.class);
+            return objectMapper.readValue(jsonString, FestivalIntroResponseDto.class);
 
         } catch (Exception e) {
             logger.error("축제 상세정보 조회 중 오류 발생: ", e);
@@ -162,7 +162,7 @@ public class FestivalService {
         }
     }
 
-    public FestivalResponseDto getFestivalDetailInfo(String lang, String contentId, String contentTypeId) {
+    public FestivalInfoResponseDto getFestivalDetailInfo(String lang, String contentId, String contentTypeId) {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
@@ -184,7 +184,7 @@ public class FestivalService {
             String jsonString = restTemplate.getForObject(uri, String.class);
 
             // JSON 문자열을 FestivalResponseDto 객체로 변환
-            return objectMapper.readValue(jsonString, FestivalResponseDto.class);
+            return objectMapper.readValue(jsonString, FestivalInfoResponseDto.class);
 
         } catch (Exception e) {
             logger.error("축제 상세정보 조회 중 오류 발생: ", e);
