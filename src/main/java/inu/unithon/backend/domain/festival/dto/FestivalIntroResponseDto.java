@@ -1,0 +1,41 @@
+package inu.unithon.backend.domain.festival.dto;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Getter
+@NoArgsConstructor
+public class FestivalIntroResponseDto {
+    private Response response;
+
+    @Getter
+    @NoArgsConstructor
+    public static class Response {
+        private Header header;
+        private Body body;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class Header {
+        private String resultCode;
+        private String resultMsg;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class Body {
+        private Items items;
+        private int numOfRows;
+        private int pageNo;
+        private int totalCount;
+
+        @Getter
+        @NoArgsConstructor
+        public static class Items {
+            private List<FestivalIntroDto> item; // 단일 객체
+        }
+    }
+}
