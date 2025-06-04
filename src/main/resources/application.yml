@@ -38,3 +38,6 @@ jwt:
 logging:
   level:
     root: INFO
+
+tourapi:
+  service-key: ${TOURAPI_SERVICE_KEY}
