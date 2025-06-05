@@ -1,4 +1,4 @@
-package inu.unithon.backend.domain.festival.controller.interface;
+package inu.unithon.backend.domain.festival.controller.api;
 
 import inu.unithon.backend.domain.festival.dto.*;
 import inu.unithon.backend.global.response.ResponseDto;

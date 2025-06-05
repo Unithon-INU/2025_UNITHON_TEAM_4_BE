@@ -103,7 +103,20 @@ public class FestivalService {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
-            String servicePath = serviceName + "/searchFestival1";
+            String servicePath = serviceName + "/searchKeyword1";
+
+            private String getContentid(String lang) {
+                return switch (lang.toLowerCase()) {
+                    case "kor" -> "15";
+                    case "jpn" -> "85";
+                    case "chn" -> "85";
+                    case "eng" -> "85";
+                    case "fra" -> "85";
+                    case "ger" -> "85";
+                    case "rus" -> "85";
+                    default -> "KorService1";
+                };
+            }
 
             // URL 수동 구성
             String url = baseUrl + servicePath
@@ -115,6 +128,7 @@ public class FestivalService {
                     + "&_type=json"
                     + "&numOfRows=10"
                     + "&pageNo=1"
+                    + "&contentTypeId=" + getContentid(lang)
                     + "&keyword=" + keyword;
 
             logger.info("📡 도커 요청 URL: {}", url);
@@ -126,10 +140,6 @@ public class FestivalService {
             // JSON 문자열을 FestivalResponseDto 객체로 변환
             return objectMapper.readValue(jsonString, FestivalResponseDto.class);
 
-        } catch (Exception e) {
-            logger.error("축제 검색 중 오류 발생: ", e);
-            throw new RuntimeException("축제 검색 실패", e);
-        }
     }
 
     public FestivalIntroResponseDto getFestivalDetailIntro(String lang, String contentId, String contentTypeId) {
@@ -200,6 +210,7 @@ public class FestivalService {
             case "eng" -> "EngService1";
             case "fra" -> "FraService1";
             case "ger" -> "GerService1";
+
             default -> "KorService1";
         };
     }
