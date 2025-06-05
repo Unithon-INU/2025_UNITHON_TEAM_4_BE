@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import inu.unithon.backend.domain.festival.service.FestivalServiceInterface;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import inu.unithon.backend.global.exception.CustomException;
+import inu.unithon.backend.global.exception.ErrorCode;
 
 import java.net.URI;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,8 +57,8 @@ public class FestivalService implements FestivalServiceInterface{
             return objectMapper.readValue(jsonString, FestivalResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("축제 리스트 조회 중 오류 발생: ", e);
-            throw new RuntimeException("축제 리스트 조회 실패", e);
+            logger.error("Festival List error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -86,8 +88,8 @@ public class FestivalService implements FestivalServiceInterface{
             return objectMapper.readValue(jsonString, FestivalResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("축제 상세 정보 조회 중 오류 발생: ", e);
-            throw new RuntimeException("축제 상세 정보 조회 실패", e);
+            logger.error("Festival info error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -120,8 +122,8 @@ public class FestivalService implements FestivalServiceInterface{
             return objectMapper.readValue(jsonString, FestivalResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("축제 검색 조회 중 오류 발생: ", e);
-            throw new RuntimeException("축제 검색 조회 실패", e);
+            logger.error("Festival Search error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -147,8 +149,8 @@ public class FestivalService implements FestivalServiceInterface{
             return objectMapper.readValue(jsonString, FestivalIntroResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("축제 소개 정보 조회 중 오류 발생: ", e);
-            throw new RuntimeException("축제 소개 정보 조회 실패", e);
+            logger.error("Festival intro error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -174,8 +176,8 @@ public class FestivalService implements FestivalServiceInterface{
             return objectMapper.readValue(jsonString, FestivalInfoResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("축제 추가 정보 조회 중 오류 발생: ", e);
-            throw new RuntimeException("축제 추가 정보 조회 실패", e);
+            logger.error("Festival Detail info error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
     public FestivalResponseDto getFestivalLocationFood(String lang, String MapX, String MapY, String NumOfRows, String PageNo, String radius) {
@@ -205,8 +207,8 @@ public class FestivalService implements FestivalServiceInterface{
             return objectMapper.readValue(jsonString, FestivalResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("축제 위치 음식 조회 중 오류 발생: ", e);
-            throw new RuntimeException("축제 위치 음식 조회 실패", e);
+            logger.error("Location Food List error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
