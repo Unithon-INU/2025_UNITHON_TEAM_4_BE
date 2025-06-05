@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import inu.unithon.backend.domain.festival.service.FestivalServiceInterface;
 
 import java.net.URI;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 @RequiredArgsConstructor
-public class FestivalService {
+public class FestivalService implements FestivalServiceInterface{
 
     private static final Logger logger = LoggerFactory.getLogger(FestivalService.class);
 
