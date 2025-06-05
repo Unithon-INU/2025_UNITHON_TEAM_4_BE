@@ -25,16 +25,4 @@ public class PostCreateRequest {
     example = "example-content"
   )
   private String content;
-
-  @Schema(
-    description = "썸네일 Url",
-    example = "www.thumbnailurl.com"
-  )
-  @NotNull(message = "사진을 넣어주세요.")
-  private String thumbnailUrl;
-
-  @Schema(
-    description = "이미지 Url"
-  )
-  private List<ImageDto> images;
 }

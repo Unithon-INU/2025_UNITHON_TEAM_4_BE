@@ -3,16 +3,21 @@ package inu.unithon.backend.domain.member.service;
 import inu.unithon.backend.domain.member.dto.request.UpdatePasswordRequestDto;
 import inu.unithon.backend.domain.member.dto.request.UpdateProfileRequestDto;
 import inu.unithon.backend.domain.member.dto.response.MyProfileResponseDto;
+import inu.unithon.backend.domain.member.dto.response.UpdateProfileResponseDto;
 import inu.unithon.backend.domain.member.dto.response.ProfileResponseDto;
 import inu.unithon.backend.domain.member.entity.Member;
 import inu.unithon.backend.domain.member.repository.MemberRepository;
+import inu.unithon.backend.domain.post.dto.PostDto;
 import inu.unithon.backend.global.exception.CustomException;
 import inu.unithon.backend.global.exception.ErrorCode;
+import inu.unithon.backend.global.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
 
@@ -24,22 +29,34 @@ import static inu.unithon.backend.global.exception.ErrorCode.*;
 @Transactional
 public class MemberServiceImpl implements MemberService{
 
+  @Value("${default.profile.image}")
+  private String defaultProfileImageUrl;
+
   private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
+  private final S3Service s3Service;
 
+  // todo : 페이지네이션 적용
   @Override
   @Transactional(readOnly = true)
   public MyProfileResponseDto getMyProfile(Long id) {
     Member member = getMember(id);
 
     log.info("getMyProfile : {}", id);
+
     return MyProfileResponseDto.builder()
       .name(member.getName())
       .profileImageUrl(member.getProfileImageUrl())
       .email(member.getEmail())
+      .createdAt(member.getCreatedAt())
+      .postCount(member.getPostCount())
+      .posts(member.getPosts().stream()
+        .map(PostDto::fromPost)
+        .toList())
       .build();
   }
 
+  // todo : 페이지네이션 적용
   @Override
   @Transactional(readOnly = true)
   public ProfileResponseDto getProfile(Long myId, Long id) {
@@ -49,14 +66,13 @@ public class MemberServiceImpl implements MemberService{
     return ProfileResponseDto.builder()
       .name(member.getName())
       .profileImageUrl(member.getProfileImageUrl())
-      // todo : 페이지네이션 적용 공부
       .posts(member.getPosts())
       .build();
   }
 
   // FIXME : 프로필 수정 -> 마지막에 로그아웃 시켜야됨
   @Override
-  public MyProfileResponseDto updateProfile(Long id, UpdateProfileRequestDto profileRequestDto) {
+  public UpdateProfileResponseDto updateProfile(Long id, UpdateProfileRequestDto profileRequestDto) {
 
     Member member = getMember(id);
     if(!Objects.equals(member.getEmail(), profileRequestDto.getEmail())) {
@@ -73,7 +89,7 @@ public class MemberServiceImpl implements MemberService{
       profileRequestDto.getRole());
     log.info("updateProfile : {}", id);
 
-    return MyProfileResponseDto.builder()
+    return UpdateProfileResponseDto.builder()
       .name(member.getName())
       .profileImageUrl(member.getProfileImageUrl())
       .email(member.getEmail())
@@ -103,6 +119,17 @@ public class MemberServiceImpl implements MemberService{
 
     log.info("updatePassword : {}", id);
     member.updatePassword(passwordEncoder.encode(newPassword));
+  }
+
+  @Override
+  public void updateProfileImage(Long id, MultipartFile file) {
+    Member member = getMember(id);
+
+    if (!Objects.equals(member.getProfileImageUrl(), defaultProfileImageUrl)) {
+      s3Service.deleteImage(member.getProfileImageUrl());
+    }
+
+    member.updateProfileImage(s3Service.uploadImage(file));
   }
 
   @Override

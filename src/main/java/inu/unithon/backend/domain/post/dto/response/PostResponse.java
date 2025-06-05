@@ -24,7 +24,7 @@ public class PostResponse {
   private List<CommentDto> comments;
   private WriterDto writer;
 
-  public static PostResponse from(Post post) {
+  public static PostResponse fromPost(Post post) {
     return PostResponse.builder()
       .postId(post.getId())
       .likes(post.getLikes())

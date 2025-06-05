@@ -18,6 +18,12 @@ public enum ErrorCode {
   INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
   SAME_PASSWORD(HttpStatus.BAD_REQUEST, "기존의 비밀번호와 달라야 합니다."),
   POST_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
+
+  NO_IMAGE_INPUT(HttpStatus.BAD_REQUEST, "적어도 하나의 이미지를 업로드 해야됩니다."),
+  S3_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "S3 이미지 업로드에 실패했습니다."),
+  S3_DELETE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "S3 이미지 삭제에 실패했습니다."),
+  S3_INVALID_URL(HttpStatus.BAD_REQUEST, "유효하지 않은 S3 URL 입니다."),
+
   INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
 
   private final HttpStatus status;
