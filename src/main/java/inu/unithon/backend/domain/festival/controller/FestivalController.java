@@ -45,4 +45,9 @@ public class FestivalController implements FestivalApi {
         FestivalIntroResponseDto response = festivalService.getFestivalDetailIntro(lang, contentId, contentTypeId);
         return ResponseEntity.ok(ResponseDto.success(response));
     }
+    @Override
+    public ResponseEntity<ResponseDto<?>> getFestivalLocationFood(String lang, String MapX, String MapY, String NumOfRows, String PageNo, String Radius) {
+        FestivalResponseDto response = festivalService.getFestivalLocationFood(lang, MapX, MapY, NumOfRows, PageNo, Radius);
+        return ResponseEntity.ok(ResponseDto.success(response));
+    }
 }

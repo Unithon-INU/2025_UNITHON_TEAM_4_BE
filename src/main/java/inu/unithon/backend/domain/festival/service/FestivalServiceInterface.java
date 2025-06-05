@@ -8,4 +8,5 @@ public interface FestivalServiceInterface {
     FestivalResponseDto getSearchFestival(String lang, String keyword);
     FestivalIntroResponseDto getFestivalDetailIntro(String lang, String contentId, String contentTypeId);
     FestivalInfoResponseDto getFestivalDetailInfo(String lang, String contentId, String contentTypeId);
+    FestivalResponseDto getFestivalLocationFood(String lang, String MapX, String MapY, String NumOfRows, String PageNo, String Radius);
 }

@@ -178,7 +178,51 @@ public class FestivalService implements FestivalServiceInterface{
             throw new RuntimeException("축제 추가 정보 조회 실패", e);
         }
     }
+    public FestivalResponseDto getFestivalLocationFood(String lang, String MapX, String MapY, String NumOfRows, String PageNo, String radius) {
+        try {
+            String serviceName = getServiceName(lang);
+            String baseUrl = "http://apis.data.go.kr/B551011/";
+            String servicePath = serviceName + "/locationBasedList1";
 
+            String url = baseUrl + servicePath
+                    + "?serviceKey=" + encodedServiceKey
+                    + "&MobileApp=UnithonApp"
+                    + "&radius=" + radius
+                    + "&MobileOS=ETC"
+                    + "&_type=json"
+                    + "&numOfRows=" + NumOfRows
+                    + "&pageNo=" + PageNo
+                    + "&mapX=" + MapX
+                    + "&mapY=" + MapY
+                    + "&radius=1000"
+                    + "&contentTypeId=" + getFoodid(lang);
+
+            logger.info("📡 도커 요청 URL: {}", url);
+
+            URI uri = new URI(url);
+            String jsonString = restTemplate.getForObject(uri, String.class);
+
+            return objectMapper.readValue(jsonString, FestivalResponseDto.class);
+
+        } catch (Exception e) {
+            logger.error("축제 위치 음식 조회 중 오류 발생: ", e);
+            throw new RuntimeException("축제 위치 음식 조회 실패", e);
+        }
+    }
+
+    private String getFoodid(String lang) {
+        return switch (lang.toLowerCase()) {
+            case "kor" -> "39";
+            case "jpn" -> "82";
+            case "chn" -> "82";
+            case "eng" -> "82";
+            case "fra" -> "82";
+            case "ger" -> "82";
+            case "rus" -> "82";
+            case "spa" -> "82";
+            default -> "39";
+        };
+    }
     private String getContentid(String lang) {
         return switch (lang.toLowerCase()) {
             case "kor" -> "15";

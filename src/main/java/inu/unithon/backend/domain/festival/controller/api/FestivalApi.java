@@ -41,4 +41,13 @@ public interface FestivalApi {
             @RequestParam String contentId,
             @RequestParam String contentTypeId
     );
+    @GetMapping("/locationFood")
+    ResponseEntity<ResponseDto<?>> getFestivalLocationFood(
+            @RequestParam(defaultValue = "kor") String lang,
+            @RequestParam String MapX,
+            @RequestParam String MapY,
+            @RequestParam String NumOfRows,
+            @RequestParam String PageNo,
+            @RequestParam String radius
+    );
 }
