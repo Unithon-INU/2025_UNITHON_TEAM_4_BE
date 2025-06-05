@@ -22,6 +22,7 @@ public class Member extends BaseEntity {
   private String profileImageUrl;
   private String email;
   private String password;
+  private Long postCount;
 
   @Enumerated(EnumType.STRING)
   private Role role;
@@ -35,6 +36,7 @@ public class Member extends BaseEntity {
     this.profileImageUrl = profileImageUrl;
     this.email = email;
     this.password = password;
+    this.postCount = 0L;
     this.role = role;
   }
 
@@ -47,5 +49,17 @@ public class Member extends BaseEntity {
 
   public void updatePassword(String password) {
     this.password = password;
+  }
+
+  public void updateProfileImage(String newProfileImageUrl) {
+    this.profileImageUrl = newProfileImageUrl;
+  }
+
+  public void increasePostCount() {
+    this.postCount++;
+  }
+
+  public void decreasePostCount() {
+    this.postCount = Math.max(0, this.postCount - 1);
   }
 }

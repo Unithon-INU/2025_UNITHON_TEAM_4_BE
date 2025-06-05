@@ -10,9 +10,11 @@ import inu.unithon.backend.global.response.ResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,10 +26,12 @@ public class PostController implements PostControllerSpecification {
   private final PostService postService;
 
   @Override
-  @PostMapping
-  public ResponseEntity<ResponseDto<Void>> createPost(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody PostCreateRequest rq) {
+  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<ResponseDto<Void>> createPost(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                      @Valid @RequestPart("data") PostCreateRequest rq,
+                                                      @RequestPart("images") List<MultipartFile> images) {
 
-    postService.create(userDetails.getMember().getId(), rq);
+    postService.create(userDetails.getMember().getId(), rq, images);
     return ResponseEntity
       .status(HttpStatus.OK)
       .body(ResponseDto.success("게시물 생성 완료"));
@@ -52,12 +56,15 @@ public class PostController implements PostControllerSpecification {
   }
 
   @Override
-  @PatchMapping("/{postId}")
-  public ResponseEntity<ResponseDto<PostResponse>> updatePost(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long postId, @Valid @RequestBody PostUpdateRequest rq) {
+  @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<ResponseDto<PostResponse>> updatePost(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                              @PathVariable Long postId,
+                                                              @Valid @RequestPart("data") PostUpdateRequest rq,
+                                                              @RequestPart("images") List<MultipartFile> images) {
 
     return ResponseEntity
       .status(HttpStatus.OK)
-      .body(ResponseDto.success("게시물 수정 완료", postService.updatePost(userDetails.getMember().getId(), postId,rq)));
+      .body(ResponseDto.success("게시물 수정 완료", postService.updatePost(userDetails.getMember().getId(), postId, rq, images)));
   }
 
   @Override

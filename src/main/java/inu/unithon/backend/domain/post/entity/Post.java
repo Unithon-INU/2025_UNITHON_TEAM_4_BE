@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,10 +52,9 @@ public class Post extends BaseEntity {
     image.setPost(this);
   }
 
-//  public void updatePost(PostUpdateRequest updateRequest) {
-//    this.title = updateRequest.getTitle();
-//    this.content = updateRequest.getContent();
-//    this.thumbnailUrl = updateRequest.getThumbnailUrl();
-//    this.images = updateRequest.getImageUrls();
-//  }
+  public void updatePost(PostUpdateRequest updateRequest, List<PostImage> images) {
+    this.title = updateRequest.getTitle();
+    this.content = updateRequest.getContent();
+    this.images = images;
+  }
 }

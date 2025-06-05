@@ -1,7 +1,8 @@
 package inu.unithon.backend.domain.post.service;
 
+import inu.unithon.backend.domain.member.entity.Member;
+import inu.unithon.backend.domain.member.repository.MemberRepository;
 import inu.unithon.backend.domain.member.service.MemberService;
-import inu.unithon.backend.domain.post.dto.ImageDto;
 import inu.unithon.backend.domain.post.dto.request.PostCreateRequest;
 import inu.unithon.backend.domain.post.dto.request.PostUpdateRequest;
 import inu.unithon.backend.domain.post.dto.response.PostResponse;
@@ -9,10 +10,13 @@ import inu.unithon.backend.domain.post.entity.Post;
 import inu.unithon.backend.domain.post.entity.PostImage;
 import inu.unithon.backend.domain.post.repository.PostRepository;
 import inu.unithon.backend.global.exception.CustomException;
+import inu.unithon.backend.global.exception.ErrorCode;
+import inu.unithon.backend.global.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,21 +31,32 @@ public class PostServiceImpl implements PostService {
 
   private final PostRepository postRepository;
   private final MemberService memberService;
+  private final S3Service s3Service;
+  private final MemberRepository memberRepository;
 
   @Override
-  public void create(Long memberId, PostCreateRequest postCreateRequest) {
+  public void create(Long memberId, PostCreateRequest postCreateRequest, List<MultipartFile> images) {
+    if (images == null || images.isEmpty()) {
+      throw new CustomException(ErrorCode.NO_IMAGE_INPUT);
+    }
+
+    List<String> imageUrls = images.stream()
+      .map(s3Service::uploadImage)
+      .toList();
+
+    Member member = memberService.getMember(memberId);
 
     Post post = Post.builder()
       .title(postCreateRequest.getTitle())
       .content(postCreateRequest.getContent())
-      .thumbnailUrl(postCreateRequest.getThumbnailUrl())
-      .member(memberService.getMember(memberId))
+      .thumbnailUrl(imageUrls.getFirst())
+      .member(member)
       .build();
 
     int index = 1;
-    for (ImageDto dto : postCreateRequest.getImages()) {
+    for (String imageUrl : imageUrls) {
       PostImage postImage = PostImage.builder()
-        .imageUrl(dto.getImageUrl())
+        .imageUrl(imageUrl)
         .orderIndex(index++)
         .post(post)
         .build();
@@ -49,6 +64,7 @@ public class PostServiceImpl implements PostService {
     }
 
     postRepository.save(post);
+    member.increasePostCount(); // post 개수 증가
     log.info("Create Post : ${}", postCreateRequest.getTitle());
   }
 
@@ -60,7 +76,7 @@ public class PostServiceImpl implements PostService {
       .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
     log.info("Get Post : ${}", postId);
 
-    return PostResponse.from(post);
+    return PostResponse.fromPost(post);
   }
 
   @Override
@@ -70,20 +86,37 @@ public class PostServiceImpl implements PostService {
     log.info("Get All Posts : ${}", posts);
 
     return posts.stream()
-      .map(PostResponse::from)
+      .map(PostResponse::fromPost)
       .toList();
   }
 
   @Override
-  public PostResponse updatePost(Long memberId, Long postId, PostUpdateRequest postUpdateRequest) {
+  public PostResponse updatePost(Long memberId, Long postId, PostUpdateRequest postUpdateRequest, List<MultipartFile> images) {
     Post post = postRepository.findById(postId)
       .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
 
     if (!post.getMember().getId().equals(memberId)) throw new CustomException(FORBIDDEN);
 
-    PostResponse postResponse = PostResponse.from(post);
+// todo : 걍 수정할거 개많음... 업데이트를 어떤식으로 진행 해야 하는지.. 사진 업데이트는 어떻게 할까??
+
+//    List<String> imageUrls = images.stream()
+//      .map(s3Service::uploadImage)
+//      .toList();
+//
+//    int index = 1;
+//    for (String imageUrl : imageUrls) {
+//      PostImage postImage = PostImage.builder()
+//        .imageUrl(imageUrl)
+//        .orderIndex(index++)
+//        .post(post)
+//        .build();
+//      post.addImage(postImage);
+//    }
+//
+//    post.updatePost(postUpdateRequest, images);
+
     log.info("Update Post : ${}", postUpdateRequest.getTitle());
-    return postResponse;
+    return PostResponse.fromPost(post);
   }
 
   @Override
@@ -91,8 +124,12 @@ public class PostServiceImpl implements PostService {
     Post post = postRepository.findById(postId)
         .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
 
-    if (!post.getMember().getId().equals(memberId)) throw new CustomException(FORBIDDEN);
+    Member member = post.getMember();
+
+    if (!member.getId().equals(memberId)) throw new CustomException(FORBIDDEN);
     postRepository.deleteById(postId);
+    member.decreasePostCount();
+
     log.info("Delete Post : ${}", postId);
     return postId;
   }

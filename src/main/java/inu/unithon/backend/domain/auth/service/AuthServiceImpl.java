@@ -8,6 +8,7 @@ import inu.unithon.backend.global.exception.CustomException;
 import inu.unithon.backend.domain.member.entity.CustomUserDetails;
 import inu.unithon.backend.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,10 +26,8 @@ public class AuthServiceImpl implements AuthService{
   private final JwtTokenProvider jwtTokenProvider;
   private final PasswordEncoder passwordEncoder;
 
-  /**
-   * Profile Image Url Default value
-   */
-  private final String profileImageUrl = "https://default.image/profile.png";
+  @Value("${default.profile.image}")
+  private String defaultProfileImageUrl;
 
   @Override
   public void signUp(SignupRequestDto requestDto) {
@@ -38,7 +37,7 @@ public class AuthServiceImpl implements AuthService{
 
     Member member = Member.builder()
       .name(requestDto.getName())
-      .profileImageUrl(profileImageUrl)
+      .profileImageUrl(defaultProfileImageUrl)
       .email(requestDto.getEmail())
       .password(passwordEncoder.encode(requestDto.getPassword()))
       .role(requestDto.getRole())
