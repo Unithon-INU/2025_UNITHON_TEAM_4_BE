@@ -8,6 +8,8 @@ import org.springframework.web.client.RestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import inu.unithon.backend.domain.festival.service.FestivalServiceInterface;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import java.net.URI;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -94,6 +96,9 @@ public class FestivalService implements FestivalServiceInterface{
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
             String servicePath = serviceName + "/searchKeyword1";
+            if ("KorService1".equals(serviceName)) {
+                keyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
+            }
 
             String url = baseUrl + servicePath
                     + "?serviceKey=" + encodedServiceKey
