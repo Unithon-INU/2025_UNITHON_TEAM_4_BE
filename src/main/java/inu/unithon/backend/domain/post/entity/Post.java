@@ -22,7 +22,7 @@ public class Post extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private Long likes;
+  private Long likes; // 좋아요 갯수 todo : 정합성, 동시성 컨트롤.
   private String title;
   private String content;
   private String thumbnailUrl;
@@ -34,7 +34,7 @@ public class Post extends BaseEntity {
   private List<Comment> comments = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false)
+  @JoinColumn(name = "member_id", nullable = false)
   private Member member;
 
   @Builder

@@ -20,7 +20,7 @@ public class PostImage extends BaseEntity {
 
   @Setter
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false)
+  @JoinColumn(name = "post_id", nullable = false)
   private Post post;
 
   @Builder

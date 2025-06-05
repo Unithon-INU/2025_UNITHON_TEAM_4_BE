@@ -17,7 +17,7 @@ spring:
       hibernate.hibernate.show_sql: true
       hibernate.hibernate.format_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     database-platform: org.hibernate.dialect.MySQLDialect
 
   datasource:
