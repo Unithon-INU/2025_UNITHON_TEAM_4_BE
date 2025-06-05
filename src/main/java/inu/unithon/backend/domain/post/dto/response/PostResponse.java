@@ -1,6 +1,6 @@
 package inu.unithon.backend.domain.post.dto.response;
 
-import inu.unithon.backend.domain.post.dto.CommentDto;
+import inu.unithon.backend.domain.comment.dto.CommentDto;
 import inu.unithon.backend.domain.post.dto.ImageDto;
 import inu.unithon.backend.domain.post.dto.WriterDto;
 import inu.unithon.backend.domain.post.entity.Post;
@@ -35,7 +35,7 @@ public class PostResponse {
         .map(ImageDto::from)
         .toList())
       .comments(post.getComments().stream()
-        .map(CommentDto::from)
+        .map(CommentDto::fromComment)
         .toList())
       .writer(WriterDto.from(post.getMember()))
       .build();

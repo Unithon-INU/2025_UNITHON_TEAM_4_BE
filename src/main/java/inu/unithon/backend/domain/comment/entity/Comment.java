@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Comment extends BaseEntity {
+
   @Id
   @GeneratedValue
   private Long id;
@@ -25,8 +26,9 @@ public class Comment extends BaseEntity {
   private String memberProfileImageUrl;
 
   @Builder
-  public Comment(String content, String memberId, String memberName, String memberProfileImageUrl) {
+  public Comment(String content, Post post, String memberId, String memberName, String memberProfileImageUrl) {
     this.content = content;
+    this.post = post;
     this.memberId = memberId;
     this.memberName = memberName;
     this.memberProfileImageUrl = memberProfileImageUrl;

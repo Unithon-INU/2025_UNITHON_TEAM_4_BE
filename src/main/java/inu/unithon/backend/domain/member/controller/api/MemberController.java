@@ -26,7 +26,7 @@ public class MemberController implements MemberControllerSpecification {
 
   private final MemberService memberService;
 
-  @GetMapping()
+  @GetMapping
   public ResponseEntity<ResponseDto<MyProfileResponseDto>> myProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
 
     return ResponseEntity
@@ -34,14 +34,14 @@ public class MemberController implements MemberControllerSpecification {
       .body(ResponseDto.success("프로필 조회 성공", memberService.getMyProfile(userDetails.getMember().getId())));
   }
 
-  @PostMapping()
+  @PostMapping
   public ResponseEntity<ResponseDto<ProfileResponseDto>> profile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody ProfileRequestDto requestDto) {
     return ResponseEntity
       .status(HttpStatus.OK)
       .body(ResponseDto.success("프로필 조회 성공", memberService.getProfile(userDetails.getMember().getId(), requestDto.getId())));
   }
 
-  @PatchMapping()
+  @PatchMapping
   public ResponseEntity<ResponseDto<UpdateProfileResponseDto>> updateProfile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody UpdateProfileRequestDto requestDto) {
     return ResponseEntity
       .status(HttpStatus.OK)
