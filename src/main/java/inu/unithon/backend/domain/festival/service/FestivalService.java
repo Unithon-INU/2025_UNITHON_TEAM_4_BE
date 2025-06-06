@@ -110,7 +110,7 @@ public class FestivalService implements FestivalServiceInterface{
                     + "&listYN=Y"
                     + "&_type=json"
                     + "&numOfRows=" + numOfRows
-                    + "&pageNo= " + pageNo
+                    + "&pageNo=" + pageNo
                     + "&contentTypeId=" + getContentid(lang)
                     + "&keyword=" + keyword;
 
