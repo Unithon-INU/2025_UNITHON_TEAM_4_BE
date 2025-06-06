@@ -25,6 +25,8 @@ public interface FestivalApi {
     @GetMapping("/search")
     ResponseEntity<ResponseDto<?>> searchFestival(
             @RequestParam(defaultValue = "kor") String lang,
+            @RequestParam(defaultValue = "10") String numOfRows,
+            @RequestParam(defaultValue = "1") String pageNo,
             @RequestParam String keyword
     );
 
