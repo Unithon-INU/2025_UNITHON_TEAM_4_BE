@@ -2,10 +2,16 @@ package inu.unithon.backend.domain.festival.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.util.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 
 import java.util.List;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class FestivalInfoResponseDto {
     private Response response;

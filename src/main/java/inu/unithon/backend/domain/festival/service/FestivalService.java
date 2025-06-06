@@ -5,15 +5,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import inu.unithon.backend.domain.festival.service.FestivalServiceInterface;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import inu.unithon.backend.global.exception.CustomException;
+import inu.unithon.backend.global.exception.ErrorCode;
+
 import java.net.URI;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 @RequiredArgsConstructor
-public class FestivalService {
+public class FestivalService implements FestivalServiceInterface{
 
     private static final Logger logger = LoggerFactory.getLogger(FestivalService.class);
 
@@ -23,14 +28,12 @@ public class FestivalService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-
     public FestivalResponseDto getFestivalList(String lang, String numOfRows, String pageNo, String eventStartDate, String areaCode) {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
             String servicePath = serviceName + "/searchFestival1";
 
-            // URL 수동 구성
             String url = baseUrl + servicePath
                     + "?serviceKey=" + encodedServiceKey
                     + "&MobileApp=UnithonApp"
@@ -41,25 +44,21 @@ public class FestivalService {
                     + "&numOfRows=" + numOfRows
                     + "&pageNo=" + pageNo
                     + "&eventStartDate=" + eventStartDate;
-            if( areaCode != null && !areaCode.isEmpty()) {
+
+            if (areaCode != null && !areaCode.isEmpty()) {
                 url += "&areaCode=" + areaCode;
             }
 
-
-
             logger.info("📡 도커 요청 URL: {}", url);
 
-            // URI 객체로 변환하여 요청
             URI uri = new URI(url);
             String jsonString = restTemplate.getForObject(uri, String.class);
 
-
-            // JSON 문자열을 FestivalResponseDto 객체로 변환
             return objectMapper.readValue(jsonString, FestivalResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("축제 리스트 조회 중 오류 발생: ", e);
-            throw new RuntimeException("축제 리스트 조회 실패", e);
+            logger.error("Festival List error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -69,7 +68,6 @@ public class FestivalService {
             String baseUrl = "http://apis.data.go.kr/B551011/";
             String servicePath = serviceName + "/detailCommon1";
 
-            // URL 수동 구성
             String url = baseUrl + servicePath
                     + "?serviceKey=" + encodedServiceKey
                     + "&MobileApp=UnithonApp"
@@ -84,18 +82,14 @@ public class FestivalService {
 
             logger.info("📡 도커 요청 URL: {}", url);
 
-            // URI 객체로 변환하여 요청
             URI uri = new URI(url);
             String jsonString = restTemplate.getForObject(uri, String.class);
 
-
-
-            // JSON 문자열을 FestivalResponseDto 객체로 변환
             return objectMapper.readValue(jsonString, FestivalResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("축제 상세정보 조회 중 오류 발생: ", e);
-            throw new RuntimeException("축제 상세정보 조회 실패", e);
+            logger.error("Festival info error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -103,9 +97,11 @@ public class FestivalService {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
-            String servicePath = serviceName + "/searchFestival1";
+            String servicePath = serviceName + "/searchKeyword1";
+            if ("KorService1".equals(serviceName)) {
+                keyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
+            }
 
-            // URL 수동 구성
             String url = baseUrl + servicePath
                     + "?serviceKey=" + encodedServiceKey
                     + "&MobileApp=UnithonApp"
@@ -115,20 +111,19 @@ public class FestivalService {
                     + "&_type=json"
                     + "&numOfRows=10"
                     + "&pageNo=1"
+                    + "&contentTypeId=" + getContentid(lang)
                     + "&keyword=" + keyword;
 
             logger.info("📡 도커 요청 URL: {}", url);
 
-            // URI 객체로 변환하여 요청
             URI uri = new URI(url);
             String jsonString = restTemplate.getForObject(uri, String.class);
 
-            // JSON 문자열을 FestivalResponseDto 객체로 변환
             return objectMapper.readValue(jsonString, FestivalResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("축제 검색 중 오류 발생: ", e);
-            throw new RuntimeException("축제 검색 실패", e);
+            logger.error("Festival Search error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -138,7 +133,6 @@ public class FestivalService {
             String baseUrl = "http://apis.data.go.kr/B551011/";
             String servicePath = serviceName + "/detailIntro1";
 
-            // URL 수동 구성
             String url = baseUrl + servicePath
                     + "?serviceKey=" + encodedServiceKey
                     + "&MobileApp=UnithonApp"
@@ -149,16 +143,14 @@ public class FestivalService {
 
             logger.info("📡 도커 요청 URL: {}", url);
 
-            // URI 객체로 변환하여 요청
             URI uri = new URI(url);
             String jsonString = restTemplate.getForObject(uri, String.class);
 
-            // JSON 문자열을 FestivalResponseDto 객체로 변환
             return objectMapper.readValue(jsonString, FestivalIntroResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("축제 상세정보 조회 중 오류 발생: ", e);
-            throw new RuntimeException("축제 상세정보 조회 실패", e);
+            logger.error("Festival intro error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -168,7 +160,6 @@ public class FestivalService {
             String baseUrl = "http://apis.data.go.kr/B551011/";
             String servicePath = serviceName + "/detailInfo1";
 
-            // URL 수동 구성
             String url = baseUrl + servicePath
                     + "?serviceKey=" + encodedServiceKey
                     + "&MobileApp=UnithonApp"
@@ -179,17 +170,73 @@ public class FestivalService {
 
             logger.info("📡 도커 요청 URL: {}", url);
 
-            // URI 객체로 변환하여 요청
             URI uri = new URI(url);
             String jsonString = restTemplate.getForObject(uri, String.class);
 
-            // JSON 문자열을 FestivalResponseDto 객체로 변환
             return objectMapper.readValue(jsonString, FestivalInfoResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("축제 상세정보 조회 중 오류 발생: ", e);
-            throw new RuntimeException("축제 상세정보 조회 실패", e);
+            logger.error("Festival Detail info error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
+    }
+    public FestivalResponseDto getFestivalLocationFood(String lang, String MapX, String MapY, String NumOfRows, String PageNo, String radius) {
+        try {
+            String serviceName = getServiceName(lang);
+            String baseUrl = "http://apis.data.go.kr/B551011/";
+            String servicePath = serviceName + "/locationBasedList1";
+
+            String url = baseUrl + servicePath
+                    + "?serviceKey=" + encodedServiceKey
+                    + "&MobileApp=UnithonApp"
+                    + "&radius=" + radius
+                    + "&MobileOS=ETC"
+                    + "&_type=json"
+                    + "&numOfRows=" + NumOfRows
+                    + "&pageNo=" + PageNo
+                    + "&mapX=" + MapX
+                    + "&mapY=" + MapY
+                    + "&radius=1000"
+                    + "&contentTypeId=" + getFoodid(lang);
+
+            logger.info("📡 도커 요청 URL: {}", url);
+
+            URI uri = new URI(url);
+            String jsonString = restTemplate.getForObject(uri, String.class);
+
+            return objectMapper.readValue(jsonString, FestivalResponseDto.class);
+
+        } catch (Exception e) {
+            logger.error("Location Food List error : ", e);
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private String getFoodid(String lang) {
+        return switch (lang.toLowerCase()) {
+            case "kor" -> "39";
+            case "jpn" -> "82";
+            case "chn" -> "82";
+            case "eng" -> "82";
+            case "fra" -> "82";
+            case "ger" -> "82";
+            case "rus" -> "82";
+            case "spa" -> "82";
+            default -> "39";
+        };
+    }
+    private String getContentid(String lang) {
+        return switch (lang.toLowerCase()) {
+            case "kor" -> "15";
+            case "jpn" -> "85";
+            case "chn" -> "85";
+            case "eng" -> "85";
+            case "fra" -> "85";
+            case "ger" -> "85";
+            case "rus" -> "85";
+            case "spa" -> "85";
+            default -> "15";
+        };
     }
 
     private String getServiceName(String lang) {

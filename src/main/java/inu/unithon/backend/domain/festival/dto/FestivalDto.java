@@ -3,8 +3,12 @@ package inu.unithon.backend.domain.festival.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class FestivalDto {
     private String addr1;
@@ -22,5 +26,6 @@ public class FestivalDto {
     private String title;
     private String zipcode;
     private String overview;
+    private String dist;
     private List<FestivalDto> item;  // 중첩된 item 지원
 }
