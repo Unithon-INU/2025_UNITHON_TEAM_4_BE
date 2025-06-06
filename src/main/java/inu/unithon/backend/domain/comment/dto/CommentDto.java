@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 public class CommentDto {
   private String content;
-  private String writerId;
+  private Long writerId;
   private String writerName;
   private String writerProfileImageUrl;
 

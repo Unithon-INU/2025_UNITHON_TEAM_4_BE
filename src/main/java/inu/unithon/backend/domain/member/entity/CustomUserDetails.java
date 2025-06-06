@@ -31,8 +31,20 @@ public class CustomUserDetails implements UserDetails {
     return member.getEmail(); // 로그인 ID
   }
 
+  public Long getId() {
+    return member.getId();
+  }
+
   public Role getRole() {
     return member.getRole();
+  }
+
+  public String getNickName() {
+    return member.getName();
+  }
+
+  public String getProfileUrl() {
+    return member.getProfileImageUrl();
   }
 
   // 계정 상태 관련 설정 (기본 true면 OK)

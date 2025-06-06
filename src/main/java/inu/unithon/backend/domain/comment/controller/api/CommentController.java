@@ -26,7 +26,13 @@ public class CommentController implements CommentControllerSpecification {
                                                          @PathVariable Long postId,
                                                          @Valid @RequestBody CommentCreateRequest rq) {
 
-    commentService.addComment(userDetails.getMember().getId(), postId, rq);
+    commentService.addComment(
+      userDetails.getId(),
+      userDetails.getNickName(),
+      userDetails.getProfileUrl(),
+      postId,
+      rq);
+
     return ResponseEntity
       .status(HttpStatus.OK)
       .body(ResponseDto.success("댓글 생성 성공"));
@@ -39,7 +45,14 @@ public class CommentController implements CommentControllerSpecification {
                                                          @PathVariable Long commentId,
                                                          @RequestBody @Valid CommentUpdateRequest rq) {
 
-    commentService.updateComment(userDetails.getMember().getId(), postId, commentId, rq);
+    commentService.updateComment(
+      userDetails.getId(),
+      userDetails.getNickName(),
+      userDetails.getProfileUrl(),
+      postId,
+      commentId,
+      rq);
+
     return ResponseEntity
       .status(HttpStatus.OK)
       .body(ResponseDto.success("댓글 수정 성공"));
@@ -51,7 +64,10 @@ public class CommentController implements CommentControllerSpecification {
                                                          @PathVariable Long postId,
                                                          @PathVariable Long commentId) {
 
-    commentService.deleteComment(userDetails.getMember().getId(), postId, commentId);
+    commentService.deleteComment(
+      userDetails.getId(),
+      commentId);
+
     return ResponseEntity
       .status(HttpStatus.OK)
       .body(ResponseDto.success("댓글 삭제 성공"));

@@ -21,17 +21,21 @@ public class Comment extends BaseEntity {
   @JoinColumn(name = "post_id", nullable = false)
   private Post post;
 
-  private String memberId;
+  private Long memberId;  // member ID
   private String memberName;
   private String memberProfileImageUrl;
 
   @Builder
-  public Comment(String content, Post post, String memberId, String memberName, String memberProfileImageUrl) {
+  public Comment(String content, Post post, Long memberId, String memberName, String memberProfileImageUrl) {
     this.content = content;
     this.post = post;
     this.memberId = memberId;
     this.memberName = memberName;
     this.memberProfileImageUrl = memberProfileImageUrl;
+  }
+
+  public void updateContent(String newContent) {
+    this.content = newContent;
   }
 
 }
