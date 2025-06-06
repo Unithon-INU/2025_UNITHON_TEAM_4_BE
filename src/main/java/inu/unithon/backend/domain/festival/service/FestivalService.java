@@ -93,7 +93,7 @@ public class FestivalService implements FestivalServiceInterface{
         }
     }
 
-    public FestivalResponseDto getSearchFestival(String lang, String keyword) {
+    public FestivalResponseDto getSearchFestival(String lang, String keyword, String numOfRows, String pageNo) {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
@@ -109,8 +109,8 @@ public class FestivalService implements FestivalServiceInterface{
                     + "&arrange=A"
                     + "&listYN=Y"
                     + "&_type=json"
-                    + "&numOfRows=10"
-                    + "&pageNo=1"
+                    + "&numOfRows=" + numOfRows
+                    + "&pageNo= " + pageNo
                     + "&contentTypeId=" + getContentid(lang)
                     + "&keyword=" + keyword;
 
