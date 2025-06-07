@@ -2,8 +2,14 @@ package inu.unithon.backend.domain.festival.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.util.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 
 @Getter
+@AllArgsConstructor
+@Builder
 @NoArgsConstructor
 public class FestivalIntroDto {
     private String contentid;
