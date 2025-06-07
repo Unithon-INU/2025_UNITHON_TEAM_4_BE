@@ -66,7 +66,9 @@ public class MemberServiceImpl implements MemberService{
     return ProfileResponseDto.builder()
       .name(member.getName())
       .profileImageUrl(member.getProfileImageUrl())
-      .posts(member.getPosts())
+      .posts(member.getPosts().stream()
+        .map(PostDto::fromPost)
+        .toList())
       .build();
   }
 

@@ -10,13 +10,11 @@ public interface CommentService {
    * @param memberId
    * @param memberName
    * @param profileUrl
-   * @param postId
    * @param rq
    */
   void addComment(Long memberId,
                   String memberName,
                   String profileUrl,
-                  Long postId,
                   CommentCreateRequest rq);
 
   /**
@@ -24,15 +22,11 @@ public interface CommentService {
    * @param memberId
    * @param memberName
    * @param profileUrl
-   * @param postId
-   * @param commentId
    * @param rq
    */
   void updateComment(Long memberId,
                      String memberName,
                      String profileUrl,
-                     Long postId,
-                     Long commentId,
                      CommentUpdateRequest rq);
 
   /**

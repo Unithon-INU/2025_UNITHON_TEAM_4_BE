@@ -5,18 +5,20 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-/** 마이 페이지에서 보이는 간단한 post 정보 **/
+/** 간단한 post 정보 **/
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostDto {
   private String thumbnailUrl;
   private String title;
+  private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
   @Builder
-  public PostDto(String thumbnailUrl, String title, LocalDateTime updatedAt) {
+  public PostDto(String thumbnailUrl, String title, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.thumbnailUrl = thumbnailUrl;
     this.title = title;
+    this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
 
@@ -24,6 +26,7 @@ public class PostDto {
     return PostDto.builder()
       .thumbnailUrl(post.getThumbnailUrl())
       .title(post.getTitle())
+      .createdAt(post.getCreatedAt())
       .updatedAt(post.getUpdatedAt())
       .build();
   }

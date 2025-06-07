@@ -5,6 +5,7 @@ import inu.unithon.backend.domain.post.controller.docs.PostControllerSpecificati
 import inu.unithon.backend.domain.post.dto.request.PostCreateRequest;
 import inu.unithon.backend.domain.post.dto.request.PostUpdateRequest;
 import inu.unithon.backend.domain.post.dto.response.PostResponse;
+import inu.unithon.backend.domain.post.dto.response.PostDetailResponse;
 import inu.unithon.backend.domain.post.service.PostService;
 import inu.unithon.backend.global.response.ResponseDto;
 import jakarta.validation.Valid;
@@ -39,7 +40,7 @@ public class PostController implements PostControllerSpecification {
 
   @Override
   @GetMapping("/{postId}")
-  public ResponseEntity<ResponseDto<PostResponse>> getPost(@PathVariable Long postId) {
+  public ResponseEntity<ResponseDto<PostDetailResponse>> getPost(@PathVariable Long postId) {
 
     return ResponseEntity
       .status(HttpStatus.OK)
@@ -57,10 +58,10 @@ public class PostController implements PostControllerSpecification {
 
   @Override
   @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ResponseEntity<ResponseDto<PostResponse>> updatePost(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                              @PathVariable Long postId,
-                                                              @Valid @RequestPart("data") PostUpdateRequest rq,
-                                                              @RequestPart("images") List<MultipartFile> images) {
+  public ResponseEntity<ResponseDto<PostDetailResponse>> updatePost(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                    @PathVariable Long postId,
+                                                                    @Valid @RequestPart("data") PostUpdateRequest rq,
+                                                                    @RequestPart("images") List<MultipartFile> images) {
 
     return ResponseEntity
       .status(HttpStatus.OK)

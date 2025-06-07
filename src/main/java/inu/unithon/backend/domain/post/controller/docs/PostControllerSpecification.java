@@ -4,11 +4,10 @@ import inu.unithon.backend.domain.member.entity.CustomUserDetails;
 import inu.unithon.backend.domain.post.dto.request.PostCreateRequest;
 import inu.unithon.backend.domain.post.dto.request.PostUpdateRequest;
 import inu.unithon.backend.domain.post.dto.response.PostResponse;
+import inu.unithon.backend.domain.post.dto.response.PostDetailResponse;
 import inu.unithon.backend.global.response.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
@@ -44,16 +43,16 @@ public interface PostControllerSpecification {
                                                @RequestPart("images") List<MultipartFile> images);
 
   // todo : read(one)
-  ResponseEntity<ResponseDto<PostResponse>> getPost(@PathVariable Long postId);
+  ResponseEntity<ResponseDto<PostDetailResponse>> getPost(@PathVariable Long postId);
 
   // todo : read(all)
   ResponseEntity<ResponseDto<List<PostResponse>>> getAllPosts();
 
   // todo : update
-  ResponseEntity<ResponseDto<PostResponse>> updatePost(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                       @PathVariable Long postId,
-                                                       @Valid @RequestBody PostUpdateRequest rq,
-                                                       @RequestPart("images") List<MultipartFile> images);
+  ResponseEntity<ResponseDto<PostDetailResponse>> updatePost(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                             @PathVariable Long postId,
+                                                             @Valid @RequestBody PostUpdateRequest rq,
+                                                             @RequestPart("images") List<MultipartFile> images);
 
   // todo : delete
   ResponseEntity<ResponseDto<Long>> deletePost(@AuthenticationPrincipal CustomUserDetails userDetails,

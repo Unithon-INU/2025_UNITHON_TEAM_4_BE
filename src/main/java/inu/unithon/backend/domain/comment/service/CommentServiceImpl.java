@@ -28,10 +28,9 @@ public class CommentServiceImpl implements CommentService {
   public void addComment(Long memberId,
                          String memberName,
                          String profileUrl,
-                         Long postId,
                          CommentCreateRequest rq) {
 
-    Post post = postRepository.findById(postId)
+    Post post = postRepository.findById(rq.getPostId())
       .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
     Comment comment = Comment.builder()
@@ -50,11 +49,9 @@ public class CommentServiceImpl implements CommentService {
   public void updateComment(Long memberId,
                             String memberName,
                             String profileUrl,
-                            Long postId,
-                            Long commentId,
                             CommentUpdateRequest rq) {
 
-    Comment comment = commentRepository.findById(commentId)
+    Comment comment = commentRepository.findById(rq.getCommentId())
       .orElseThrow(()-> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
     // 검증 : memberId, commentId 일치인지

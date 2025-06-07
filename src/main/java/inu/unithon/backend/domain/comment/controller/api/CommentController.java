@@ -30,7 +30,6 @@ public class CommentController implements CommentControllerSpecification {
       userDetails.getId(),
       userDetails.getNickName(),
       userDetails.getProfileUrl(),
-      postId,
       rq);
 
     return ResponseEntity
@@ -49,8 +48,6 @@ public class CommentController implements CommentControllerSpecification {
       userDetails.getId(),
       userDetails.getNickName(),
       userDetails.getProfileUrl(),
-      postId,
-      commentId,
       rq);
 
     return ResponseEntity
