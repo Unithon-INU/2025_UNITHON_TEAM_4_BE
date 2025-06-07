@@ -20,22 +20,53 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "users", description = "Users API")
 public interface MemberControllerSpecification {
 
-  // todo : 프로필 조회(my)
+  /**
+   * 본인 프로필 조회
+   * @param userDetails
+   * @return
+   */
   ResponseEntity<ResponseDto<MyProfileResponseDto>> myProfile(@AuthenticationPrincipal CustomUserDetails userDetails);
 
-  // todo : 프로필 조회(other)
-  ResponseEntity<ResponseDto<ProfileResponseDto>> profile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody ProfileRequestDto requestDto);
+  /**
+   * 다른 사람 프로필 조회
+   * @param userDetails
+   * @param requestDto
+   * @return
+   */
+  ResponseEntity<ResponseDto<ProfileResponseDto>> profile(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                          @Valid @RequestBody ProfileRequestDto requestDto);
 
-  // todo : 프로필 수정
-  ResponseEntity<ResponseDto<UpdateProfileResponseDto>> updateProfile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody UpdateProfileRequestDto requestDto);
+  /**
+   * 프로필 수정
+   * @param userDetails
+   * @param requestDto
+   * @return
+   */
+  ResponseEntity<ResponseDto<UpdateProfileResponseDto>> updateProfile(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                      @Valid @RequestBody UpdateProfileRequestDto requestDto);
 
-  // todo : 회원 탈퇴
+  /**
+   * 회원 탈퇴
+   * @param userDetails
+   * @return
+   */
   ResponseEntity<ResponseDto<Void>> deleteProfile(@AuthenticationPrincipal CustomUserDetails userDetails);
 
-  // todo : 비밀번호 수정
-  ResponseEntity<ResponseDto<Void>> updatePassword(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody UpdatePasswordRequestDto requestDto);
+  /**
+   * 비밀번호 수정
+   * @param userDetails
+   * @param requestDto
+   * @return
+   */
+  ResponseEntity<ResponseDto<Void>> updatePassword(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                   @Valid @RequestBody UpdatePasswordRequestDto requestDto);
 
-  // todo : 프로필 사진만 수정
+  /**
+   * 프로필 사진 수정
+   * @param userDetails
+   * @param image
+   * @return
+   */
   ResponseEntity<ResponseDto<Void>> updateProfileImage(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                        @RequestPart MultipartFile image);
 }

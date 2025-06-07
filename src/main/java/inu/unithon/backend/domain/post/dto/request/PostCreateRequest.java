@@ -9,8 +9,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-@Builder
-@Schema(description = "게시물 생성 DTO")
+@Schema(description = "게시물 생성 request")
 public class PostCreateRequest {
 
   @Schema(

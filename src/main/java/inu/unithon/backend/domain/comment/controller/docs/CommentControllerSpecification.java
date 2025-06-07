@@ -4,12 +4,14 @@ import inu.unithon.backend.domain.comment.dto.req.CommentCreateRequest;
 import inu.unithon.backend.domain.comment.dto.req.CommentUpdateRequest;
 import inu.unithon.backend.domain.member.entity.CustomUserDetails;
 import inu.unithon.backend.global.response.ResponseDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+@Tag(name = "comments", description = "Comments API")
 public interface CommentControllerSpecification {
 
   /**

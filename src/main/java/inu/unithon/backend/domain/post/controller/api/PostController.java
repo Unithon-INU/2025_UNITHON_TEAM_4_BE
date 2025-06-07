@@ -70,7 +70,8 @@ public class PostController implements PostControllerSpecification {
 
   @Override
   @DeleteMapping("/{postId}")
-  public ResponseEntity<ResponseDto<Long>> deletePost(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long postId) {
+  public ResponseEntity<ResponseDto<Long>> deletePost(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                      @PathVariable Long postId) {
 
     postService.delete(userDetails.getMember().getId(), postId);
     return ResponseEntity
