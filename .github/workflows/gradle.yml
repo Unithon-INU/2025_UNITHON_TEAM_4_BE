@@ -15,6 +15,17 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+        # 캐시 복원: Gradle User Home
+    - name: Restore Gradle Cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: gradle-cache-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          gradle-cache-${{ runner.os }}-
+
     # Create application-prod.yml
     - uses: actions/checkout@v3
     - run: |
