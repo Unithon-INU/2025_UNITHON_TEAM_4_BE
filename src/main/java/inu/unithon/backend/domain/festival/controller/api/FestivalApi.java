@@ -13,6 +13,7 @@ public interface FestivalApi {
             @RequestParam(defaultValue = "10") String numOfRows,
             @RequestParam(defaultValue = "1") String pageNo,
             @RequestParam(defaultValue = "20250601") String eventStartDate,
+            @RequestParam(required = false) String eventEndDate,
             @RequestParam(required = false) String areaCode
     );
 

@@ -27,8 +27,8 @@ public class FestivalController implements FestivalApi {
      * @return 축제 목록 응답
      */
     @Override
-    public ResponseEntity<ResponseDto<?>> getFestivalByArea(String lang, String numOfRows, String pageNo, String eventStartDate, String areaCode) {
-        FestivalResponseDto response = festivalService.getFestivalList(lang, numOfRows, pageNo, eventStartDate, areaCode);
+    public ResponseEntity<ResponseDto<?>> getFestivalByArea(String lang, String numOfRows, String pageNo, String eventStartDate, String areaCode, String eventEndDate) {
+        FestivalResponseDto response = festivalService.getFestivalList(lang, numOfRows, pageNo, eventStartDate, areaCode, eventEndDate);
         return ResponseEntity.ok(ResponseDto.success(response));
     }
 
