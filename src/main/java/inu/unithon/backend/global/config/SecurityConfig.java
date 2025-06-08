@@ -42,15 +42,24 @@ public class SecurityConfig {
     http
       .csrf(AbstractHttpConfigurer::disable)
       .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .formLogin(AbstractHttpConfigurer::disable)
+      .logout(logout -> logout.logoutUrl("/api/v1/auth/logout").logoutSuccessUrl("/").permitAll())
+      .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
       .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-        .requestMatchers("/api/**").permitAll() // 임시
+        .requestMatchers(
+          "/api/v1/auth/**",
+          "/swagger-ui/**",
+          "/v3/api-docs/**").permitAll()
+
+        .requestMatchers("/api/v1/users/**").authenticated()
+        .requestMatchers("/api/v1/posts/**").authenticated()
+        .requestMatchers("/api/v1/festivals/**").authenticated()
         .anyRequest().authenticated()
       )
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .formLogin(AbstractHttpConfigurer::disable)
-      .logout(logout -> logout.logoutUrl("/auth/logout").logoutSuccessUrl("/").permitAll())
-      .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+      .logout(logout -> logout.logoutUrl("/auth/logout").logoutSuccessUrl("/").permitAll());
 
     return http.build();
   }
@@ -58,8 +67,19 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOriginPatterns(List.of("*")); // 혹은 "http://*"
-    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedOriginPatterns(List.of(
+      "https://2025-unithon-team-4-fe.vercel.app",
+      "localhost:5173"
+    )); // 혹은 "http://*"
+
+    configuration.setAllowedMethods(List.of(
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "PATCH",
+      "OPTIONS"
+    ));
     configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);
 
