@@ -10,11 +10,13 @@ import lombok.Getter;
 public class WriterDto {
   private Long id;
   private String name;
+  private String profileImage;
 
-  public static WriterDto from(Member member) {
+  public static WriterDto fromMember(Member member) {
     return WriterDto.builder()
       .id(member.getId())
       .name(member.getName())
+      .profileImage(member.getProfileImageUrl())
       .build();
   }
 }

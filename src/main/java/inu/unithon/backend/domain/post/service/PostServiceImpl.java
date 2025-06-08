@@ -6,6 +6,7 @@ import inu.unithon.backend.domain.member.service.MemberService;
 import inu.unithon.backend.domain.post.dto.request.PostCreateRequest;
 import inu.unithon.backend.domain.post.dto.request.PostUpdateRequest;
 import inu.unithon.backend.domain.post.dto.response.PostResponse;
+import inu.unithon.backend.domain.post.dto.response.PostDetailResponse;
 import inu.unithon.backend.domain.post.entity.Post;
 import inu.unithon.backend.domain.post.entity.PostImage;
 import inu.unithon.backend.domain.post.repository.PostRepository;
@@ -70,13 +71,13 @@ public class PostServiceImpl implements PostService {
 
   @Override
   @Transactional(readOnly = true)
-  public PostResponse getPost(Long postId) {
+  public PostDetailResponse getPost(Long postId) {
 
     Post post = postRepository.findById(postId)
       .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
     log.info("Get Post : ${}", postId);
 
-    return PostResponse.fromPost(post);
+    return PostDetailResponse.fromPost(post);
   }
 
   @Override
@@ -91,7 +92,7 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public PostResponse updatePost(Long memberId, Long postId, PostUpdateRequest postUpdateRequest, List<MultipartFile> images) {
+  public PostDetailResponse updatePost(Long memberId, Long postId, PostUpdateRequest postUpdateRequest, List<MultipartFile> images) {
     Post post = postRepository.findById(postId)
       .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
 
@@ -116,7 +117,7 @@ public class PostServiceImpl implements PostService {
 //    post.updatePost(postUpdateRequest, images);
 
     log.info("Update Post : ${}", postUpdateRequest.getTitle());
-    return PostResponse.fromPost(post);
+    return PostDetailResponse.fromPost(post);
   }
 
   @Override

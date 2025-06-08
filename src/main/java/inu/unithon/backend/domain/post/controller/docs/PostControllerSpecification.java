@@ -4,20 +4,16 @@ import inu.unithon.backend.domain.member.entity.CustomUserDetails;
 import inu.unithon.backend.domain.post.dto.request.PostCreateRequest;
 import inu.unithon.backend.domain.post.dto.request.PostUpdateRequest;
 import inu.unithon.backend.domain.post.dto.response.PostResponse;
+import inu.unithon.backend.domain.post.dto.response.PostDetailResponse;
 import inu.unithon.backend.global.response.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -26,7 +22,13 @@ import java.util.List;
 @Tag(name = "posts", description = "Posts API")
 public interface PostControllerSpecification {
 
-  // todo : create
+  /**
+   * 게시물 생성
+   * @param userDetails
+   * @param rq
+   * @param images
+   * @return
+   */
   @Operation(
     summary = "게시물 생성",
     description = "게시글을 작성하는 API",
@@ -38,24 +40,42 @@ public interface PostControllerSpecification {
       )
     )
   )
-  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   ResponseEntity<ResponseDto<Void>> createPost(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                @Valid @RequestPart("data") PostCreateRequest rq,
                                                @RequestPart("images") List<MultipartFile> images);
 
-  // todo : read(one)
-  ResponseEntity<ResponseDto<PostResponse>> getPost(@PathVariable Long postId);
+  /**
+   * 단일 게시물 조회
+   * @param postId
+   * @return
+   */
+  ResponseEntity<ResponseDto<PostDetailResponse>> getPost(@PathVariable Long postId);
 
-  // todo : read(all)
+  /**
+   * 전체 게시물 조회
+   * @return
+   */
   ResponseEntity<ResponseDto<List<PostResponse>>> getAllPosts();
 
-  // todo : update
-  ResponseEntity<ResponseDto<PostResponse>> updatePost(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                       @PathVariable Long postId,
-                                                       @Valid @RequestBody PostUpdateRequest rq,
-                                                       @RequestPart("images") List<MultipartFile> images);
+  /**
+   * 게시물 수정
+   * @param userDetails
+   * @param postId
+   * @param rq
+   * @param images
+   * @return
+   */
+  ResponseEntity<ResponseDto<PostDetailResponse>> updatePost(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                             @PathVariable Long postId,
+                                                             @Valid @RequestBody PostUpdateRequest rq,
+                                                             @RequestPart("images") List<MultipartFile> images);
 
-  // todo : delete
+  /**
+   * 게시물 삭제
+   * @param userDetails
+   * @param postId
+   * @return
+   */
   ResponseEntity<ResponseDto<Long>> deletePost(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                @PathVariable Long postId);
 

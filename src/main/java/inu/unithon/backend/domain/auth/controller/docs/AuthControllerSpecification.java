@@ -13,9 +13,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Tag(name = "auth", description = "Auth API")
 public interface AuthControllerSpecification {
 
+  /**
+   * 회원 가입
+   * @param requestDto
+   * @return
+   */
   @PostMapping("/signup")
   ResponseEntity<ResponseDto<Void>> signUp(@Valid @RequestBody SignupRequestDto requestDto);
 
+  /**
+   * 로그인
+   * @param requestDto
+   * @return
+   */
   @PostMapping("/login")
   ResponseEntity<ResponseDto<String>> login(@Valid @RequestBody LoginRequestDto requestDto);
 

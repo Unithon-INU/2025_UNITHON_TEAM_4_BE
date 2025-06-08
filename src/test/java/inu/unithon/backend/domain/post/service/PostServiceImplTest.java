@@ -3,6 +3,7 @@ package inu.unithon.backend.domain.post.service;
 import inu.unithon.backend.domain.member.entity.Member;
 import inu.unithon.backend.domain.auth.fixture.AuthFixture;
 import inu.unithon.backend.domain.post.dto.response.PostResponse;
+import inu.unithon.backend.domain.post.dto.response.PostDetailResponse;
 import inu.unithon.backend.domain.post.entity.Post;
 import inu.unithon.backend.domain.post.fixture.PostFixture;
 import inu.unithon.backend.domain.post.repository.PostRepository;
@@ -66,7 +67,7 @@ class PostServiceImplTest {
     when(postRepository.findById(postId)).thenReturn(Optional.of(post));
 
     // when
-    PostResponse result = postService.getPost(postId);
+    PostDetailResponse result = postService.getPost(postId);
 
     // then
     assertNotNull(result);
