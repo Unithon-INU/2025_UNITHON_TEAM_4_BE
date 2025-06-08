@@ -15,25 +15,18 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-        # 캐시 복원: Gradle User Home
-    - name: Restore Gradle Cache
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: gradle-cache-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          gradle-cache-${{ runner.os }}-
-
-    # Create application-prod.yml
-    - name: Create application-prod.yml
-      run: |
+    # Create YML
+    - uses: actions/checkout@v3
+    - run: |
         mkdir -p ./src/main/resources
-        echo "${{ secrets.APPLICATION_PROD }}" > ./src/main/resources/application-prod.yml
+        touch ./src/main/resources/application.yml
+    - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
 
-    - name: Create docker-compose.prod.yml
-      run: echo "${{ secrets.DOCKER_COMPOSE_PROD }}" > ./docker-compose.prod.yml
+    - uses: actions/checkout@v3
+    - name: Create docker-compose.yml
+      run: |
+        touch ./docker-compose.yml
+        echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
 
 
       # Java 21 세팅
@@ -75,8 +68,8 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Create docker-compose.prod.yml
-        run: echo "${{ secrets.DOCKER_COMPOSE_PROD }}" > docker-compose.prod.yml
+      - name: Create docker-compose.yml
+        run: echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yml
 
       # 최신 이미지를 풀받습니다
       - name: docker pull
@@ -96,7 +89,7 @@ jobs:
 
       # docker-compose 실행
       - name: Run with docker-compose
-        run: sudo docker compose -f docker-compose.prod.yml up -d --build
+        run: sudo docker compose -f docker-compose.yml up -d --build
 
       # 미사용 이미지를 정리합니다
       - name: delete old docker image
