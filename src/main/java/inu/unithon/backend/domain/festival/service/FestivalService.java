@@ -28,7 +28,7 @@ public class FestivalService implements FestivalServiceInterface{
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    public FestivalResponseDto getFestivalList(String lang, String numOfRows, String pageNo, String eventStartDate, String areaCode) {
+    public FestivalResponseDto getFestivalList(String lang, String numOfRows, String pageNo, String eventStartDate, String areaCode, String eventEndDate) {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
@@ -44,6 +44,9 @@ public class FestivalService implements FestivalServiceInterface{
                     + "&numOfRows=" + numOfRows
                     + "&pageNo=" + pageNo
                     + "&eventStartDate=" + eventStartDate;
+            if (eventEndDate != null && !eventEndDate.isEmpty()) {
+                url += "&eventEndDate=" + eventEndDate;
+            }
 
             if (areaCode != null && !areaCode.isEmpty()) {
                 url += "&areaCode=" + areaCode;

@@ -3,7 +3,7 @@ package inu.unithon.backend.domain.festival.service;
 import inu.unithon.backend.domain.festival.dto.*;
 
 public interface FestivalServiceInterface {
-    FestivalResponseDto getFestivalList(String lang, String numOfRows, String pageNo, String eventStartDate, String areaCode);
+    FestivalResponseDto getFestivalList(String lang, String numOfRows, String pageNo, String eventStartDate, String areaCode, String eventEndDate);
     FestivalResponseDto getFestivalInfo(String lang, String contentId);
     FestivalResponseDto getSearchFestival(String lang, String keyword, String numOfRows, String pageNo);
     FestivalIntroResponseDto getFestivalDetailIntro(String lang, String contentId, String contentTypeId);
