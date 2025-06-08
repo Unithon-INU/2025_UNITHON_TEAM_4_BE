@@ -27,12 +27,11 @@ jobs:
           gradle-cache-${{ runner.os }}-
 
     # Create application-prod.yml
-    - uses: actions/checkout@v3
-    - run: |
+    - name: Create application-prod.yml
+      run: |
         mkdir -p ./src/main/resources
         echo "${{ secrets.APPLICATION_PROD }}" > ./src/main/resources/application-prod.yml
 
-    - uses: actions/checkout@v3
     - name: Create docker-compose.prod.yml
       run: echo "${{ secrets.DOCKER_COMPOSE_PROD }}" > ./docker-compose.prod.yml
 
