@@ -75,7 +75,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Create docker-compose.yml
+      - name: Create docker-compose.prod.yml
         run: echo "${{ secrets.DOCKER_COMPOSE_PROD }}" > docker-compose.prod.yml
 
       # 최신 이미지를 풀받습니다
