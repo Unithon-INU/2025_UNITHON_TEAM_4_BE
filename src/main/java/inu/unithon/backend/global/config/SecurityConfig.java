@@ -69,7 +69,7 @@ public class SecurityConfig {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOriginPatterns(List.of(
       "https://2025-unithon-team-4-fe.vercel.app",
-      "localhost:5173"
+      "http://localhost:5173"
     )); // 혹은 "http://*"
 
     configuration.setAllowedMethods(List.of(
