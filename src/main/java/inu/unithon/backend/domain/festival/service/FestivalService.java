@@ -246,10 +246,12 @@ public class FestivalService implements FestivalServiceInterface{
         return switch (lang.toLowerCase()) {
             case "kor" -> "KorService1";
             case "jpn" -> "JpnService1";
-            case "chn" -> "ChnService1";
+            case "chn" -> "ChsService1";
             case "eng" -> "EngService1";
-            case "fra" -> "FraService1";
+            case "fra" -> "FreService1";
             case "ger" -> "GerService1";
+            case "rus" -> "RusService1";
+            case "spa" -> "SpnService1";
             default -> "KorService1";
         };
     }
