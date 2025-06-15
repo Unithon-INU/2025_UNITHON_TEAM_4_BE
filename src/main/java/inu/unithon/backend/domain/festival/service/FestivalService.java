@@ -222,7 +222,6 @@ public class FestivalService implements FestivalServiceInterface{
             case "chn" -> "82";
             case "eng" -> "82";
             case "fra" -> "82";
-            case "ger" -> "82";
             case "rus" -> "82";
             case "spa" -> "82";
             default -> "39";
@@ -235,7 +234,6 @@ public class FestivalService implements FestivalServiceInterface{
             case "chn" -> "85";
             case "eng" -> "85";
             case "fra" -> "85";
-            case "ger" -> "85";
             case "rus" -> "85";
             case "spa" -> "85";
             default -> "15";
@@ -249,7 +247,6 @@ public class FestivalService implements FestivalServiceInterface{
             case "chn" -> "ChsService1";
             case "eng" -> "EngService1";
             case "fra" -> "FreService1";
-            case "ger" -> "GerService1";
             case "rus" -> "RusService1";
             case "spa" -> "SpnService1";
             default -> "KorService1";
