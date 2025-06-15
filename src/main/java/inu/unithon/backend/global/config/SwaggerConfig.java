@@ -23,8 +23,8 @@ public class SwaggerConfig {
 
     // API 기본 정보
     Info info = new Info()
-      .title("Steam API")
-      .description("Steam API 맛보기")
+      .title("Swagger API")
+      .description(".")
       .version("1.0.0");
 
     // 서버 정보

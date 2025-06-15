@@ -9,13 +9,15 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostDto {
+  private Long postId;
   private String thumbnailUrl;
   private String title;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
   @Builder
-  public PostDto(String thumbnailUrl, String title, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public PostDto(Long postId, String thumbnailUrl, String title, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this.postId = postId;
     this.thumbnailUrl = thumbnailUrl;
     this.title = title;
     this.createdAt = createdAt;
@@ -24,6 +26,7 @@ public class PostDto {
 
   public static PostDto fromPost(Post post) {
     return PostDto.builder()
+      .postId(post.getId())
       .thumbnailUrl(post.getThumbnailUrl())
       .title(post.getTitle())
       .createdAt(post.getCreatedAt())
