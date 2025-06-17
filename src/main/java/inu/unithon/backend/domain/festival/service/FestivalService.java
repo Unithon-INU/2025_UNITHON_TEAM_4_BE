@@ -101,7 +101,7 @@ public class FestivalService implements FestivalServiceInterface{
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
             String servicePath = serviceName + "/searchKeyword1";
-            if ("KorService1".equals(serviceName)) {
+            if ("KorService1".equals(serviceName) || "JpnService1".equals(serviceName) || "ChsService1".equals(serviceName)) {
                 keyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
             }
 
@@ -222,7 +222,6 @@ public class FestivalService implements FestivalServiceInterface{
             case "chn" -> "82";
             case "eng" -> "82";
             case "fra" -> "82";
-            case "ger" -> "82";
             case "rus" -> "82";
             case "spa" -> "82";
             default -> "39";
@@ -235,7 +234,6 @@ public class FestivalService implements FestivalServiceInterface{
             case "chn" -> "85";
             case "eng" -> "85";
             case "fra" -> "85";
-            case "ger" -> "85";
             case "rus" -> "85";
             case "spa" -> "85";
             default -> "15";
@@ -246,10 +244,11 @@ public class FestivalService implements FestivalServiceInterface{
         return switch (lang.toLowerCase()) {
             case "kor" -> "KorService1";
             case "jpn" -> "JpnService1";
-            case "chn" -> "ChnService1";
+            case "chn" -> "ChsService1";
             case "eng" -> "EngService1";
-            case "fra" -> "FraService1";
-            case "ger" -> "GerService1";
+            case "fra" -> "FreService1";
+            case "rus" -> "RusService1";
+            case "spa" -> "SpnService1";
             default -> "KorService1";
         };
     }
