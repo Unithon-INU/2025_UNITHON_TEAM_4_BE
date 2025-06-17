@@ -101,7 +101,7 @@ public class FestivalService implements FestivalServiceInterface{
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
             String servicePath = serviceName + "/searchKeyword1";
-            if ("KorService1".equals(serviceName)) {
+            if ("KorService1".equals(serviceName) || "JpnService1".equals(serviceName) || "ChsService1".equals(serviceName)) {
                 keyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
             }
 
