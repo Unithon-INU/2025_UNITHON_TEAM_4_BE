@@ -15,6 +15,10 @@ import inu.unithon.backend.global.exception.ErrorCode;
 import inu.unithon.backend.global.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -82,13 +86,11 @@ public class PostServiceImpl implements PostService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<PostResponse> getAllPosts() {
-    List<Post> posts = postRepository.findAll();
-    log.info("Get All Posts : ${}", posts);
+  public Page<PostResponse> getAllPosts(int page) {
+    Pageable pageable = PageRequest.of(page, 10, Sort.Direction.DESC, "createdAt");
+    Page<Post> posts =  postRepository.findAll(pageable);
 
-    return posts.stream()
-      .map(PostResponse::fromPost)
-      .toList();
+    return posts.map(PostResponse::fromPost);
   }
 
   @Override
@@ -134,4 +136,5 @@ public class PostServiceImpl implements PostService {
     log.info("Delete Post : ${}", postId);
     return postId;
   }
+
 }

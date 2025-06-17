@@ -10,6 +10,7 @@ import inu.unithon.backend.domain.post.service.PostService;
 import inu.unithon.backend.global.response.ResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,11 +50,11 @@ public class PostController implements PostControllerSpecification {
 
   @Override
   @GetMapping
-  public ResponseEntity<ResponseDto<List<PostResponse>>> getAllPosts() {
+  public ResponseEntity<ResponseDto<Page<PostResponse>>> getAllPosts(@RequestParam(defaultValue = "0") int page) {
 
     return ResponseEntity
       .status(HttpStatus.OK)
-      .body(ResponseDto.success("전체 게시물 조회 완료", postService.getAllPosts()));
+      .body(ResponseDto.success("page : " + page + " 게시물 조회 완료", postService.getAllPosts(page)));
   }
 
   @Override
