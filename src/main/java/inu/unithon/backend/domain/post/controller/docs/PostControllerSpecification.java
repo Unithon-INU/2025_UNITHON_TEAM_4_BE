@@ -55,9 +55,11 @@ public interface PostControllerSpecification {
   /**
    * 전체 게시물 조회
    * @param page
+   * @param size
    * @return
    */
-  ResponseEntity<ResponseDto<Page<PostResponse>>> getAllPosts(@RequestParam(defaultValue = "0") int page);
+  ResponseEntity<ResponseDto<Page<PostResponse>>> getAllPosts(@RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int size);
 
   /**
    * 게시물 수정

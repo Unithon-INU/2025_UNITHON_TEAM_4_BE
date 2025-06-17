@@ -29,9 +29,10 @@ public interface PostService {
   /**
    * 전체 글 조회
    * @param page
+   * @param size
    * @return
    */
-  Page<PostResponse> getAllPosts(int page);
+  Page<PostResponse> getAllPosts(int page, int size);
 
   // todo : 글 Update
   PostDetailResponse updatePost(Long memberId, Long postId, PostUpdateRequest postUpdateRequest, List<MultipartFile> images);

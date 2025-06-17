@@ -49,12 +49,13 @@ public class PostController implements PostControllerSpecification {
   }
 
   @Override
-  @GetMapping
-  public ResponseEntity<ResponseDto<Page<PostResponse>>> getAllPosts(@RequestParam(defaultValue = "0") int page) {
+  @GetMapping("/page")
+  public ResponseEntity<ResponseDto<Page<PostResponse>>> getAllPosts(@RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "10") int size) {
 
     return ResponseEntity
       .status(HttpStatus.OK)
-      .body(ResponseDto.success("page : " + page + " 게시물 조회 완료", postService.getAllPosts(page)));
+      .body(ResponseDto.success("page : " + page + " 게시물 조회 완료", postService.getAllPosts(page, size)));
   }
 
   @Override
