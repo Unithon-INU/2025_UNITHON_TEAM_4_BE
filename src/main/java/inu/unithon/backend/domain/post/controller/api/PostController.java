@@ -49,7 +49,7 @@ public class PostController implements PostControllerSpecification {
   }
 
   @Override
-  @GetMapping("/page")
+  @GetMapping
   public ResponseEntity<ResponseDto<Page<PostResponse>>> getAllPosts(@RequestParam(defaultValue = "0") int page,
                                                                      @RequestParam(defaultValue = "10") int size) {
 
