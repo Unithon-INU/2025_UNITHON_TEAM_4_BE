@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -53,9 +54,12 @@ public interface PostControllerSpecification {
 
   /**
    * 전체 게시물 조회
+   * @param page
+   * @param size
    * @return
    */
-  ResponseEntity<ResponseDto<List<PostResponse>>> getAllPosts();
+  ResponseEntity<ResponseDto<Page<PostResponse>>> getAllPosts(@RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int size);
 
   /**
    * 게시물 수정
