@@ -4,6 +4,9 @@ import inu.unithon.backend.domain.comment.dto.req.CommentCreateRequest;
 import inu.unithon.backend.domain.comment.dto.req.CommentUpdateRequest;
 import inu.unithon.backend.domain.comment.entity.Comment;
 import inu.unithon.backend.domain.comment.repository.CommentRepository;
+import inu.unithon.backend.domain.member.entity.Member;
+import inu.unithon.backend.domain.member.entity.Role;
+import inu.unithon.backend.domain.member.service.MemberService;
 import inu.unithon.backend.domain.post.entity.Post;
 import inu.unithon.backend.domain.post.repository.PostRepository;
 import inu.unithon.backend.global.exception.CustomException;
@@ -21,6 +24,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
+  private final MemberService memberService;
   private final CommentRepository commentRepository;
   private final PostRepository postRepository;
 
@@ -68,7 +72,9 @@ public class CommentServiceImpl implements CommentService {
     Comment comment = commentRepository.findById(commentId)
       .orElseThrow(()-> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
-    if (!Objects.equals(comment.getMemberId(), memberId)) throw new CustomException(ErrorCode.FORBIDDEN_402);
+    Member member = memberService.getMember(memberId);
+    if(member.getRole()!= Role.ADMIN)
+      if (!Objects.equals(comment.getMemberId(), memberId)) throw new CustomException(ErrorCode.FORBIDDEN_402);
 
     log.info("Delete comment {}", comment);
     commentRepository.deleteById(commentId);

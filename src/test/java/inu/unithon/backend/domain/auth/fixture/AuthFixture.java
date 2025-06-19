@@ -19,4 +19,18 @@ public class AuthFixture {
     ReflectionTestUtils.setField(member, "id", id);
     return member;
   }
+
+  public static Member createAdmin(Long id, String email, String name) {
+    Member member = Member.builder()
+      .email(email)
+      .name(name)
+      .profileImageUrl("test-url")
+      .password("test-password")
+      .role(Role.ADMIN)
+      .build();
+
+    // 강제 주입
+    ReflectionTestUtils.setField(member, "id", id);
+    return member;
+  }
 }

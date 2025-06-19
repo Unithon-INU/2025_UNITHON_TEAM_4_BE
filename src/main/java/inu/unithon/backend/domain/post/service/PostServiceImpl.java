@@ -1,6 +1,7 @@
 package inu.unithon.backend.domain.post.service;
 
 import inu.unithon.backend.domain.member.entity.Member;
+import inu.unithon.backend.domain.member.entity.Role;
 import inu.unithon.backend.domain.member.repository.MemberRepository;
 import inu.unithon.backend.domain.member.service.MemberService;
 import inu.unithon.backend.domain.post.dto.request.PostCreateRequest;
@@ -127,11 +128,15 @@ public class PostServiceImpl implements PostService {
     Post post = postRepository.findById(postId)
         .orElseThrow(() -> new CustomException(POST_NOT_FOUND));
 
-    Member member = post.getMember();
+    Member member = memberService.getMember(memberId);
+    Member postOwner = post.getMember();
 
-    if (!member.getId().equals(memberId)) throw new CustomException(FORBIDDEN);
+    if(member.getRole()!=Role.ADMIN) {
+      if (!postOwner.getId().equals(memberId)) throw new CustomException(FORBIDDEN);
+    }
+
     postRepository.deleteById(postId);
-    member.decreasePostCount();
+    postOwner.decreasePostCount();
 
     log.info("Delete Post : ${}", postId);
     return postId;

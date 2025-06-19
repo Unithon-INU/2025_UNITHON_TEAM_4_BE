@@ -6,6 +6,7 @@ import inu.unithon.backend.domain.member.dto.response.MyProfileResponseDto;
 import inu.unithon.backend.domain.member.dto.response.UpdateProfileResponseDto;
 import inu.unithon.backend.domain.member.dto.response.ProfileResponseDto;
 import inu.unithon.backend.domain.member.entity.Member;
+import inu.unithon.backend.domain.member.entity.Role;
 import inu.unithon.backend.domain.member.repository.MemberRepository;
 import inu.unithon.backend.domain.post.dto.PostDto;
 import inu.unithon.backend.global.exception.CustomException;
@@ -14,6 +15,10 @@ import inu.unithon.backend.global.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +61,6 @@ public class MemberServiceImpl implements MemberService{
       .build();
   }
 
-  // todo : 페이지네이션 적용
   @Override
   @Transactional(readOnly = true)
   public ProfileResponseDto getProfile(Long myId, Long id) {
@@ -132,6 +136,31 @@ public class MemberServiceImpl implements MemberService{
     }
 
     member.updateProfileImage(s3Service.uploadImage(file));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<Member> getMembers(Long id, int page, int size) {
+    // id가 ADMIN인지 체크
+    Member member = getMember(id);
+    if(member.getRole()!= Role.ADMIN) throw new CustomException(ErrorCode.FORBIDDEN);
+
+    Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+
+    log.info("getMembers, Admin Id : {}", id);
+    return memberRepository.findAll(pageable);
+  }
+
+  @Override
+  public Long deleteMember(Long myId, Long targetId) {
+    Member member = getMember(myId);
+    if(member.getRole()!= Role.ADMIN) throw new CustomException(ErrorCode.FORBIDDEN);
+
+    Member targetMember = getMember(targetId);
+    memberRepository.delete(targetMember);
+    log.info("deleteMember : {}", targetId);
+
+    return targetId;
   }
 
   @Override
