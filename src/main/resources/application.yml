@@ -5,6 +5,7 @@ server:
 
 app:
   domain: ${APP_DOMAIN}
+  origin: ${APP_ORIGIN}
 
 spring:
   application:

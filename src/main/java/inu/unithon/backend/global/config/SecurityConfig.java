@@ -25,8 +25,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  @Value("${app.domain}")
-  private String domain;
+  @Value("${app.origin}")
+  private String origin;
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -78,7 +78,7 @@ public class SecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(List.of(
-      domain,
+      origin,
       "https://2025-unithon-team-4-fe.vercel.app",
       "http://localhost:5173"
     )); // 혹은 "http://*"
