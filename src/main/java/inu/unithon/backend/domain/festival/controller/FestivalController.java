@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import inu.unithon.backend.domain.festival.service.FestivalServiceInterface;
 
 @RestController
-@RequestMapping("/api/festivals")
+@RequestMapping("/api/v1/festivals")
 @RequiredArgsConstructor
 public class FestivalController implements FestivalApi {
 
