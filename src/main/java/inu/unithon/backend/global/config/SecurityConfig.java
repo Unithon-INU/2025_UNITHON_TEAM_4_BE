@@ -50,11 +50,25 @@ public class SecurityConfig {
         .requestMatchers(
           "/api/v1/auth/**",
           "/swagger-ui/**",
-          "/v3/api-docs/**").permitAll()
+          "/v3/api-docs/**"
+        ).permitAll()
 
-        .requestMatchers("/api/v1/users/**").authenticated()
-        .requestMatchers("/api/v1/posts/**").authenticated()
-        .requestMatchers("/api/v1/festivals/**").authenticated()
+        .requestMatchers(
+          "/api/v1/festivals/**"
+        ).permitAll()
+
+        .requestMatchers(
+          "/api/v1/users/**"
+        ).authenticated()
+
+        .requestMatchers(
+          "/api/v1/posts/**"
+        ).authenticated()
+
+        .requestMatchers(
+          "/api/v1/festivals/**"
+        ).authenticated()
+
         .anyRequest().authenticated()
       )
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

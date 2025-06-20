@@ -13,7 +13,8 @@ public enum ErrorCode {
   EMAIL_DUPLICATED(HttpStatus.CONFLICT, "이미 등록된 이메일입니다."),
   NAME_DUPLICATED(HttpStatus.CONFLICT, "이미 등록된 이름입니다."),
   INVALID_INPUT(HttpStatus.BAD_REQUEST, "입력값이 올바르지 않습니다."),
-  UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
+  UNAUTHORIZED_400(HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
+  UNAUTHORIZED_401(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 일치하지 않습니다."),
   FORBIDDEN(HttpStatus.UNAUTHORIZED, "삭제 할 권한이 없습니다."),
   INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
   SAME_PASSWORD(HttpStatus.BAD_REQUEST, "기존의 비밀번호와 달라야 합니다."),
@@ -23,6 +24,7 @@ public enum ErrorCode {
   S3_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "S3 이미지 업로드에 실패했습니다."),
   S3_DELETE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "S3 이미지 삭제에 실패했습니다."),
   S3_INVALID_URL(HttpStatus.BAD_REQUEST, "유효하지 않은 S3 URL 입니다."),
+  PAYLOAD_TOO_LARGE(HttpStatus.PAYLOAD_TOO_LARGE, "파일 크기가 너무 큽니다."),
 
   COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 댓글을 찾을 수 없습니다."),
   FORBIDDEN_401(HttpStatus.UNAUTHORIZED, "본인의 댓글만 수정 할 수 있습니다."),

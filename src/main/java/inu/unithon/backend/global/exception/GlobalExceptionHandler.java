@@ -1,8 +1,6 @@
 package inu.unithon.backend.global.exception;
 
 import inu.unithon.backend.global.response.ResponseDto;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -12,9 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +18,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  // 유효성 검사 실패 처리
+  /** 유효성 검사 실패 처리 */
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ResponseDto<?>> handleValidationException(MethodArgumentNotValidException ex) {
     Map<String, String> errors = new HashMap<>();
@@ -38,16 +34,18 @@ public class GlobalExceptionHandler {
         ));
   }
 
+  /** 로그인 시 비밀번호가 틀렸거나 인증 정보가 잘못된 경우 처리 */
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<ResponseDto<?>> handleBadCredentials(BadCredentialsException ex) {
     return ResponseEntity
-      .status(401)
+      .status(ErrorCode.UNAUTHORIZED_401.getStatus())
       .body(ResponseDto.error(
-        401,
-        "아이디 또는 비밀번호가 잘못되었습니다."
+        ErrorCode.UNAUTHORIZED_401.getStatus().value(),
+        ErrorCode.UNAUTHORIZED_401.getMessage()
       ));
   }
 
+  /** 로그인 시 존재하지 않는 이메일(사용자)로 로그인 시도한 경우 처리 */
   @ExceptionHandler(UsernameNotFoundException.class)
   public ResponseEntity<ResponseDto<?>> handleUsernameNotFound(UsernameNotFoundException ex) {
     return ResponseEntity
@@ -58,17 +56,29 @@ public class GlobalExceptionHandler {
       ));
   }
 
+  /** 계정이 비활성화 되었거나(Disabled) 잠긴 경우(Locked) 처리 */
   @ExceptionHandler({DisabledException.class, LockedException.class})
   public ResponseEntity<ResponseDto<?>> handleAccountStatus(AuthenticationException ex) {
     return ResponseEntity
-      .status(403)
+      .status(ErrorCode.UNAUTHORIZED_400.getStatus())
       .body(ResponseDto.error(
-        403,
-        "계정 사용이 불가능한 상태입니다."
+        ErrorCode.UNAUTHORIZED_400.getStatus().value(),
+        ErrorCode.UNAUTHORIZED_400.getMessage()
       ));
   }
 
-  // 공통 CustomException 처리
+  /** request part, multipart file 사용할 때 max file size*/
+  @ExceptionHandler(MaxUploadSizeExceededException.class)
+  public ResponseEntity<ResponseDto<?>> handleMaxSizeException(MaxUploadSizeExceededException ex) {
+    return ResponseEntity
+      .status(ErrorCode.PAYLOAD_TOO_LARGE.getStatus())
+      .body(ResponseDto.error(
+        ErrorCode.PAYLOAD_TOO_LARGE.getStatus().value(),
+        ErrorCode.PAYLOAD_TOO_LARGE.getMessage()
+      ));
+  }
+
+  /** 공통 CustomException 처리 */
   @ExceptionHandler(CustomException.class)
   public ResponseEntity<ResponseDto<?>> handleCustomException(CustomException ex) {
     ErrorCode code = ex.getErrorCode();
@@ -80,7 +90,7 @@ public class GlobalExceptionHandler {
       ));
   }
 
-  // 예상 못한 모든 예외 처리
+  /** 예상 못한 모든 예외 처리 */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ResponseDto<?>> handleAll(Exception ex) {
     return ResponseEntity
