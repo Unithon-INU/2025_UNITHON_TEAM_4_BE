@@ -77,7 +77,7 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOriginPatterns(List.of(
+    configuration.setAllowedOrigins(List.of(
       domain,
       "https://2025-unithon-team-4-fe.vercel.app",
       "http://localhost:5173"
