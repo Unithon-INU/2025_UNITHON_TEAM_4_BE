@@ -3,6 +3,7 @@ package inu.unithon.backend.global.config;
 
 import inu.unithon.backend.global.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,9 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+  @Value("${app.origin}")
+  private String origin;
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -50,24 +54,31 @@ public class SecurityConfig {
         .requestMatchers(
           "/api/v1/auth/**",
           "/swagger-ui/**",
-          "/v3/api-docs/**").permitAll()
+          "/v3/api-docs/**"
+        ).permitAll()
 
-        .requestMatchers("/api/v1/users/**").authenticated()
-        .requestMatchers("/api/v1/posts/**").authenticated()
-        .requestMatchers("/api/v1/festivals/**").authenticated()
+        .requestMatchers(
+          "/api/v1/festivals/**"
+        ).permitAll()
+
+        .requestMatchers(
+          "/api/v1/users/**"
+        ).authenticated()
+
+        .requestMatchers(
+          "/api/v1/posts/**"
+        ).authenticated()
+
         .anyRequest().authenticated()
-      )
-      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-      .formLogin(AbstractHttpConfigurer::disable)
-      .logout(logout -> logout.logoutUrl("/auth/logout").logoutSuccessUrl("/").permitAll());
-
+      );
     return http.build();
   }
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOriginPatterns(List.of(
+    configuration.setAllowedOrigins(List.of(
+      origin,
       "https://2025-unithon-team-4-fe.vercel.app",
       "http://localhost:5173"
     )); // 혹은 "http://*"

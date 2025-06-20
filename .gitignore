@@ -43,3 +43,5 @@ out/
 *.env
 src/main/resources/application-prod.yml
 docker-compose.prod.yaml
+nginx/docker-compose.nginx.yaml
+nginx/

@@ -5,6 +5,7 @@ server:
 
 app:
   domain: ${APP_DOMAIN}
+  origin: ${APP_ORIGIN}
 
 spring:
   application:
@@ -14,6 +15,10 @@ spring:
   docker:
     compose:
       file: docker-compose.dev.yaml
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
 
   jpa:
     properties:
@@ -25,7 +30,6 @@ spring:
 
   datasource:
     url: ${MYSQL_URL}
-
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
 
