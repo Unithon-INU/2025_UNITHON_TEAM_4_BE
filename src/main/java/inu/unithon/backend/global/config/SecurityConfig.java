@@ -3,6 +3,7 @@ package inu.unithon.backend.global.config;
 
 import inu.unithon.backend.global.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,9 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+  @Value("${app.domain}")
+  private String domain;
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -66,11 +70,7 @@ public class SecurityConfig {
         ).authenticated()
 
         .anyRequest().authenticated()
-      )
-      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-      .formLogin(AbstractHttpConfigurer::disable)
-      .logout(logout -> logout.logoutUrl("/auth/logout").logoutSuccessUrl("/").permitAll());
-
+      );
     return http.build();
   }
 
@@ -78,6 +78,7 @@ public class SecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOriginPatterns(List.of(
+      domain,
       "https://2025-unithon-team-4-fe.vercel.app",
       "http://localhost:5173"
     )); // 혹은 "http://*"
