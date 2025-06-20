@@ -65,10 +65,6 @@ public class SecurityConfig {
           "/api/v1/posts/**"
         ).authenticated()
 
-        .requestMatchers(
-          "/api/v1/festivals/**"
-        ).authenticated()
-
         .anyRequest().authenticated()
       )
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
