@@ -22,7 +22,6 @@ public class FestivalLike {
     // 축제 고유 식별자 (공공 API의 contentId)
     private String contentId;
 
-    // 선택: 즐겨찾기 목록에서 보여줄 최소 정보 캐싱
     private String title;
     private String imageUrl;
     private String address;

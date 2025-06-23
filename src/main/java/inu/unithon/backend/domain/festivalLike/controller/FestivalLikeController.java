@@ -25,7 +25,7 @@ public class FestivalLikeController {
         return userDetails.getMember();
     }
 
-    // ✅ 좋아요 토글 (좋아요 추가 또는 취소)
+    // 좋아요 토글 (좋아요 추가 또는 취소)
     @PostMapping("/{contentId}/like")
     public ResponseEntity<String> toggleLike(
             @PathVariable String contentId,
