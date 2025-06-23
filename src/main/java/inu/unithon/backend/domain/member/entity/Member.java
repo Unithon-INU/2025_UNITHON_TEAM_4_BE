@@ -1,5 +1,6 @@
 package inu.unithon.backend.domain.member.entity;
 
+import inu.unithon.backend.domain.festivalLike.entity.FestivalLike;
 import inu.unithon.backend.domain.member.dto.request.UpdateProfileRequestDto;
 import inu.unithon.backend.domain.member.dto.response.ProfileResponseDto;
 import inu.unithon.backend.domain.post.entity.Post;
@@ -7,6 +8,7 @@ import inu.unithon.backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,6 +31,10 @@ public class Member extends BaseEntity {
 
   @OneToMany(mappedBy = "member" , cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.LAZY)
   private List<Post> posts;
+
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<FestivalLike> festivalBookmarks = new ArrayList<>();
+
 
   @Builder
   public Member(String name, String profileImageUrl, String email, String password, Role role) {
