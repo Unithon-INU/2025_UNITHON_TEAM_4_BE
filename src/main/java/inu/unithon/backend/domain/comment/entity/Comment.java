@@ -24,6 +24,7 @@ public class Comment extends BaseEntity {
   private Long memberId;  // member ID
   private String memberName;
   private String memberProfileImageUrl;
+  private Long likes;
 
   @Builder
   public Comment(String content, Post post, Long memberId, String memberName, String memberProfileImageUrl) {
@@ -32,10 +33,18 @@ public class Comment extends BaseEntity {
     this.memberId = memberId;
     this.memberName = memberName;
     this.memberProfileImageUrl = memberProfileImageUrl;
+    this.likes = 0L;
   }
 
   public void updateContent(String newContent) {
     this.content = newContent;
   }
+  public void increaseLikeCount() {
+    this.likes++;
+  }
+  public void decreaseLikeCount() {
+    this.likes = Math.max(0, this.likes - 1);
+  }
+
 
 }
