@@ -31,7 +31,7 @@ public class CommentLikeController {
     ) {
         Member member = getCurrentMember(authentication);
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("comment is not found"));
 
         boolean liked = commentLikeService.toggleLike(member, comment);
         return ResponseEntity.ok(new CommentLikeToggleResponseDto(liked, comment.getLikes()));
