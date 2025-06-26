@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,7 +36,7 @@ public class CommentLikeService {
         }
     }
 
-    public boolean isLikedByMember(Member member, Comment comment) {
-        return commentLikeRepository.existsByMemberAndComment(member, comment);
+    public List<CommentLike> getLikedComments(Member member) {
+        return commentLikeRepository.findAllByMember(member);
     }
 }

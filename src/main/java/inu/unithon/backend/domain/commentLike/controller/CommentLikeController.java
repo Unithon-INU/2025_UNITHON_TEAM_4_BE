@@ -36,4 +36,10 @@ public class CommentLikeController {
         boolean liked = commentLikeService.toggleLike(member, comment);
         return ResponseEntity.ok(new CommentLikeToggleResponseDto(liked, comment.getLikes()));
     }
+
+    @GetMapping("/myLikes")
+    public ResponseEntity<?> getLikedComments(Authentication authentication) {
+        Member member = getCurrentMember(authentication);
+        return ResponseEntity.ok(commentLikeService.getLikedComments(member));
+    }
 }

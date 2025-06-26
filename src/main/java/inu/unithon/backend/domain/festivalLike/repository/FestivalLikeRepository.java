@@ -12,5 +12,4 @@ import java.util.Optional;
 public interface FestivalLikeRepository extends JpaRepository<FestivalLike, Long> {
     Optional<FestivalLike> findByMemberAndContentId(Member member, String contentId);
     List<FestivalLike> findAllByMember(Member member);
-    void deleteByMemberAndContentId(Member member, String contentId);
 }

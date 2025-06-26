@@ -27,4 +27,14 @@ public class PostLikeController {
         boolean liked = postLikeService.toggleLike(member, postId);
         return ResponseEntity.ok(liked ? "좋아요 완료" : "좋아요 취소");
     }
+    @GetMapping("/myLikes")
+    public ResponseEntity<?> getLikedPosts(Authentication authentication) {
+        Member member = getCurrentMember(authentication);
+        return ResponseEntity.ok(postLikeService.getLikedPosts(member));
+    }
+    @GetMapping("/{postId}/likeCount")
+    public ResponseEntity<Long> countLikesForPost(@PathVariable Long postId) {
+        long likeCount = postLikeService.countLikesForPost(postId);
+        return ResponseEntity.ok(likeCount);
+    }
 }

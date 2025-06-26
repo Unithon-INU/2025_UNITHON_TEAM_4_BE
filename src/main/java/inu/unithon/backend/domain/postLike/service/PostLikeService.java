@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostLikeService {
@@ -32,5 +34,15 @@ public class PostLikeService {
                     post.increaseLikeCount(); // 좋아요 숫자 증가
                     return true;
                 });
+    }
+
+    public List<PostLike> getLikedPosts(Member member) {
+        return postLikeRepository.findAllByMember(member);
+    }
+
+    public long countLikesForPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+        return postLikeRepository.countByPost(post);
     }
 }
