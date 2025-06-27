@@ -1,8 +1,7 @@
-package inu.unithon.backend.domain.postLike.entity;
+package inu.unithon.backend.domain.commentLike.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import inu.unithon.backend.domain.comment.entity.Comment;
 import inu.unithon.backend.domain.member.entity.Member;
-import inu.unithon.backend.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,11 +10,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class PostLike {
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore //post 정보를 직렬화할 때 무한 루프 방지
-    private Post post;
+public class CommentLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +19,6 @@ public class PostLike {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Comment comment;
 }

@@ -38,7 +38,7 @@ public class FestivalLikeService {
         }
     }
 
-    // 사용자 좋아요 목록 조회
+
     public List<FestivalLike> getLikedFestivals(Member member) {
         return festivalLikeRepository.findAllByMember(member);
     }

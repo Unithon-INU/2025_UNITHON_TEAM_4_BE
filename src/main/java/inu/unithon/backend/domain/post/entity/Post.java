@@ -52,6 +52,15 @@ public class Post extends BaseEntity {
     image.setPost(this);
   }
 
+  public void increaseLikeCount() {
+    this.likes++;
+  }
+
+  public void decreaseLikeCount() {
+    this.likes = Math.max(0, this.likes - 1);
+  }
+
+
   public void updatePost(PostUpdateRequest updateRequest, List<PostImage> images) {
     this.title = updateRequest.getTitle();
     this.content = updateRequest.getContent();

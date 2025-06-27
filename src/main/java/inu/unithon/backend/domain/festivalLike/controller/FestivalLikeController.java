@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/festivals")
+@RequestMapping("/api/v1/festivals")
 public class FestivalLikeController {
 
     private final FestivalLikeService likeService;
