@@ -24,6 +24,4 @@ public class PostLike {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Post post;
 }
