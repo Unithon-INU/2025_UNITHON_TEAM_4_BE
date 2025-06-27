@@ -1,5 +1,6 @@
 package inu.unithon.backend.domain.postLike.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import inu.unithon.backend.domain.member.entity.Member;
 import inu.unithon.backend.domain.post.entity.Post;
 import jakarta.persistence.*;
@@ -11,6 +12,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class PostLike {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore //post 정보를 직렬화할 때 무한 루프 방지
+    private Post post;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

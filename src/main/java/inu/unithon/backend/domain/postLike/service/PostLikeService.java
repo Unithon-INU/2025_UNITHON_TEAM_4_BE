@@ -3,6 +3,7 @@ package inu.unithon.backend.domain.postLike.service;
 import inu.unithon.backend.domain.member.entity.Member;
 import inu.unithon.backend.domain.post.entity.Post;
 import inu.unithon.backend.domain.post.repository.PostRepository;
+import inu.unithon.backend.domain.postLike.dto.PostLikeResponseDto;
 import inu.unithon.backend.domain.postLike.entity.PostLike;
 import inu.unithon.backend.domain.postLike.repository.PostLikeRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +37,10 @@ public class PostLikeService {
                 });
     }
 
-    public List<PostLike> getLikedPosts(Member member) {
-        return postLikeRepository.findAllByMember(member);
+    public List<PostLikeResponseDto> getLikedPosts(Member member) {
+        return postLikeRepository.findAllByMember(member).stream()
+                .map(postLike -> PostLikeResponseDto.from(postLike.getPost()))
+                .toList();
     }
 
 }
