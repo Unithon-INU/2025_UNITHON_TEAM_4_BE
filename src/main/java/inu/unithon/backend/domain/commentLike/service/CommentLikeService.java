@@ -7,6 +7,7 @@ import inu.unithon.backend.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import inu.unithon.backend.domain.commentLike.dto.CommentLikeResponseDto;
 
 
 import java.util.List;
@@ -36,7 +37,9 @@ public class CommentLikeService {
         }
     }
 
-    public List<CommentLike> getLikedComments(Member member) {
-        return commentLikeRepository.findAllByMember(member);
+    public List<CommentLikeResponseDto> getLikedComments(Member member) {
+        return commentLikeRepository.findAllByMember(member).stream()
+                .map(commentLike -> CommentLikeResponseDto.from(commentLike.getComment()))
+                .toList();
     }
 }

@@ -2,13 +2,14 @@ package inu.unithon.backend.domain.commentLike.controller;
 
 import inu.unithon.backend.domain.comment.entity.Comment;
 import inu.unithon.backend.domain.comment.repository.CommentRepository;
-import inu.unithon.backend.domain.commentLike.dto.CommentLikeToggleResponseDto;
+import inu.unithon.backend.domain.commentLike.dto.CommentLikeResponseDto;
 import inu.unithon.backend.domain.commentLike.service.CommentLikeService;
 import inu.unithon.backend.domain.member.entity.Member;
 import inu.unithon.backend.domain.member.entity.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 import org.springframework.security.core.Authentication;
 
@@ -25,7 +26,7 @@ public class CommentLikeController {
     }
 
     @PostMapping("/{commentId}/like")
-    public ResponseEntity<CommentLikeToggleResponseDto> toggleLike(
+    public ResponseEntity<CommentLikeResponseDto> toggleLike(
             @PathVariable Long commentId,
             Authentication authentication
     ) {
@@ -34,11 +35,11 @@ public class CommentLikeController {
                 .orElseThrow(() -> new IllegalArgumentException("comment is not found"));
 
         boolean liked = commentLikeService.toggleLike(member, comment);
-        return ResponseEntity.ok(new CommentLikeToggleResponseDto(liked, comment.getLikes()));
+        return ResponseEntity.ok(CommentLikeResponseDto.from(comment));
     }
 
     @GetMapping("/myLikes")
-    public ResponseEntity<?> getLikedComments(Authentication authentication) {
+    public ResponseEntity<List<CommentLikeResponseDto>> getLikedComments(Authentication authentication) {
         Member member = getCurrentMember(authentication);
         return ResponseEntity.ok(commentLikeService.getLikedComments(member));
     }
