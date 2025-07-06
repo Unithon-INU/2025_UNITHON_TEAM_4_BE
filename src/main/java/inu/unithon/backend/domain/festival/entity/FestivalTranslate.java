@@ -6,7 +6,6 @@ import lombok.*;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FestivalTranslate extends BaseEntity {
 
@@ -25,7 +24,7 @@ public class FestivalTranslate extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "festival_id")
-    private Festival fesitval;
+    private Festival festival;
 
     @Builder
     public FestivalTranslate(String language, String title, String imageUrl, String address, String contentId, String content, String startDate, String endDate, Festival festival) {
@@ -37,6 +36,6 @@ public class FestivalTranslate extends BaseEntity {
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.fesitval = festival;
+        this.festival = festival;
     }
 }

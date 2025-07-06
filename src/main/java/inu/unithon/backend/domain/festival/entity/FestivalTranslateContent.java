@@ -3,17 +3,17 @@ package inu.unithon.backend.domain.festival.entity;
 import jakarta.persistence.*;
 import inu.unithon.backend.global.entity.BaseEntity;
 import lombok.*;
-import java.util.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Festival extends BaseEntity {
+public class FestivalTranslateContent extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String language;
     private String title;
     private String imageUrl;
     private String address;
@@ -22,15 +22,13 @@ public class Festival extends BaseEntity {
     private String startDate;
     private String endDate;
 
-    @OneToOne(mappedBy = "festival", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "festivalContent_id")
     private FestivalContent festivalContent;
 
-    @OneToMany(mappedBy = "festival", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<FestivalTranslate> festivalTranslates = new ArrayList<>();
-
     @Builder
-    public Festival(String title, String imageUrl, String address, String contentId,
-                    String content, String startDate, String endDate, FestivalContent festivalContent, List<FestivalTranslate> festivalTranslates) {
+    public FestivalTranslateContent(String language, String title, String imageUrl, String address, String contentId, String content, String startDate, String endDate, FestivalContent festivalContent) {
+        this.language = language;
         this.title = title;
         this.imageUrl = imageUrl;
         this.address = address;
@@ -39,6 +37,5 @@ public class Festival extends BaseEntity {
         this.startDate = startDate;
         this.endDate = endDate;
         this.festivalContent = festivalContent;
-        this.festivalTranslates = festivalTranslates;
     }
 }
