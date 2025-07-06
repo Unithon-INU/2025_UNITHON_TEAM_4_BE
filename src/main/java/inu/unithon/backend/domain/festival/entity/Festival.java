@@ -22,10 +22,12 @@ public class Festival extends BaseEntity {
     private String startDate;
     private String endDate;
 
-    @OneToOne(mappedBy = "festival", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "festival_content_id")
     private FestivalContent festivalContent;
 
-    @OneToMany(mappedBy = "festival", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "festival_id")
     private List<FestivalTranslate> festivalTranslates = new ArrayList<>();
 
     @Builder

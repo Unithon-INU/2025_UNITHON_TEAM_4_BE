@@ -22,9 +22,6 @@ public class FestivalTranslate extends BaseEntity {
     private String startDate;
     private String endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "festival_id")
-    private Festival festival;
 
     @Builder
     public FestivalTranslate(String language, String title, String imageUrl, String address, String contentId, String content, String startDate, String endDate, Festival festival) {

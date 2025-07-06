@@ -24,11 +24,12 @@
         private String endDate;
 
 
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "festival_id")  // FK는 여기 있음
-        private Festival festival;
+//        @OneToOne(fetch = FetchType.LAZY)
+//        @JoinColumn(name = "festival_id")  // 양방향 생각했었음..
+//        private Festival festival;
 
-        @OneToMany(mappedBy = "festivalContent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @JoinColumn(name = "festival_content_id")
         private List<FestivalTranslateContent> festivalTranslateContents = new ArrayList<>();
 
         @Builder
