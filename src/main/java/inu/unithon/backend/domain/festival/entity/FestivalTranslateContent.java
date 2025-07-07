@@ -22,12 +22,13 @@ public class FestivalTranslateContent extends BaseEntity {
     private String startDate;
     private String endDate;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "festivalContent_id") // 양방향 생각했었음..
-//    private FestivalContent festivalContent;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "festivalContent_id")
+    private FestivalContent festivalContent;
 
     @Builder
-    public FestivalTranslateContent(String language, String title, String imageUrl, String address, String contentId, String content, String startDate, String endDate) {
+    public FestivalTranslateContent(String language, String title, String imageUrl, String address,
+                                    String contentId, String content, String startDate, String endDate, FestivalContent festivalContent) {
         this.language = language;
         this.title = title;
         this.imageUrl = imageUrl;
@@ -36,5 +37,6 @@ public class FestivalTranslateContent extends BaseEntity {
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.festivalContent = festivalContent;
     }
 }
