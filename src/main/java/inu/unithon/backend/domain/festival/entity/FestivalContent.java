@@ -28,9 +28,13 @@
 //        @JoinColumn(name = "festival_id")  // 양방향 생각했었음..
 //        private Festival festival;
 
-        @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-        @JoinColumn(name = "festival_content_id")
+        @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @JoinColumn(name = "festival_id")
+        private Festival festival;
+
+        @OneToMany(mappedBy = "festivalContent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
         private List<FestivalTranslateContent> festivalTranslateContents = new ArrayList<>();
+
 
         @Builder
         public FestivalContent(String title, String imageUrl, String address, String content,
