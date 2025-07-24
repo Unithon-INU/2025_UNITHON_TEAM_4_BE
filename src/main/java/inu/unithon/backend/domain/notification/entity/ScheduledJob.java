@@ -25,6 +25,7 @@ public class ScheduledJob extends BaseEntity {
   // 실행 날짜
   private LocalDateTime executeAt;
 
+  // 실행 되었는가 true/false
   @Setter
   private boolean executed;
 

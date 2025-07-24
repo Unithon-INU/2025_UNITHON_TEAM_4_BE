@@ -31,12 +31,21 @@ spring:
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
   quartz:
-    job-store-type: memory
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
     properties:
       org:
         quartz:
           scheduler:
             instanceName: simpleScheduler
+            instancedId: AUTO
+          jobstore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            useProperties: false
+            tablePrefix: QRTZ_
+            isClustered: false # 클러스터링할 거면 true
           threadPool:
             class: org.quartz.simpl.SimpleThreadPool
             threadCount: 5
