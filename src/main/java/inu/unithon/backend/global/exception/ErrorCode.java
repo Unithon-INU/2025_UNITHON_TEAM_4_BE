@@ -30,6 +30,12 @@ public enum ErrorCode {
   FORBIDDEN_401(HttpStatus.UNAUTHORIZED, "본인의 댓글만 수정 할 수 있습니다."),
   FORBIDDEN_402(HttpStatus.UNAUTHORIZED, "본인의 댓글만 삭제 할 수 있습니다."),
 
+  JOB_SCHEDULING_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "알림 Job 스케줄링에 실패했습니다."),
+  JOB_EXECUTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "알림 Job 실행 중 오류가 발생했습니다."),
+  JOB_NOT_FOUND(HttpStatus.NOT_FOUND, "알림 Job 존재하지 않습니다."),
+  JOB_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "알림 Job 삭제 실패."),
+
+
   INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
 
   private final HttpStatus status;

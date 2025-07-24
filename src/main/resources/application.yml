@@ -19,7 +19,6 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 20MB
-
   jpa:
     properties:
       hibernate.hibernate.show_sql: true
@@ -27,11 +26,21 @@ spring:
     hibernate:
       ddl-auto: create-drop
     database-platform: org.hibernate.dialect.MySQLDialect
-
   datasource:
     url: ${MYSQL_URL}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
+  quartz:
+    job-store-type: memory
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: simpleScheduler
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 5
+            threadPriority: 5
 
 springdoc:
   api-docs:

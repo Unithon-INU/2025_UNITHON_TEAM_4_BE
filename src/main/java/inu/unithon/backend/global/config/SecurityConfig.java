@@ -52,6 +52,7 @@ public class SecurityConfig {
       .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
       .authorizeHttpRequests(auth -> auth
         .requestMatchers(
+          "api/v1/test/**",
           "/api/v1/auth/**",
           "/swagger-ui/**",
           "/v3/api-docs/**"
