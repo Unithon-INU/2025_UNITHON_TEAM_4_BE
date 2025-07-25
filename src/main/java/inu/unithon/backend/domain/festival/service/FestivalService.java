@@ -1,6 +1,9 @@
 package inu.unithon.backend.domain.festival.service;
 
 import inu.unithon.backend.domain.festival.dto.*;
+import inu.unithon.backend.domain.festival.entity.Festival;
+import inu.unithon.backend.domain.festival.repository.FestivalRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,8 +15,11 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import inu.unithon.backend.global.exception.CustomException;
 import inu.unithon.backend.global.exception.ErrorCode;
+import inu.unithon.backend.domain.festival.dto.FestivalDto;
 
 import java.net.URI;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -21,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class FestivalService implements FestivalServiceInterface{
 
     private static final Logger logger = LoggerFactory.getLogger(FestivalService.class);
+    private final FestivalRepository festivalRepository;
 
     @Value("${tourapi.service-key}")
     private String encodedServiceKey;
@@ -212,6 +219,27 @@ public class FestivalService implements FestivalServiceInterface{
         } catch (Exception e) {
             logger.error("Location Food List error : ", e);
             throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private Festival toEntity(FestivalDto dto) {
+        return Festival.builder()
+                .contentId(dto.getContentid())
+                .title(dto.getTitle())
+                .startDate(dto.getEventstartdate())
+                .endDate(dto.getEventenddate())
+                .imageUrl(dto.getFirstimage())
+                .build();
+    }
+
+    @Transactional
+    public void saveFestivalList(List<FestivalDto> dtoList){
+        // if i need clean up db should do festivalRepository.deleteAll(); method
+        for (FestivalDto dto : dtoList){
+            if(!festivalRepository.existsByContentId(dto.getContentid())) {
+                Festival festival = toEntity(dto);
+                festivalRepository.save(festival);
+            }
         }
     }
 
