@@ -1,34 +1,36 @@
 package inu.unithon.backend.domain.notification.controller;
 
-import inu.unithon.backend.domain.notification.entity.ScheduledJob;
-import inu.unithon.backend.global.scheduler.QuartzService;
+import inu.unithon.backend.domain.member.entity.CustomUserDetails;
+import inu.unithon.backend.domain.notification.service.reservation.NotificationReservationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/test")
 public class NotificationTestController {
 
-  private final QuartzService quartzService;
+  private final NotificationReservationService notificationReservationService;
 
-  @GetMapping("/set-notifi")
-  public void setNotification() {
-    ScheduledJob job = ScheduledJob.builder()
-      .userId(1L)
-      .message("test scheduled job")
-      .festivalId(1L)
-      .executeAt(LocalDateTime.now().plusSeconds(30))
-      .build();
-    quartzService.createAndScheduleJob(job);
+  /**
+   * 사용자가 좋아요 누름 ->
+   * 알림 예약
+   */
+  @GetMapping("/set-notifi/{festivalId}")
+  public void setNotification(@AuthenticationPrincipal CustomUserDetails userDetails,
+                              @PathVariable Long festivalId) {
+
+    notificationReservationService.reserveAllNotifications(userDetails.getId(), festivalId);
+
   }
 
-  @GetMapping("/del-notifi")
-  public void deleteNotification() {
-    quartzService.deleteScheduleJob(1L, 1L);
+  @GetMapping("/del-notifi/{festivalId}")
+  public void deleteNotification(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                 @PathVariable Long festivalId) {
+    notificationReservationService.deleteAllNotifications(userDetails.getId(), festivalId);
   }
 }

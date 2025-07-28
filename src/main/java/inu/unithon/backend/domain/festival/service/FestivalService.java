@@ -1,17 +1,19 @@
 package inu.unithon.backend.domain.festival.service;
 
 import inu.unithon.backend.domain.festival.dto.*;
+import inu.unithon.backend.domain.festival.entity.Festival;
+import inu.unithon.backend.domain.festival.repository.FestivalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import inu.unithon.backend.domain.festival.service.FestivalServiceInterface;
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import inu.unithon.backend.global.exception.CustomException;
-import inu.unithon.backend.global.exception.ErrorCode;
+import inu.unithon.backend.global.exception.CommonErrorCode;
 
 import java.net.URI;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class FestivalService implements FestivalServiceInterface{
 
     private static final Logger logger = LoggerFactory.getLogger(FestivalService.class);
+    private final FestivalRepository festivalRepository;
 
     @Value("${tourapi.service-key}")
     private String encodedServiceKey;
@@ -61,7 +64,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Festival List error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -92,7 +95,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Festival info error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -126,7 +129,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Festival Search error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -153,7 +156,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Festival intro error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -180,7 +183,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Festival Detail info error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
     public FestivalResponseDto getFestivalLocationFood(String lang, String MapX, String MapY, String NumOfRows, String PageNo, String radius) {
@@ -211,7 +214,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Location Food List error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -251,5 +254,16 @@ public class FestivalService implements FestivalServiceInterface{
             case "spa" -> "SpnService1";
             default -> "KorService1";
         };
+    }
+
+    /**
+     * 축제 아이디로 축제를 받아오는 메서드
+     * @author : frozzun
+     * @param festivalId 축제 Id
+     * @return Festival
+     */
+    public Festival getFestival(Long festivalId) {
+        return festivalRepository.findById(festivalId)
+          .orElseThrow(() -> new CustomException(CommonErrorCode.FESTIVAL_NOT_FOUND));
     }
 }

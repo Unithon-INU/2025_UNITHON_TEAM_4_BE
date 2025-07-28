@@ -12,7 +12,7 @@ import inu.unithon.backend.domain.post.entity.Post;
 import inu.unithon.backend.domain.post.entity.PostImage;
 import inu.unithon.backend.domain.post.repository.PostRepository;
 import inu.unithon.backend.global.exception.CustomException;
-import inu.unithon.backend.global.exception.ErrorCode;
+import inu.unithon.backend.global.exception.CommonErrorCode;
 import inu.unithon.backend.global.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static inu.unithon.backend.global.exception.ErrorCode.FORBIDDEN;
-import static inu.unithon.backend.global.exception.ErrorCode.POST_NOT_FOUND;
+import static inu.unithon.backend.global.exception.CommonErrorCode.FORBIDDEN;
+import static inu.unithon.backend.global.exception.CommonErrorCode.POST_NOT_FOUND;
 
 @Slf4j
 @Service
@@ -43,7 +43,7 @@ public class PostServiceImpl implements PostService {
   @Override
   public void create(Long memberId, PostCreateRequest postCreateRequest, List<MultipartFile> images) {
     if (images == null || images.isEmpty()) {
-      throw new CustomException(ErrorCode.NO_IMAGE_INPUT);
+      throw new CustomException(CommonErrorCode.NO_IMAGE_INPUT);
     }
 
     List<String> imageUrls = images.stream()

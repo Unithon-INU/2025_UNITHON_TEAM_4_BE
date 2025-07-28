@@ -4,6 +4,7 @@
     import jakarta.persistence.*;
     import lombok.*;
 
+    import java.time.LocalDateTime;
     import java.util.ArrayList;
     import java.util.List;
 
@@ -20,8 +21,10 @@
         private String imageUrl;
         private String address;
         private String content;
-        private String startDate;
-        private String endDate;
+        //    private String startDate;
+        private LocalDateTime startDate;
+        //    private String endDate;
+        private LocalDateTime endDate;
 
 
 //        @OneToOne(fetch = FetchType.LAZY)
@@ -36,15 +39,24 @@
         private List<FestivalTranslateContent> festivalTranslateContents = new ArrayList<>();
 
 
-        @Builder
-        public FestivalContent(String title, String imageUrl, String address, String content,
-                               String startDate, String endDate) {
-            this.title = title;
-            this.imageUrl = imageUrl;
-            this.address = address;
-            this.content = content;
-            this.startDate = startDate;
-            this.endDate = endDate;
+//        @Builder
+//        public FestivalContent(String title, String imageUrl, String address, String content,
+//                               String startDate, String endDate) {
+//            this.title = title;
+//            this.imageUrl = imageUrl;
+//            this.address = address;
+//            this.content = content;
+//            this.startDate = startDate;
+//            this.endDate = endDate;
+//        }
+    @Builder
+    public FestivalContent(String title, String imageUrl, String address, String content,
+                           LocalDateTime startDate, LocalDateTime endDate) {
+        this.title = title;
+        this.imageUrl = imageUrl;
+        this.address = address;
+        this.content = content;
+        this.startDate = startDate;
+        this.endDate = endDate;
         }
-
     }

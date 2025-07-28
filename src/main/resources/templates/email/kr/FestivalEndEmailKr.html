@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>축제 종료 알림</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; color: #333;">
+<h2>🎉 <span th:text="${festivalName}">[축제명]</span> 축제가 종료되었습니다!</h2>
+<p>
+    안녕하세요.<br>
+    참여해주셔서 감사합니다! 아래는 축제의 상세 정보입니다.
+</p>
+<ul>
+    <li><strong>축제 기간:</strong>
+        <span th:text="${festivalStart}">[시작일]</span> ~
+        <span th:text="${festivalEnd}">[종료일]</span>
+    </li>
+</ul>
+<p>
+    다음에도 더 많은 즐거움을 드릴 수 있도록 노력하겠습니다.<br>
+    좋은 하루 되세요! 😊
+</p>
+<hr style="margin-top: 30px;">
+<p style="font-size: 12px; color: #888;">
+    본 메일은 발신전용입니다. 문의는 홈페이지를 이용해주세요.
+</p>
+</body>
+</html>

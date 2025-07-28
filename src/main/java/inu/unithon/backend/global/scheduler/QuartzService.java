@@ -2,12 +2,13 @@ package inu.unithon.backend.global.scheduler;
 
 import inu.unithon.backend.domain.notification.entity.ScheduledJob;
 import inu.unithon.backend.domain.notification.repository.ScheduledJobRepository;
-import inu.unithon.backend.domain.notification.service.NotificationJob;
+import inu.unithon.backend.domain.notification.service.job.NotificationJob;
 import inu.unithon.backend.global.exception.CustomException;
-import inu.unithon.backend.global.exception.ErrorCode;
+import inu.unithon.backend.global.exception.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.quartz.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class QuartzService {
 
@@ -30,7 +32,9 @@ public class QuartzService {
     JobDetail jobDetail = JobBuilder.newJob(NotificationJob.class)
       .withIdentity("job_" + jobEntity.getId(), "custom-jobs")
       .usingJobData("userId", String.valueOf(jobEntity.getUserId()))
-      .usingJobData("message", jobEntity.getMessage())
+      .usingJobData("festivalId", String.valueOf(jobEntity.getFestivalId()))
+      .usingJobData("executeAt", String.valueOf(jobEntity.getExecuteAt()))
+      .usingJobData("type", jobEntity.getType().ordinal())
       .build();
 
     Trigger trigger = TriggerBuilder.newTrigger()
@@ -40,7 +44,7 @@ public class QuartzService {
     try {
       scheduler.scheduleJob(jobDetail, trigger);
     } catch (SchedulerException e) {
-      throw new CustomException(ErrorCode.JOB_SCHEDULING_FAILED);
+      throw new CustomException(CommonErrorCode.JOB_SCHEDULING_FAILED);
     }
   }
 
@@ -48,7 +52,7 @@ public class QuartzService {
     Optional<ScheduledJob> optionalJob = scheduledJobRepository.findByUserIdAndFestivalId(userId, festivalId);
 
     ScheduledJob job = optionalJob.orElseThrow(() ->
-      new CustomException(ErrorCode.JOB_NOT_FOUND)
+      new CustomException(CommonErrorCode.JOB_NOT_FOUND)
     );
 
     // 2. Quartz Job 삭제
@@ -56,10 +60,10 @@ public class QuartzService {
     try {
       boolean deleted = scheduler.deleteJob(jobKey);
       if (!deleted) {
-        throw new CustomException(ErrorCode.JOB_DELETE_FAILED);
+        throw new CustomException(CommonErrorCode.JOB_DELETE_FAILED);
       }
     } catch (SchedulerException e) {
-      throw new CustomException(ErrorCode.JOB_DELETE_FAILED);
+      throw new CustomException(CommonErrorCode.JOB_DELETE_FAILED);
     }
 
     // 3. DB에서도 제거
