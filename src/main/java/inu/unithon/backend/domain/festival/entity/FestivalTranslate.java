@@ -17,7 +17,7 @@ public class FestivalTranslate extends BaseEntity {
     private String title;
     private String imageUrl;
     private String address;
-    private String contentId;
+    private long contentId;
     private String content;
     private String startDate;
     private String endDate;
@@ -28,7 +28,7 @@ public class FestivalTranslate extends BaseEntity {
 
 
     @Builder
-    public FestivalTranslate(String language, String title, String imageUrl, String address, String contentId, String content, String startDate, String endDate, Festival festival) {
+    public FestivalTranslate(String language, String title, String imageUrl, String address, long contentId, String content, String startDate, String endDate, Festival festival) {
         this.language = language;
         this.title = title;
         this.imageUrl = imageUrl;

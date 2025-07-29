@@ -3,6 +3,8 @@ package inu.unithon.backend.domain.festival.entity;
 import jakarta.persistence.*;
 import inu.unithon.backend.global.entity.BaseEntity;
 import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -17,10 +19,12 @@ public class Festival extends BaseEntity {
     private String title;
     private String imageUrl;
     private String address;
-    private String contentId;
+    private long contentId;
     private String content;
-    private String startDate;
-    private String endDate;
+    //    private String startDate;
+    private LocalDateTime startDate;
+    //    private String endDate;
+    private LocalDateTime endDate;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "festival_content_id")
@@ -30,9 +34,23 @@ public class Festival extends BaseEntity {
     @JoinColumn(name = "festival_id")
     private List<FestivalTranslate> festivalTranslates = new ArrayList<>();
 
+//    @Builder
+//    public Festival(String title, String imageUrl, String address, String contentId,
+//                    String content, String startDate, String endDate, FestivalContent festivalContent, List<FestivalTranslate> festivalTranslates) {
+//        this.title = title;
+//        this.imageUrl = imageUrl;
+//        this.address = address;
+//        this.contentId = contentId;
+//        this.content = content;
+//        this.startDate = startDate;
+//        this.endDate = endDate;
+//        this.festivalContent = festivalContent;
+//        this.festivalTranslates = festivalTranslates;
+//    }
+
     @Builder
-    public Festival(String title, String imageUrl, String address, String contentId,
-                    String content, String startDate, String endDate, FestivalContent festivalContent, List<FestivalTranslate> festivalTranslates) {
+    public Festival(String title, String imageUrl, String address, long contentId,
+                    String content, LocalDateTime startDate, LocalDateTime endDate, FestivalContent festivalContent, List<FestivalTranslate> festivalTranslates) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.address = address;
