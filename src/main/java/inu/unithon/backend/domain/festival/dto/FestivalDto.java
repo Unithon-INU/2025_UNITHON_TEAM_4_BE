@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -14,7 +15,7 @@ public class FestivalDto {
     private String addr1;
     private String addr2;
     private String areacode;
-    private String contentid;
+    private long contentid;
     private String contenttypeid;
     private String createdtime;
     private String firstimage;

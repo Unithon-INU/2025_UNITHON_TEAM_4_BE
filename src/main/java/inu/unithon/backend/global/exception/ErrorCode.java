@@ -34,6 +34,8 @@ public enum ErrorCode {
   JOB_EXECUTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "알림 Job 실행 중 오류가 발생했습니다."),
   JOB_NOT_FOUND(HttpStatus.NOT_FOUND, "알림 Job 존재하지 않습니다."),
   JOB_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "알림 Job 삭제 실패."),
+  DATE_PARSE_ERROR(HttpStatus.BAD_REQUEST, "날짜 형식이 올바르지 않습니다."),
+  LIST_UPDATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "리스트 업데이트에 실패했습니다."),
 
 
   INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");

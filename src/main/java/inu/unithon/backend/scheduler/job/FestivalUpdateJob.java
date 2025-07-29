@@ -26,7 +26,7 @@ public class FestivalUpdateJob implements Job{
     }
 
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
         //TODO: 축제 정보 업데이트 로직 구현
         try{
             String pageNum = "1";
@@ -35,15 +35,16 @@ public class FestivalUpdateJob implements Job{
             FestivalResponseDto response = festivalService.getFestivalList("kor", numOfRows, pageNum, startDate, null,null);
             List<FestivalDto> dtoList = response.getResponse().getBody().getItems().getItem();
             festivalService.saveFestivalList(dtoList);
-            //maiking db saving method response.toEntityList().forEach;
+
+
 
 
 
 
         } catch (Exception e) {
-            throw new CustomException(ErrorCode.JOB_EXECUTION_FAILED);
+            throw new CustomException(ErrorCode.LIST_UPDATE_FAILED);
         }
-        System.out.println("축제 정보 업데이트 작업이 실행되었습니다.");
+        System.out.println("축제 List update ");
     }
 
 }

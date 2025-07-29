@@ -4,6 +4,7 @@ import inu.unithon.backend.domain.festival.dto.*;
 import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.repository.FestivalRepository;
 import jakarta.transaction.Transactional;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,9 @@ import inu.unithon.backend.global.exception.ErrorCode;
 import inu.unithon.backend.domain.festival.dto.FestivalDto;
 
 import java.net.URI;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -222,12 +225,25 @@ public class FestivalService implements FestivalServiceInterface{
         }
     }
 
-    private Festival toEntity(FestivalDto dto) {
+    private Festival listToEntity(FestivalDto dto) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+
+        try {
+            if(dto.getEventenddate() != null && !dto.getEventenddate().isBlank()){
+                start = LocalDateTime.parse(dto.getEventenddate(), formatter).withHour(0).withMinute(0);
+            } if(dto.getEventstartdate() != null && !dto.getEventstartdate().isBlank()){
+                end = LocalDateTime.parse(dto.getEventstartdate(), formatter).withHour(0).withMinute(0);
+            }
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.DATE_PARSE_ERROR);
+        }
         return Festival.builder()
                 .contentId(dto.getContentid())
                 .title(dto.getTitle())
-                .startDate(dto.getEventstartdate())
-                .endDate(dto.getEventenddate())
+                .startDate(start)
+                .endDate(end)
                 .imageUrl(dto.getFirstimage())
                 .build();
     }
@@ -237,7 +253,7 @@ public class FestivalService implements FestivalServiceInterface{
         // if i need clean up db should do festivalRepository.deleteAll(); method
         for (FestivalDto dto : dtoList){
             if(!festivalRepository.existsByContentId(dto.getContentid())) {
-                Festival festival = toEntity(dto);
+                Festival festival = listToEntity(dto);
                 festivalRepository.save(festival);
             }
         }
