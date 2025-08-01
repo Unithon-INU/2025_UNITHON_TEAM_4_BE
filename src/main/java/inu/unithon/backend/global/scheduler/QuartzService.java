@@ -1,5 +1,6 @@
 package inu.unithon.backend.global.scheduler;
 
+import inu.unithon.backend.domain.notification.entity.FestivalNotificationType;
 import inu.unithon.backend.domain.notification.entity.ScheduledJob;
 import inu.unithon.backend.domain.notification.repository.ScheduledJobRepository;
 import inu.unithon.backend.domain.notification.service.job.NotificationJob;
@@ -68,6 +69,11 @@ public class QuartzService {
 
     // 3. DB에서도 제거
     scheduledJobRepository.delete(job);
+  }
+
+  // 중복 확인 메서드
+  public boolean existsJob(Long userId, Long festivalId, FestivalNotificationType type) {
+    return scheduledJobRepository.existsByUserIdAndFestivalIdAndType(userId, festivalId, type);
   }
 }
 

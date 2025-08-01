@@ -8,6 +8,7 @@ import inu.unithon.backend.domain.notification.policy.NotificationTimingPolicy;
 import inu.unithon.backend.global.scheduler.QuartzService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,15 @@ public class NotificationReservationServiceImpl implements NotificationReservati
     Festival festival = festivalService.getFestival(festivalId);
 
     for (NotificationTimingPolicy policy : timingPolicies) {  // 모든 알림 정책 순회
+      FestivalNotificationType type = policy.getType();
+
+      // 중복 예약 방지
+      boolean alreadyExists = quartzService.existsJob(userId, festivalId, type);
+      if (alreadyExists) {
+        log.info("이미 예약된 알림입니다. userId={}, festivalId={}, type={}", userId, festivalId, type);
+        continue;
+      }
+
       LocalDateTime targetDate = policy.getType() == START
         ? festival.getStartDate()
         : festival.getEndDate();
@@ -43,7 +53,12 @@ public class NotificationReservationServiceImpl implements NotificationReservati
         .executeAt(executeAt)
         .build();
 
-      quartzService.createAndScheduleJob(job);
+      try {
+        quartzService.createAndScheduleJob(job);
+      } catch (DataIntegrityViolationException e) {
+        // 동시성으로 인해 존재하지 않던 job이 누군가에 의해 먼저 save된 경우
+        log.warn("중복 예약 충돌 감지 (DB 유니크 인덱스 방어 성공): userId={}, festivalId={}, type={}", userId, festivalId, policy.getType());
+      }
     }
   }
 

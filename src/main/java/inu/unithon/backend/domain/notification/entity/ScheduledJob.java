@@ -7,16 +7,25 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(
+  name = "scheduled_notifications",
+  uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"user_id", "festival_id", "type"})
+  }
+)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ScheduledJob extends BaseEntity {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(name = "user_id", nullable = false)
   private Long userId;
+
+  @Column(name = "festival_id", nullable = false)
   private Long festivalId;
 
   // 실행 날짜
@@ -27,6 +36,7 @@ public class ScheduledJob extends BaseEntity {
   private boolean executed;
 
   @Enumerated(EnumType.STRING)
+  @Column(name = "type", nullable = false)
   private FestivalNotificationType type;
 
   @Builder
