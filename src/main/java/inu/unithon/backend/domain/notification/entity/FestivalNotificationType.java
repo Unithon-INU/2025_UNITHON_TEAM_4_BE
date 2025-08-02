@@ -1,6 +1,6 @@
 package inu.unithon.backend.domain.notification.entity;
 
-import inu.unithon.backend.global.email.EmailService;
+import inu.unithon.backend.global.email.service.EmailService;
 import inu.unithon.backend.global.email.dto.FestivalEmailDto;
 
 /**

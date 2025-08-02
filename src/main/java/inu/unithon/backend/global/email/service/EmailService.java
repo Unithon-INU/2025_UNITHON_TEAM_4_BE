@@ -1,4 +1,4 @@
-package inu.unithon.backend.global.email;
+package inu.unithon.backend.global.email.service;
 
 import inu.unithon.backend.global.email.dto.FestivalEmailDto;
 
