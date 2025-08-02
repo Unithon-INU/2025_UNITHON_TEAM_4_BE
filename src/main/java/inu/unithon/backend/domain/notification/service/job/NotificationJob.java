@@ -6,7 +6,7 @@ import inu.unithon.backend.domain.member.entity.Member;
 import inu.unithon.backend.domain.member.service.MemberService;
 import inu.unithon.backend.domain.notification.entity.FestivalNotificationType;
 import inu.unithon.backend.domain.notification.repository.ScheduledJobRepository;
-import inu.unithon.backend.global.email.EmailService;
+import inu.unithon.backend.global.email.service.EmailService;
 import inu.unithon.backend.global.email.dto.FestivalEmailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
