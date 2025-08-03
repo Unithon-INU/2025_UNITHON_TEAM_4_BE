@@ -19,6 +19,13 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 20MB
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+
   jpa:
     properties:
       hibernate.hibernate.show_sql: true
