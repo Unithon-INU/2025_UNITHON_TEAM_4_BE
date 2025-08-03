@@ -1,5 +1,6 @@
-package inu.unithon.backend.global.config;
+package inu.unithon.backend.global.rabbitMq;
 
+import lombok.Getter;
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
+@Getter
 public class RabbitMqConfig {
     @Value("${rabbitmq.exchange.name}")
     private String exchangeName;
