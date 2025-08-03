@@ -58,6 +58,21 @@ spring:
             threadCount: 5
             threadPriority: 5
 
+rabbitmq:
+  exchanges:
+    name: festival.exchange
+  queues:
+    detail:
+      name: festival.detail.queue
+      routing-key: festival.detail
+    translate:
+        name: festival.translate.queue
+        routing-key: festival.translate
+    detail-translate:
+        name: festival.detail-translate.queue
+        routing-key: festival.detail-translate
+
+
 springdoc:
   api-docs:
     path: /v3/api-docs
