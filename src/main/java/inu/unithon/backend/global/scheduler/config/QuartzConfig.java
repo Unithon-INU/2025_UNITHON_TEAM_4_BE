@@ -1,6 +1,6 @@
-package inu.unithon.backend.scheduler.config;
+package inu.unithon.backend.global.scheduler.config;
 
-import inu.unithon.backend.scheduler.job.FestivalUpdateJob;
+import inu.unithon.backend.global.scheduler.job.FestivalUpdateJob;
 import lombok.RequiredArgsConstructor;
 import org.quartz.*;
 import org.springframework.context.annotation.Bean;

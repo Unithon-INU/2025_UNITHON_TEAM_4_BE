@@ -20,8 +20,10 @@ import inu.unithon.backend.domain.festival.dto.FestivalDto;
 
 import java.net.URI;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -249,13 +251,27 @@ public class FestivalService implements FestivalServiceInterface{
     }
 
     @Transactional
-    public void saveFestivalList(List<FestivalDto> dtoList){
-        // if i need clean up db should do festivalRepository.deleteAll(); method
-        for (FestivalDto dto : dtoList){
-            if(!festivalRepository.existsByContentId(dto.getContentid())) {
-                Festival festival = listToEntity(dto);
-                festivalRepository.save(festival);
-            }
+    public void saveFestivalList(List<FestivalDto> dtoList) {
+        List<Long> incomingContentIds = dtoList.stream()
+                .map(FestivalDto::getContentid)
+                .toList(); // response 로 받아온 값중에 contentId만 추출
+
+        // 미리 DB에 존재하는 contentId 가져오기
+        List<Long> existingContentIds = festivalRepository.findContentIdsByContentIds(incomingContentIds);
+        Set<Long> existingSet = new HashSet<>(existingContentIds); // 중복 제거를 위해 Set 사용
+        // List의 시간 연산도는 O(n) 이지만, Set의 시간 복잡도는 O(1)이므로 중복 제거에 유리해서
+
+        List<Festival> festivalsToSave = dtoList.stream()
+                .filter(dto -> !existingSet.contains(dto.getContentid()))
+                // 필터링하여 이미 존재하는 contentId를 제외
+                .map(this::listToEntity)
+                .toList();
+
+        if (!festivalsToSave.isEmpty()) {
+            festivalRepository.saveAll(festivalsToSave);
+            logger.info(" 총 {}개 새로 저장 완료", festivalsToSave.size());
+        } else {
+            logger.info("저장할 새로운 축제 정보가 없습니다.");
         }
     }
 

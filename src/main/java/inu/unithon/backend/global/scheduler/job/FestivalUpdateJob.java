@@ -1,4 +1,4 @@
-package inu.unithon.backend.scheduler.job;
+package inu.unithon.backend.global.scheduler.job;
 
 import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
 import org.quartz.Job;

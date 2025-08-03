@@ -2,8 +2,12 @@ package inu.unithon.backend.domain.festival.repository;
 
 import inu.unithon.backend.domain.festival.entity.Festival;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import java.util.*;
 
 public interface FestivalRepository extends JpaRepository<Festival, Long>{
     boolean existsByContentId(long contentId);
+    @Query("SELECT f.contentId FROM Festival f WHERE f.contentId IN :contentId")
+    List<Long> findContentIdsByContentIds(List<Long> contentIds);
 
 }
