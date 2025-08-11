@@ -26,6 +26,16 @@ public class FestivalContent extends BaseEntity {
     private LocalDateTime startDate;
     //    private String endDate;
     private LocalDateTime endDate;
+    private String overview;
+    private String playtime;
+    private String mapx;
+    private String mapy;
+    private String firstImage;
+    private String firstImage2;
+    private String areaCode;
+    private String addr1;
+    private String tel;
+
 
 
 //        @OneToOne(fetch = FetchType.LAZY)

@@ -21,10 +21,10 @@ spring:
       max-request-size: 20MB
 
   rabbitmq:
-    host: ${RABBITMQ_HOST}
-    port: ${RABBITMQ_PORT}
-    username: ${RABBITMQ_USERNAME}
-    password: ${RABBITMQ_PASSWORD}
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
 
   jpa:
     properties:
@@ -59,7 +59,7 @@ spring:
             threadPriority: 5
 
 rabbitmq:
-  exchanges:
+  exchange:
     name: festival.exchange
   queues:
     detail:
