@@ -3,6 +3,7 @@ package inu.unithon.backend.domain.festival.service;
 import inu.unithon.backend.domain.festival.dto.*;
 import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.repository.FestivalRepository;
+import inu.unithon.backend.global.rabbitMq.RabbitMqProducer;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import inu.unithon.backend.global.exception.ErrorCode;
 import inu.unithon.backend.domain.festival.dto.FestivalDto;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +32,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 @RequiredArgsConstructor
 public class FestivalService implements FestivalServiceInterface{
+
+    private static final DateTimeFormatter ymeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private final RabbitMqProducer rabbitMqProducer;
+
+    private LocalDateTime parseYmdToDay(String ymd) {
+        if (ymd == null || ymd.isBlank()) return null;
+        LocalDate date = LocalDate.parse(ymd, ymeFormatter);
+        return date.atStartOfDay();
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(FestivalService.class);
     private final FestivalRepository festivalRepository;
@@ -221,50 +232,49 @@ public class FestivalService implements FestivalServiceInterface{
     }
 
     private Festival listToEntity(FestivalDto dto) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDateTime start = null;
-        LocalDateTime end = null;
-
         try {
-            if(dto.getEventenddate() != null && !dto.getEventenddate().isBlank()){
-                start = LocalDateTime.parse(dto.getEventenddate(), formatter).withHour(0).withMinute(0);
-            } if(dto.getEventstartdate() != null && !dto.getEventstartdate().isBlank()){
-                end = LocalDateTime.parse(dto.getEventstartdate(), formatter).withHour(0).withMinute(0);
-            }
-        } catch (Exception e) {
+            LocalDateTime startDate = parseYmdToDay(dto.getEventstartdate());
+            LocalDateTime endDate = parseYmdToDay(dto.getEventenddate());
+
+            return Festival.builder()
+                    .contentId(dto.getContentid())
+                    .title(dto.getTitle())
+                    .startDate(startDate)
+                    .endDate(endDate)
+                    .imageUrl(dto.getFirstimage())
+                    .build();
+        } catch (Exception e){
             throw new CustomException(ErrorCode.DATE_PARSE_ERROR);
         }
-        return Festival.builder()
-                .contentId(dto.getContentid())
-                .title(dto.getTitle())
-                .startDate(start)
-                .endDate(end)
-                .imageUrl(dto.getFirstimage())
-                .build();
+
     }
 
     @Transactional
+    @Override
     public void saveFestivalList(List<FestivalDto> dtoList) {
-        List<Long> incomingContentIds = dtoList.stream()
+        List<Long> newContentIds = dtoList.stream()
                 .map(FestivalDto::getContentid)
-                .toList(); // response 로 받아온 값중에 contentId만 추출
-
-        // 미리 DB에 존재하는 contentId 가져오기
-        List<Long> existingContentIds = festivalRepository.findContentIdsByContentIds(incomingContentIds);
-        Set<Long> existingSet = new HashSet<>(existingContentIds); // 중복 제거를 위해 Set 사용
-        // List의 시간 연산도는 O(n) 이지만, Set의 시간 복잡도는 O(1)이므로 중복 제거에 유리해서
+                // 조회한 데이터 set에서 contentID만을 추출해서 stream을 통해 List 로 변환
+                .toList();
+        List<Long> oldContentIds = festivalRepository.findContentIdsByContentIds(newContentIds);
+        // 변환한 List 를 통해 기존에 있는 data 인지 판별
+        Set<Long> oldContentIdSet = new HashSet<>(oldContentIds);
+        // 새로운 데이터 중 기존에 없는 데이터만을 모야 set으로
 
         List<Festival> festivalsToSave = dtoList.stream()
-                .filter(dto -> !existingSet.contains(dto.getContentid()))
-                // 필터링하여 이미 존재하는 contentId를 제외
+                .filter(dto -> !oldContentIdSet.contains(dto.getContentid()))
+                // 앞서 만든 set을 통해 기존에 있는 data는 들어가지 않도록 설정
                 .map(this::listToEntity)
                 .toList();
-
         if (!festivalsToSave.isEmpty()) {
+            // 앞서 만든 festivalsToSave 리스트는 db에 현재 없는 새로운 데이터들로만 이루어진 Festival 객체들의 리스트 들로 이루어 졌으므로
+            // ㅇ; 리스트가 비어있지 않다면 아래 로직을 실행
             festivalRepository.saveAll(festivalsToSave);
-            logger.info(" 총 {}개 새로 저장 완료", festivalsToSave.size());
+            logger.info(" 새로운 축제 정보 저장 완료: {}", festivalsToSave.size());
+            festivalsToSave.forEach(f -> rabbitMqProducer.detailSend(String.valueOf(f.getContentId())));
+            // 앞서 저장된 객체 리스트들을 각자 하나씩 rabbitMqProducer를 통해 detailSend 메소드를 등록
         } else {
-            logger.info("저장할 새로운 축제 정보가 없습니다.");
+            logger.info(" nothing to new");
         }
     }
 

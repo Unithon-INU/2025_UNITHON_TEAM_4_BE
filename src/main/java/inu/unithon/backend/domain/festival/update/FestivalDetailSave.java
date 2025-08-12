@@ -7,6 +7,7 @@ import inu.unithon.backend.domain.festival.repository.FestivalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import inu.unithon.backend.domain.festival.service.FestivalService;
+import inu.unithon.backend.domain.festival.entity.FestivalContent;
 
 
 @Service
@@ -17,7 +18,7 @@ public class FestivalDetailSave {
 
     public void saveDetail(String ContentId){
         FestivalResponseDto festivalResponseDto = festivalService.getFestivalInfo("kor", ContentId);
-        FestivalIntroResponseDto festivalIntroResponseDto = festivalService.getFestivalDetailIntro("kor", ContentId, "15");
-        FestivalInfoResponseDto festivalInfoResponseDto = festivalService.getFestivalDetailInfo("kor", ContentId, "15");
+
+
     }
 }

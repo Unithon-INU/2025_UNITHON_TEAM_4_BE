@@ -11,7 +11,7 @@ public class RabbitMqProducer {
     private final RabbitTemplate rabbitTemplate;
     private final RabbitMqConfig rabbitMqConfig;
 
-    public void DetailSend(String contentId){
+    public void detailSend(String contentId){
         rabbitTemplate.convertAndSend(
                 rabbitMqConfig.getExchangeName(),
                 rabbitMqConfig.getDetailRoutingKey(),
@@ -19,17 +19,17 @@ public class RabbitMqProducer {
         );
     }
 
-    public void TranslateSend(String contentId){
+    public void translateSend(String contentId){
         rabbitTemplate.convertAndSend(
-                rabbitMqConfig.getTranslateQueueName(),
+                rabbitMqConfig.getExchangeName(),
                 rabbitMqConfig.getTranslateRoutingKey(),
                 contentId
         );
     }
 
-    public void DetailTranslateSend(String contentId){
+    public void detailTranslateSend(String contentId){
         rabbitTemplate.convertAndSend(
-                rabbitMqConfig.getDetailTranslateQueueName(),
+                rabbitMqConfig.getExchangeName(),
                 rabbitMqConfig.getDetailTranslateRoutingKey(),
                 contentId
         );
