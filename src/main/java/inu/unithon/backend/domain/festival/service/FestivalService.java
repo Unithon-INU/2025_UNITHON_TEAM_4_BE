@@ -268,7 +268,7 @@ public class FestivalService implements FestivalServiceInterface{
                 .toList();
         if (!festivalsToSave.isEmpty()) {
             // 앞서 만든 festivalsToSave 리스트는 db에 현재 없는 새로운 데이터들로만 이루어진 Festival 객체들의 리스트 들로 이루어 졌으므로
-            // ㅇ; 리스트가 비어있지 않다면 아래 로직을 실행
+            // 이 리스트가 비어있지 않다면 아래 로직을 실행
             festivalRepository.saveAll(festivalsToSave);
             logger.info(" 새로운 축제 정보 저장 완료: {}", festivalsToSave.size());
             festivalsToSave.forEach(f -> rabbitMqProducer.detailSend(String.valueOf(f.getContentId())));

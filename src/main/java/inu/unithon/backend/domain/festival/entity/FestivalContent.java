@@ -19,12 +19,9 @@ public class FestivalContent extends BaseEntity {
 
     private String title;
     private long contentId;
-    private String imageUrl;
     private String address;
     private String content;
-    //    private String startDate;
     private LocalDateTime startDate;
-    //    private String endDate;
     private LocalDateTime endDate;
     private String overview;
     private String playtime;
@@ -37,38 +34,46 @@ public class FestivalContent extends BaseEntity {
     private String tel;
 
 
-
-//        @OneToOne(fetch = FetchType.LAZY)
-//        @JoinColumn(name = "festival_id")  // 양방향 생각했었음..
-//        private Festival festival;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "festival_id")
-    private Festival festival;
-
-    @OneToMany(mappedBy = "festivalContent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<FestivalTranslateContent> festivalTranslateContents = new ArrayList<>();
-
-
-    //        @Builder
-//        public FestivalContent(String title, String imageUrl, String address, String content,
-//                               String startDate, String endDate) {
-//            this.title = title;
-//            this.imageUrl = imageUrl;
-//            this.address = address;
-//            this.content = content;
-//            this.startDate = startDate;
-//            this.endDate = endDate;
-//        }
     @Builder
-    public FestivalContent(String title, String imageUrl, String address, String content, long contentId,
-                           LocalDateTime startDate, LocalDateTime endDate) {
+    public FestivalContent(String title, String address, String content, long contentId,
+                           LocalDateTime startDate, LocalDateTime endDate, String overview,
+                           String playtime, String mapx, String mapy, String firstImage,
+                           String firstImage2, String areaCode, String addr1, String tel) {
         this.title = title;
-        this.imageUrl = imageUrl;
         this.address = address;
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
         this.contentId = contentId;
+        this.overview = overview;
+        this.playtime = playtime;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.firstImage = firstImage;
+        this.firstImage2 = firstImage2;
+        this.areaCode = areaCode;
+        this.addr1 = addr1;
+        this.tel = tel;
+    }
+
+    public void updateFromInfo(
+            String title, String address,
+            LocalDateTime startDate, LocalDateTime endDate,
+            String overview, String playtime, String mapx, String mapy,
+            String firstImage, String firstImage2, String areaCode, String addr1, String tel
+    ) {
+        this.title = title;
+        this.address = address;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.overview = overview;
+        this.playtime = playtime;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.firstImage = firstImage;
+        this.firstImage2 = firstImage2;
+        this.areaCode = areaCode;
+        this.addr1 = addr1;
+        this.tel = tel;
     }
 }
