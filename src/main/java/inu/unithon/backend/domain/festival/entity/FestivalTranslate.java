@@ -11,14 +11,12 @@ import java.time.LocalDateTime;
 public class FestivalTranslate extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long contentId;
 
     private String language;
     private String title;
     private String imageUrl;
     private String address;
-    private long contentId;
     private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;

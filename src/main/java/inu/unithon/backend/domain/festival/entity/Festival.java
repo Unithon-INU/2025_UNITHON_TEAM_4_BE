@@ -13,13 +13,11 @@ import java.util.*;
 public class Festival extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long contentId;
 
     private String title;
     private String imageUrl;
     private String address;
-    private long contentId;
     private String content;
     //    private String startDate;
     private LocalDateTime startDate;

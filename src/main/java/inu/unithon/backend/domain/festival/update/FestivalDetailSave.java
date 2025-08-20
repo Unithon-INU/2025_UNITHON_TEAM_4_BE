@@ -3,15 +3,12 @@ package inu.unithon.backend.domain.festival.update;
 
 import inu.unithon.backend.domain.festival.dto.FestivalDto;
 import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
-import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.entity.FestivalContent;
 import inu.unithon.backend.domain.festival.repository.FestivalContentRepository;
 import inu.unithon.backend.domain.festival.service.FestivalServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import inu.unithon.backend.domain.festival.repository.FestivalRepository;
-import inu.unithon.backend.domain.festival.service.FestivalService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -72,7 +69,7 @@ public class FestivalDetailSave {
         LocalDateTime end   = TimeSetting(item.getEventenddate());
 
 
-        FestivalContent entity = festivalContentRepository.findbyContentId(contentId)
+        FestivalContent entity = festivalContentRepository.findByContentId(contentId)
                 .orElseGet(() -> FestivalContent.builder().contentId(contentId).build());
 
         entity.updateFromInfo(

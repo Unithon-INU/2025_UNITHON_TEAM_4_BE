@@ -25,10 +25,10 @@ public class RabbitMqConfig {
     @Value("${rabbitmq.queues.translate.routing-key}")
     private String translateRoutingKey;
 
-    @Value("${rabbitmq.queues.second.translate.name}")
+    @Value("${rabbitmq.queues.detail-translate.name}")
     private String detailTranslateQueueName;
 
-    @Value("${rabbitmq.queues.second.translate.routing-key}")
+    @Value("${rabbitmq.queues.detail-translate.routing-key}")
     private String detailTranslateRoutingKey;
 
     @Bean

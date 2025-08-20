@@ -12,11 +12,10 @@ import java.time.LocalDateTime;
 public class FestivalContent extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long contentId;
 
     private String title;
-    private long contentId;
+
     private String address;
     private String content;
     private LocalDateTime startDate;

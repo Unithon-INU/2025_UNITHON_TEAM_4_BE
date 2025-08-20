@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface FestivalContentRepository extends JpaRepository<FestivalContent, Long> {
-    Optional<FestivalContent> findbyContentId(long contentId);
+    Optional<FestivalContent> findByContentId(long contentId);
 }

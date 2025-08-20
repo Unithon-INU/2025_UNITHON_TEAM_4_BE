@@ -68,9 +68,9 @@ rabbitmq:
     translate:
         name: festival.translate.queue
         routing-key: festival.translate
-    second.translate:
-        name: festival.second.translate.queue
-        routing-key: festival.second.translate
+    detail-translate:
+        name: festival.detail-translate.queue
+        routing-key: festival.detail-translate
 
 
 springdoc:
