@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -60,7 +58,7 @@ public class FestivalContent extends BaseEntity {
             String title, String address,
             LocalDateTime startDate, LocalDateTime endDate,
             String overview, String playtime, String mapx, String mapy,
-            String firstImage, String firstImage2, String areaCode, String addr1, String tel
+            String firstImage, String firstImage2, String areaCode, String addr1
     ) {
         this.title = title;
         this.address = address;
