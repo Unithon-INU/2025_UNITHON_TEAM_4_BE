@@ -20,11 +20,14 @@ public class FestivalContent extends BaseEntity {
     private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    @Column(length = 1000)
     private String overview;
     private String playtime;
     private String mapx;
     private String mapy;
+    @Column(length = 1000)
     private String firstImage;
+    @Column(length = 1000)
     private String firstImage2;
     private String areaCode;
     private String addr1;
