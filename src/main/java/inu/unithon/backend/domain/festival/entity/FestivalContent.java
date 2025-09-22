@@ -21,9 +21,7 @@
         private String imageUrl;
         private String address;
         private String content;
-        //    private String startDate;
         private LocalDateTime startDate;
-        //    private String endDate;
         private LocalDateTime endDate;
 
 

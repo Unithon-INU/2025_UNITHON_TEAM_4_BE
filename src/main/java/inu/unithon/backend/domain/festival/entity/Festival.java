@@ -21,9 +21,7 @@ public class Festival extends BaseEntity {
     private String address;
     private String contentId;
     private String content;
-//    private String startDate;
     private LocalDateTime startDate;
-//    private String endDate;
     private LocalDateTime endDate;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

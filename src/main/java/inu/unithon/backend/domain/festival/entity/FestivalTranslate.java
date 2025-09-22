@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import inu.unithon.backend.global.entity.BaseEntity;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,14 +15,15 @@ public class FestivalTranslate extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String language;
+    @Enumerated(EnumType.STRING)
+    private TranslateLanguage language;
     private String title;
     private String imageUrl;
     private String address;
     private String contentId;
     private String content;
-    private String startDate;
-    private String endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "festival_id")
@@ -28,7 +31,15 @@ public class FestivalTranslate extends BaseEntity {
 
 
     @Builder
-    public FestivalTranslate(String language, String title, String imageUrl, String address, String contentId, String content, String startDate, String endDate, Festival festival) {
+    public FestivalTranslate(TranslateLanguage language,
+                             String title,
+                             String imageUrl,
+                             String address,
+                             String contentId,
+                             String content,
+                             LocalDateTime startDate,
+                             LocalDateTime endDate,
+                             Festival festival) {
         this.language = language;
         this.title = title;
         this.imageUrl = imageUrl;
