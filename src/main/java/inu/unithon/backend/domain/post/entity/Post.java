@@ -29,7 +29,7 @@ public class Post extends BaseEntity {
   private String thumbnailUrl;
 
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<PostImage> images = new ArrayList<>();
+  private List<PostImage> images  = new ArrayList<>();
 
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<Comment> comments = new ArrayList<>();

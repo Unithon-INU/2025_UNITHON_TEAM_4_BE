@@ -2,7 +2,7 @@ package inu.unithon.backend.domain.festival.service;
 
 import inu.unithon.backend.domain.festival.dto.*;
 import inu.unithon.backend.domain.festival.entity.Festival;
-import inu.unithon.backend.domain.festival.repository.FestivalRepository;
+import inu.unithon.backend.domain.festival.repository.festival.FestivalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

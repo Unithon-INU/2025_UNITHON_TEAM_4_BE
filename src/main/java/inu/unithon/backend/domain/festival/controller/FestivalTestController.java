@@ -2,15 +2,14 @@ package inu.unithon.backend.domain.festival.controller;
 
 import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.entity.FestivalContent;
-import inu.unithon.backend.domain.festival.repository.FestivalContentRepository;
-import inu.unithon.backend.domain.festival.repository.FestivalRepository;
+import inu.unithon.backend.domain.festival.repository.festival.FestivalContentRepository;
+import inu.unithon.backend.domain.festival.repository.festival.FestivalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Festival, FestivalContent 를 DB에 저장하는 테스트 컨트롤러

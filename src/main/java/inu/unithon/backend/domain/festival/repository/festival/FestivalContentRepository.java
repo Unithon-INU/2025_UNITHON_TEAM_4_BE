@@ -1,4 +1,4 @@
-package inu.unithon.backend.domain.festival.repository;
+package inu.unithon.backend.domain.festival.repository.festival;
 
 import inu.unithon.backend.domain.festival.entity.FestivalContent;
 import org.springframework.data.jpa.repository.JpaRepository;
