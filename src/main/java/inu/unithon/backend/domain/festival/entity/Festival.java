@@ -16,6 +16,7 @@ public class Festival extends BaseEntity {
     private long contentId;
 
     private String title;
+    @Column(length = 1000)
     private String imageUrl;
     private String address;
     private String content;

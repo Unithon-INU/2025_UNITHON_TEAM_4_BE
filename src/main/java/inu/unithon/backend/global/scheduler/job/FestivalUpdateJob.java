@@ -27,7 +27,6 @@ public class FestivalUpdateJob implements Job{
 
     @Override
     public void execute(JobExecutionContext context) {
-        //TODO: 축제 정보 업데이트 로직 구현
         try{
             String pageNum = "1";
             String numOfRows = "600";

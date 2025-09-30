@@ -19,6 +19,7 @@ public class RabbitMqProducer {
         );
     }
 
+
     public void translateSend(String contentId){
         rabbitTemplate.convertAndSend(
                 rabbitMqConfig.getExchangeName(),

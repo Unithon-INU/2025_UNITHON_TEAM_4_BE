@@ -15,6 +15,7 @@ public class FestivalTranslate extends BaseEntity {
 
     private String language;
     private String title;
+    @Column(length = 1000)
     private String imageUrl;
     private String address;
     private String content;

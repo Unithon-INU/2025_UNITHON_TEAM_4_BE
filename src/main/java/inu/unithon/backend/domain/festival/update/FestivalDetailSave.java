@@ -3,12 +3,14 @@ package inu.unithon.backend.domain.festival.update;
 
 import inu.unithon.backend.domain.festival.dto.FestivalDto;
 import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.entity.FestivalContent;
 import inu.unithon.backend.domain.festival.repository.FestivalContentRepository;
 import inu.unithon.backend.domain.festival.service.FestivalServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import inu.unithon.backend.domain.festival.repository.FestivalRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,14 +23,16 @@ public class FestivalDetailSave {
 
     private final FestivalServiceInterface festivalService;
     private final FestivalContentRepository festivalContentRepository;
+    private final FestivalRepository festivalRepository;
     private static final DateTimeFormatter dayFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-    private LocalDateTime TimeSetting(String date) {
-        if (date == null || date.isBlank()) {
-            return null;
-        }
-        return LocalDate.parse(date, dayFormat).atStartOfDay();
-    }
+
+//    private LocalDateTime TimeSetting(String date) {
+//        if (date == null || date.isBlank()) {
+//            return null;
+//        }
+//        return LocalDate.parse(date, dayFormat).atStartOfDay();
+//    }
 
     private FestivalDto FirstItem(FestivalResponseDto data) {
         if(data == null || data.getResponse() == null) return null;
@@ -48,6 +52,13 @@ public class FestivalDetailSave {
 
         long contentId = Long.parseLong(contentIdStr);
 
+        Festival parent = festivalRepository.findByContentId(contentId)
+                .orElseThrow();
+        // detail common APi 에서 축제 시작일과 종료일을 주는줄 알았는데 주지않아서 기존 리스트에서 호출해서 받아온 값을 사용하기 위해
+        // 그냥 festival repo 에서 현재 ContentId 일치하는 Data에서 시작일과 종료일 추출
+
+
+
         FestivalResponseDto info = festivalService.getFestivalInfo("kor", contentIdStr);
         FestivalDto item = FirstItem(info);
         if(item == null) {
@@ -55,7 +66,6 @@ public class FestivalDetailSave {
         }
 
         String title       = item.getTitle();
-        String imageUrl    = item.getFirstimage();
         String address     = item.getAddr1();
         String overview    = item.getOverview();
         String mapx        = item.getMapx();
@@ -65,8 +75,8 @@ public class FestivalDetailSave {
         String areaCode    = item.getAreacode();
         String addr1       = item.getAddr1();
         String tel         = item.getTel();
-        LocalDateTime start = TimeSetting(item.getEventstartdate());
-        LocalDateTime end   = TimeSetting(item.getEventenddate());
+        LocalDateTime start = parent.getStartDate();
+        LocalDateTime end   = parent.getEndDate();
 
 
         FestivalContent entity = festivalContentRepository.findByContentId(contentId)

@@ -265,6 +265,7 @@ public class FestivalService implements FestivalServiceInterface{
                 .filter(dto -> !oldContentIdSet.contains(dto.getContentid()))
                 // 앞서 만든 set을 통해 기존에 있는 data는 들어가지 않도록 설정
                 .map(this::listToEntity)
+                // Festival 형식으로 change 하여 필터에 안걸린것들로만
                 .toList();
         if (!festivalsToSave.isEmpty()) {
             // 앞서 만든 festivalsToSave 리스트는 db에 현재 없는 새로운 데이터들로만 이루어진 Festival 객체들의 리스트 들로 이루어 졌으므로
