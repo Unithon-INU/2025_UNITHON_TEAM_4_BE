@@ -1,8 +1,8 @@
-package inu.unithon.backend.domain.festival.dto;
+package inu.unithon.backend.domain.festival.dto.v1;
+
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -13,26 +13,26 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FestivalInfoResponseDto {
-    private Response response;
+public class FestivalResponseDto {
+    private FestivalResponse response;
 
     @Getter
     @NoArgsConstructor
-    public static class Response {
-        private Header header;
-        private Body body;
+    public static class FestivalResponse {
+        private FestivalHeader header;
+        private FestivalBody body;
     }
 
     @Getter
     @NoArgsConstructor
-    public static class Header {
+    public static class FestivalHeader {
         private String resultCode;
         private String resultMsg;
     }
 
     @Getter
     @NoArgsConstructor
-    public static class Body {
+    public static class FestivalBody {
         private Items items;
         private int numOfRows;
         private int pageNo;
@@ -41,7 +41,7 @@ public class FestivalInfoResponseDto {
         @Getter
         @NoArgsConstructor
         public static class Items {
-            private List<FestivalInfoDto> item;
+            private List<FestivalDto> item;
         }
     }
 }

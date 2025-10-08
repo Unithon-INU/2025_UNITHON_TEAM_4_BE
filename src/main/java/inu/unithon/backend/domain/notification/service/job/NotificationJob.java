@@ -1,7 +1,7 @@
 package inu.unithon.backend.domain.notification.service.job;
 
 import inu.unithon.backend.domain.festival.entity.Festival;
-import inu.unithon.backend.domain.festival.service.FestivalService;
+import inu.unithon.backend.domain.festival.service.FestivalServiceImpl;
 import inu.unithon.backend.domain.member.entity.Member;
 import inu.unithon.backend.domain.member.service.MemberService;
 import inu.unithon.backend.domain.notification.entity.FestivalNotificationType;
@@ -28,7 +28,7 @@ public class NotificationJob implements Job {
   private final ScheduledJobRepository scheduledJobRepository;
   private final EmailService emailService;
   private final MemberService memberService;
-  private final FestivalService festivalService;
+  private final FestivalServiceImpl festivalServiceImpl;
 
   // 알림을 보내는 타이밍(트리거)에 execute 메서드 실행됨.
   @Override
@@ -51,7 +51,7 @@ public class NotificationJob implements Job {
       "\"type\": \"{}\" }}", realUserId, realFestivalId, executeAt, type);
 
     Member member = memberService.getMember(realUserId);
-    Festival festival = festivalService.getFestival(realFestivalId);
+    Festival festival = festivalServiceImpl.getFestival(realFestivalId);
 
     FestivalEmailDto dto = FestivalEmailDto.builder()
       .email(member.getEmail())

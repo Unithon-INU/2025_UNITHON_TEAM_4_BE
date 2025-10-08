@@ -1,7 +1,7 @@
 package inu.unithon.backend.domain.notification.service.reservation;
 
 import inu.unithon.backend.domain.festival.entity.Festival;
-import inu.unithon.backend.domain.festival.service.FestivalService;
+import inu.unithon.backend.domain.festival.service.FestivalServiceImpl;
 import inu.unithon.backend.domain.notification.entity.FestivalNotificationType;
 import inu.unithon.backend.domain.notification.entity.FestivalStatus;
 import inu.unithon.backend.domain.notification.entity.ScheduledJob;
@@ -15,23 +15,20 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static inu.unithon.backend.domain.notification.entity.FestivalNotificationType.END;
 import static inu.unithon.backend.domain.notification.entity.FestivalNotificationType.START;
-import static inu.unithon.backend.domain.notification.entity.FestivalStatus.ENDED;
-import static inu.unithon.backend.domain.notification.entity.FestivalStatus.PRE;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class NotificationReservationServiceImpl implements NotificationReservationService {
 
-  private final FestivalService festivalService;
+  private final FestivalServiceImpl festivalServiceImpl;
   private final QuartzService quartzService;
   private final List<NotificationTimingPolicy> timingPolicies;
 
   @Override
   public void reserveAllNotifications(Long userId, Long festivalId) {
-    Festival festival = festivalService.getFestival(festivalId);
+    Festival festival = festivalServiceImpl.getFestival(festivalId);
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime startDate = festival.getStartDate();
     LocalDateTime endDate = festival.getEndDate();
