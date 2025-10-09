@@ -11,8 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.UUID;
 
-import static inu.unithon.backend.global.exception.ErrorCode.S3_DELETE_FAIL;
-import static inu.unithon.backend.global.exception.ErrorCode.S3_UPLOAD_FAIL;
+import static inu.unithon.backend.global.exception.CommonErrorCode.S3_DELETE_FAIL;
+import static inu.unithon.backend.global.exception.CommonErrorCode.S3_UPLOAD_FAIL;
 
 @Service
 @RequiredArgsConstructor

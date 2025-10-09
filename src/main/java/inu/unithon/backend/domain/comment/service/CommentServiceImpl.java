@@ -10,7 +10,7 @@ import inu.unithon.backend.domain.member.service.MemberService;
 import inu.unithon.backend.domain.post.entity.Post;
 import inu.unithon.backend.domain.post.repository.PostRepository;
 import inu.unithon.backend.global.exception.CustomException;
-import inu.unithon.backend.global.exception.ErrorCode;
+import inu.unithon.backend.global.exception.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class CommentServiceImpl implements CommentService {
                          CommentCreateRequest rq) {
 
     Post post = postRepository.findById(rq.getPostId())
-      .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+      .orElseThrow(() -> new CustomException(CommonErrorCode.POST_NOT_FOUND));
 
     Comment comment = Comment.builder()
       .content(rq.getContent())
@@ -56,10 +56,10 @@ public class CommentServiceImpl implements CommentService {
                             CommentUpdateRequest rq) {
 
     Comment comment = commentRepository.findById(rq.getCommentId())
-      .orElseThrow(()-> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+      .orElseThrow(()-> new CustomException(CommonErrorCode.COMMENT_NOT_FOUND));
 
     // 검증 : memberId, commentId 일치인지
-    if (!Objects.equals(comment.getMemberId(), memberId)) throw new CustomException(ErrorCode.FORBIDDEN_401);
+    if (!Objects.equals(comment.getMemberId(), memberId)) throw new CustomException(CommonErrorCode.FORBIDDEN_401);
 
     log.info("Update comment {}", comment);
     comment.updateContent(rq.getComment());
@@ -70,11 +70,11 @@ public class CommentServiceImpl implements CommentService {
                             Long commentId) {
 
     Comment comment = commentRepository.findById(commentId)
-      .orElseThrow(()-> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+      .orElseThrow(()-> new CustomException(CommonErrorCode.COMMENT_NOT_FOUND));
 
     Member member = memberService.getMember(memberId);
     if(member.getRole()!= Role.ADMIN)
-      if (!Objects.equals(comment.getMemberId(), memberId)) throw new CustomException(ErrorCode.FORBIDDEN_402);
+      if (!Objects.equals(comment.getMemberId(), memberId)) throw new CustomException(CommonErrorCode.FORBIDDEN_402);
 
     log.info("Delete comment {}", comment);
     commentRepository.deleteById(commentId);

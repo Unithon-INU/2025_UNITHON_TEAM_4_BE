@@ -57,6 +57,23 @@ spring:
             class: org.quartz.simpl.SimpleThreadPool
             threadCount: 5
             threadPriority: 5
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_ID}
+    password: ${EMAIL_PW}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  data:
+    elasticsearch:
+      client:
+        rest:
+          uris: ${ELASTICSEARCH_URIS}
 
 rabbitmq:
   exchange:
