@@ -1,6 +1,7 @@
 package inu.unithon.backend.global.scheduler.job;
 
 import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
+import inu.unithon.backend.global.exception.CommonErrorCode;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -41,7 +42,7 @@ public class FestivalUpdateJob implements Job{
 
 
         } catch (Exception e) {
-            throw new CustomException(ErrorCode.LIST_UPDATE_FAILED);
+            throw new CustomException(CommonErrorCode.LIST_UPDATE_FAILED);
         }
         System.out.println("축제 List update ");
     }

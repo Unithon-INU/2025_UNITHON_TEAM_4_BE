@@ -35,6 +35,8 @@ public enum CommonErrorCode implements ErrorCode {
   EMAIL_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 전송 실패."),
 
   FESTIVAL_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "존재하지 않는 축제입니다. "),
+    LIST_UPDATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "축제 리스트 업데이트에 실패했습니다. "),
+  DATE_PARSE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "날짜 파싱에 실패했습니다. "),
 
   INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
 

@@ -17,6 +17,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import inu.unithon.backend.global.exception.CustomException;
 import inu.unithon.backend.global.exception.ErrorCode;
+import inu.unithon.backend.global.exception.CommonErrorCode;
 import inu.unithon.backend.domain.festival.dto.FestivalDto;
 
 import java.net.URI;
@@ -83,7 +84,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Festival List error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -109,7 +110,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Festival info error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -142,7 +143,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Festival Search error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -169,7 +170,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Festival intro error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -196,7 +197,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Festival Detail info error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
     public FestivalResponseDto getFestivalLocationFood(String lang, String MapX, String MapY, String NumOfRows, String PageNo, String radius) {
@@ -227,7 +228,7 @@ public class FestivalService implements FestivalServiceInterface{
 
         } catch (Exception e) {
             logger.error("Location Food List error : ", e);
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -244,7 +245,7 @@ public class FestivalService implements FestivalServiceInterface{
                     .imageUrl(dto.getFirstimage())
                     .build();
         } catch (Exception e){
-            throw new CustomException(ErrorCode.DATE_PARSE_ERROR);
+            throw new CustomException(CommonErrorCode.DATE_PARSE_ERROR);
         }
 
     }
