@@ -245,7 +245,7 @@ public class FestivalService implements FestivalServiceInterface{
                     .imageUrl(dto.getFirstimage())
                     .build();
         } catch (Exception e){
-            throw new CustomException(CommonErrorCode.DATE_PARSE_ERROR);
+            throw new CustomException(CommonErrorCode.DATE_PARSE_FAILED);
         }
 
     }
