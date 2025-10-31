@@ -26,8 +26,6 @@ public class FestivalTestController {
   @GetMapping("/putFestival")
   public void putFestival() {
 
-
-
     FestivalContent content = FestivalContent.builder()
       .title("테스트 축제 컨텐트 title")
       .imageUrl("www.testContent.com")
@@ -36,7 +34,7 @@ public class FestivalTestController {
       .startDate(LocalDateTime.now())
       .endDate(LocalDateTime.now())
       .build();
-    contentRepository.save(content);
+
 
     Festival festival = Festival.builder()
       .title("테스트 축제 title")
@@ -48,6 +46,11 @@ public class FestivalTestController {
       .endDate(LocalDateTime.now())
       .festivalContent(content)
       .build();
+
+    // set festival in festival content
+    content.setFestival(festival);
+
+    contentRepository.save(content);
     festivalRepository.save(festival);
 
   }
