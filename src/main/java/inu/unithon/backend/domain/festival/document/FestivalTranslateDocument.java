@@ -15,6 +15,10 @@ import java.time.LocalDateTime;
 @Document(indexName = "festival_translate")
 public class FestivalTranslateDocument {
 
+  /**
+   * Elasticsearch 문서의 고유 ID
+   * -> festivalId + "_" + language 로 구성 (예: "123_kor")
+   */
   @Id
   private String id;   // Elasticsearch는 String ID 권장
 
@@ -58,22 +62,32 @@ public class FestivalTranslateDocument {
   private Long festivalId;
 
   @Builder
-  public FestivalTranslateDocument(TranslateLanguage language,
-                                   String title,
-                                   String content,
-                                   String imageUrl,
-                                   String contentId,
-                                   LocalDateTime startDate,
-                                   LocalDateTime endDate,
-                                   Long festivalId
+  public FestivalTranslateDocument(
+    String id,
+    TranslateLanguage language,
+    String title,
+    String content,
+    String address,
+    String imageUrl,
+    String contentId,
+    LocalDateTime startDate,
+    LocalDateTime endDate,
+    Long festivalId
   ) {
+    this.id = (id != null) ? id : generateId(festivalId, language);
+
     this.language = language;
     this.title = title;
     this.content = content;
+    this.address = address;
     this.imageUrl = imageUrl;
     this.contentId = contentId;
     this.startDate = startDate;
     this.endDate = endDate;
     this.festivalId = festivalId;
+  }
+
+  private static String generateId(Long festivalId, TranslateLanguage language) {
+    return festivalId + "_" + language.name();
   }
 }

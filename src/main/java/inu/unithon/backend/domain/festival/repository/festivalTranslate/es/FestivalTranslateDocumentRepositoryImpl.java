@@ -1,5 +1,7 @@
-package inu.unithon.backend.domain.festival.repository.festivalTranslate;
+package inu.unithon.backend.domain.festival.repository.festivalTranslate.es;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.json.JsonData;
 import inu.unithon.backend.domain.festival.document.FestivalTranslateDocument;
 import inu.unithon.backend.domain.festival.entity.TranslateLanguage;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +17,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.boolQuery;
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.multiMatchQuery;
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.termQuery;
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.rangeQuery;
-
 @Repository
 @RequiredArgsConstructor
 public class FestivalTranslateDocumentRepositoryImpl implements FestivalTranslateDocumentRepositoryCustom {
@@ -29,22 +26,28 @@ public class FestivalTranslateDocumentRepositoryImpl implements FestivalTranslat
   @Override
   public Page<FestivalTranslateDocument> searchByKeyword(TranslateLanguage language, String keyword, Pageable pageable) {
 
-    NativeQuery query = NativeQuery.builder()
-      .withQuery(QueryBuilders.boolQuery()
-        .must(QueryBuilders.termQuery("language", language.name()))
-        .must(QueryBuilders.multiMatchQuery(keyword)
+    // ELC DSL 방식으로 쿼리 구성
+    Query query = Query.of(q -> q
+      .bool(b -> b
+        .must(m -> m.term(t -> t.field("language").value(language.name())))
+        .must(m -> m.multiMatch(mm -> mm
           .fields("title", "title.eng", "title.chn", "title.jpn", "title.fra", "title.rus", "title.spa", "content", "address")
-        )
+          .query(keyword)
+        ))
       )
+    );
+
+    NativeQuery nativeQuery = NativeQuery.builder()
+      .withQuery(query)
       .withPageable(pageable)
       .build();
 
-    List<FestivalTranslateDocument> results = esOperations.search(query, FestivalTranslateDocument.class)
+    List<FestivalTranslateDocument> results = esOperations.search(nativeQuery, FestivalTranslateDocument.class)
       .stream()
       .map(SearchHit::getContent)
       .collect(Collectors.toList());
 
-    long total = esOperations.count(query, FestivalTranslateDocument.class);
+    long total = esOperations.count(nativeQuery, FestivalTranslateDocument.class);
 
     return new PageImpl<>(results, pageable, total);
   }
@@ -52,21 +55,25 @@ public class FestivalTranslateDocumentRepositoryImpl implements FestivalTranslat
   @Override
   public Page<FestivalTranslateDocument> searchByPeriod(TranslateLanguage language, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
 
-    NativeQuery query = NativeQuery.builder()
-      .withQuery(QueryBuilders.boolQuery()
-        .must(QueryBuilders.termQuery("language", language.name()))
-        .must(QueryBuilders.rangeQuery("startDate").gte(startDate))
-        .must(QueryBuilders.rangeQuery("endDate").lte(endDate))
+    Query query = Query.of(q -> q
+      .bool(b -> b
+        .must(m -> m.term(t -> t.field("language").value(language.name())))
+        .must(m -> m.range(r -> r.field("startDate").gte(JsonData.of(startDate.toString()))))
+        .must(m -> m.range(r -> r.field("endDate").lte(JsonData.of(endDate.toString()))))
       )
+    );
+
+    NativeQuery nativeQuery = NativeQuery.builder()
+      .withQuery(query)
       .withPageable(pageable)
       .build();
 
-    List<FestivalTranslateDocument> results = esOperations.search(query, FestivalTranslateDocument.class)
+    List<FestivalTranslateDocument> results = esOperations.search(nativeQuery, FestivalTranslateDocument.class)
       .stream()
       .map(SearchHit::getContent)
       .collect(Collectors.toList());
 
-    long total = esOperations.count(query, FestivalTranslateDocument.class);
+    long total = esOperations.count(nativeQuery, FestivalTranslateDocument.class);
 
     return new PageImpl<>(results, pageable, total);
   }

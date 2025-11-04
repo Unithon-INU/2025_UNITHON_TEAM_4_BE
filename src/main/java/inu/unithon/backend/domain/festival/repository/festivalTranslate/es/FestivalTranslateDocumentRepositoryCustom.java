@@ -1,4 +1,4 @@
-package inu.unithon.backend.domain.festival.repository.festivalTranslate;
+package inu.unithon.backend.domain.festival.repository.festivalTranslate.es;
 
 import inu.unithon.backend.domain.festival.document.FestivalTranslateDocument;
 import inu.unithon.backend.domain.festival.entity.TranslateLanguage;

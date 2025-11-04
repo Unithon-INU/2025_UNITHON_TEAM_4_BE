@@ -13,6 +13,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -44,8 +46,21 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+    command: >
+      bash -c "
+        elasticsearch-plugin install --batch analysis-nori &&
+        elasticsearch-plugin install --batch analysis-kuromoji &&
+        elasticsearch-plugin install --batch analysis-smartcn &&
+        exec /usr/local/bin/docker-entrypoint.sh elasticsearch
+      "
     volumes:
       - esdata:/usr/share/elasticsearch/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
+      interval: 10s        # 10초마다 검사
+      timeout: 5s          # 5초 이내 응답 없으면 실패
+      retries: 5           # 최대 5번 재시도
+      start_period: 20s    # 컨테이너 시작 후 20초는 대기 (플러그인 설치, 초기화용)
     networks:
       - app-network
 
@@ -67,4 +82,5 @@ volumes:
 
 networks:
   app-network:
+    name: app-network
     driver: bridge

@@ -63,6 +63,7 @@ public class FestivalController implements FestivalControllerSpecification {
     @Override
     public ResponseEntity<ResponseDto<?>> searchFestivalByKeyword(FestivalTranslateSearchRequest request,int page,int size) {
         PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByKeyword(request, page, size);
+//        PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByKeywordEs(request, page, size);
         return ResponseEntity
           .ok(ResponseDto.success(response));
     }
@@ -79,6 +80,7 @@ public class FestivalController implements FestivalControllerSpecification {
     @Override
     public ResponseEntity<ResponseDto<?>> searchFestivalByPeriod(FestivalTranslatePeriodSearchRequest request, int page, int size) {
         PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByPeriod(request, page, size);
+//        PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByPeriodEs(request, page, size);
         return ResponseEntity
           .ok(ResponseDto.success(response));
     }

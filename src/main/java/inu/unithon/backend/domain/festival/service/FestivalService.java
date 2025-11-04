@@ -17,7 +17,7 @@ public interface FestivalService {
     FestivalResponseDto getFestivalLocationFood(String lang, String MapX, String MapY, String NumOfRows, String PageNo, String Radius);
 
     /**
-     * 키워드로 축제 검색
+     * 키워드로 축제 검색 - JPA
      * @param festivalTranslateSearchRequest
      * @param page
      * @param size
@@ -33,4 +33,23 @@ public interface FestivalService {
      * @return
      */
     PageResponseDto<FestivalTranslateResponse> searchFestivalsByPeriod(FestivalTranslatePeriodSearchRequest festivalTranslatePeriodSearchRequest, int page, int size);
+
+    /**
+     * 키워드로 축제 검색 - ES
+     * @param festivalTranslateSearchRequest
+     * @param page
+     * @param size
+     * @return
+     */
+    PageResponseDto<FestivalTranslateResponse> searchFestivalsByKeywordEs(FestivalTranslateSearchRequest festivalTranslateSearchRequest, int page, int size);
+
+    /**
+     * 기간으로 축제 검색 - ES
+     * @param festivalTranslatePeriodSearchRequest
+     * @param page
+     * @param size
+     * @return
+     */
+    PageResponseDto<FestivalTranslateResponse> searchFestivalsByPeriodEs(FestivalTranslatePeriodSearchRequest festivalTranslatePeriodSearchRequest, int page, int size);
+
 }
