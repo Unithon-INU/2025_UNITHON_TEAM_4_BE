@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 public class FestivalTranslate extends BaseEntity {
 
     @Id
+    @GeneratedValue
+    private long id;
+
     private long contentId;
 
     private String language;

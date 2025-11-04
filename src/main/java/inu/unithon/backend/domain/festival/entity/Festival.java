@@ -13,6 +13,9 @@ import java.util.*;
 public class Festival extends BaseEntity {
 
     @Id
+    @GeneratedValue
+    private long id;
+
     private long contentId;
 
     private String title;

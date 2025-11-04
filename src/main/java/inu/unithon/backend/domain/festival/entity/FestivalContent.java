@@ -11,7 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FestivalContent extends BaseEntity {
 
+
     @Id
+    @GeneratedValue
+    private long id;
+
     private long contentId;
 
     private String title;
