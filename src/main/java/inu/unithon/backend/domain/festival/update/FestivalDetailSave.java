@@ -4,13 +4,13 @@ import inu.unithon.backend.domain.festival.dto.v1.FestivalDto;
 import inu.unithon.backend.domain.festival.dto.v1.FestivalResponseDto;
 import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.entity.FestivalContent;
-import inu.unithon.backend.domain.festival.repository.FestivalContentRepository;
+import inu.unithon.backend.domain.festival.repository.festival.FestivalContentRepository;
+import inu.unithon.backend.domain.festival.repository.festival.FestivalRepository;
 import inu.unithon.backend.domain.festival.service.FestivalSaveService;
 import inu.unithon.backend.domain.festival.service.FestivalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import inu.unithon.backend.domain.festival.repository.FestivalRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

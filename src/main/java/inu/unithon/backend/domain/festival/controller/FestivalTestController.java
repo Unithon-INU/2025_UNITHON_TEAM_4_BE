@@ -43,7 +43,7 @@ public class FestivalTestController {
       .title("테스트 축제 title")
       .imageUrl("www.test.com")
       .address("테스트 축제 address")
-      .contentId(1)
+      .contentId(1L)
       .content("테스트 축제 content")
       .startDate(LocalDateTime.now())
       .endDate(LocalDateTime.now())
