@@ -1,60 +1,83 @@
-    package inu.unithon.backend.domain.festival.entity;
+package inu.unithon.backend.domain.festival.entity;
 
-    import inu.unithon.backend.global.entity.BaseEntity;
-    import jakarta.persistence.*;
-    import lombok.*;
+import inu.unithon.backend.global.entity.BaseEntity;
+import jakarta.persistence.*;
+import lombok.*;
 
-    import java.time.LocalDateTime;
-    import java.util.ArrayList;
-    import java.util.List;
+import java.time.LocalDateTime;
 
-    @Entity
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public class FestivalContent extends BaseEntity {
-
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-
-        private String title;
-        private String imageUrl;
-        private String address;
-        private String content;
-        private LocalDateTime startDate;
-        private LocalDateTime endDate;
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class FestivalContent extends BaseEntity {
 
 
-//        @OneToOne(fetch = FetchType.LAZY)
-//        @JoinColumn(name = "festival_id")  // 양방향 생각했었음..
-//        private Festival festival;
+    @Id
+    @GeneratedValue
+    private long id;
 
-        @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-        @JoinColumn(name = "festival_id")
-        private Festival festival;
+    private long contentId;
 
-        @OneToMany(mappedBy = "festivalContent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-        private List<FestivalTranslateContent> festivalTranslateContents = new ArrayList<>();
+    private String title;
+
+    private String address;
+    private String content;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    @Column(length = 1000)
+    private String overview;
+    private String playtime;
+    private String mapx;
+    private String mapy;
+    @Column(length = 1000)
+    private String firstImage;
+    @Column(length = 1000)
+    private String firstImage2;
+    private String areaCode;
+    private String addr1;
+    private String tel;
 
 
-//        @Builder
-//        public FestivalContent(String title, String imageUrl, String address, String content,
-//                               String startDate, String endDate) {
-//            this.title = title;
-//            this.imageUrl = imageUrl;
-//            this.address = address;
-//            this.content = content;
-//            this.startDate = startDate;
-//            this.endDate = endDate;
-//        }
     @Builder
-    public FestivalContent(String title, String imageUrl, String address, String content,
-                           LocalDateTime startDate, LocalDateTime endDate) {
+    public FestivalContent(String title, String address, String content, long contentId,
+                           LocalDateTime startDate, LocalDateTime endDate, String overview,
+                           String playtime, String mapx, String mapy, String firstImage,
+                           String firstImage2, String areaCode, String addr1, String tel) {
         this.title = title;
-        this.imageUrl = imageUrl;
         this.address = address;
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
-        }
+        this.contentId = contentId;
+        this.overview = overview;
+        this.playtime = playtime;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.firstImage = firstImage;
+        this.firstImage2 = firstImage2;
+        this.areaCode = areaCode;
+        this.addr1 = addr1;
+        this.tel = tel;
     }
+
+    public void updateFromInfo(
+            String title, String address,
+            LocalDateTime startDate, LocalDateTime endDate,
+            String overview, String playtime, String mapx, String mapy,
+            String firstImage, String firstImage2, String areaCode, String addr1
+    ) {
+        this.title = title;
+        this.address = address;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.overview = overview;
+        this.playtime = playtime;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.firstImage = firstImage;
+        this.firstImage2 = firstImage2;
+        this.areaCode = areaCode;
+        this.addr1 = addr1;
+        this.tel = tel;
+    }
+}

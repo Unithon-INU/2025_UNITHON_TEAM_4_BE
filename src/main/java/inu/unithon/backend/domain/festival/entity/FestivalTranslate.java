@@ -3,7 +3,6 @@ package inu.unithon.backend.domain.festival.entity;
 import jakarta.persistence.*;
 import inu.unithon.backend.global.entity.BaseEntity;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,15 +11,16 @@ import java.time.LocalDateTime;
 public class FestivalTranslate extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private long id;
 
-    @Enumerated(EnumType.STRING)
-    private TranslateLanguage language;
+    private long contentId;
+
+    private String language;
     private String title;
+    @Column(length = 1000)
     private String imageUrl;
     private String address;
-    private String contentId;
     private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -31,15 +31,7 @@ public class FestivalTranslate extends BaseEntity {
 
 
     @Builder
-    public FestivalTranslate(TranslateLanguage language,
-                             String title,
-                             String imageUrl,
-                             String address,
-                             String contentId,
-                             String content,
-                             LocalDateTime startDate,
-                             LocalDateTime endDate,
-                             Festival festival) {
+    public FestivalTranslate(String language, String title, String imageUrl, String address, long contentId, String content, LocalDateTime startDate, LocalDateTime endDate, Festival festival) {
         this.language = language;
         this.title = title;
         this.imageUrl = imageUrl;

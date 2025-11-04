@@ -19,6 +19,13 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 20MB
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
   jpa:
     properties:
       hibernate.hibernate.show_sql: true
@@ -67,6 +74,21 @@ spring:
       client:
         rest:
           uris: ${ELASTICSEARCH_URIS}
+
+rabbitmq:
+  exchange:
+    name: festival.exchange
+  queues:
+    detail:
+      name: festival.detail.queue
+      routing-key: festival.detail
+    translate:
+        name: festival.translate.queue
+        routing-key: festival.translate
+    detail-translate:
+        name: festival.detail-translate.queue
+        routing-key: festival.detail-translate
+
 
 springdoc:
   api-docs:

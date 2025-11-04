@@ -13,15 +13,19 @@ import java.util.*;
 public class Festival extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private long id;
+
+    private long contentId;
 
     private String title;
+    @Column(length = 1000)
     private String imageUrl;
     private String address;
-    private String contentId;
     private String content;
+    //    private String startDate;
     private LocalDateTime startDate;
+    //    private String endDate;
     private LocalDateTime endDate;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -47,7 +51,7 @@ public class Festival extends BaseEntity {
 //    }
 
     @Builder
-    public Festival(String title, String imageUrl, String address, String contentId,
+    public Festival(String title, String imageUrl, String address, long contentId,
                     String content, LocalDateTime startDate, LocalDateTime endDate, FestivalContent festivalContent, List<FestivalTranslate> festivalTranslates) {
         this.title = title;
         this.imageUrl = imageUrl;
