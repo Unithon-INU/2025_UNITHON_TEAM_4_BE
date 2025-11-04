@@ -1,8 +1,7 @@
-package inu.unithon.backend.domain.festival.dto;
+package inu.unithon.backend.domain.festival.dto.v1;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -12,7 +11,7 @@ import lombok.Builder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FestivalInfoDto {
-    private long contentid;
+    private Long contentid;
     private String contenttypeid;
     private String serialnum;
     private String infoname;

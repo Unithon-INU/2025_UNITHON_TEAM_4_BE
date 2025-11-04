@@ -11,16 +11,16 @@ import java.time.LocalDateTime;
 public class FestivalTranslate extends BaseEntity {
 
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private long contentId;
-
-    private String language;
+    @Enumerated(EnumType.STRING)
+    private TranslateLanguage language;
     private String title;
     @Column(length = 1000)
     private String imageUrl;
     private String address;
+    private Long contentId;
     private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -31,7 +31,15 @@ public class FestivalTranslate extends BaseEntity {
 
 
     @Builder
-    public FestivalTranslate(String language, String title, String imageUrl, String address, long contentId, String content, LocalDateTime startDate, LocalDateTime endDate, Festival festival) {
+    public FestivalTranslate(TranslateLanguage language,
+                             String title,
+                             String imageUrl,
+                             String address,
+                             Long contentId,
+                             String content,
+                             LocalDateTime startDate,
+                             LocalDateTime endDate,
+                             Festival festival) {
         this.language = language;
         this.title = title;
         this.imageUrl = imageUrl;

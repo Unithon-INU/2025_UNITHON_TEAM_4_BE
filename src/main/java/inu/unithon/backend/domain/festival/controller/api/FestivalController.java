@@ -1,20 +1,25 @@
-package inu.unithon.backend.domain.festival.controller;
+package inu.unithon.backend.domain.festival.controller.api;
 
-import inu.unithon.backend.domain.festival.controller.api.FestivalApi;
-import inu.unithon.backend.domain.festival.dto.*;
-import inu.unithon.backend.domain.festival.service.FestivalService;
+import inu.unithon.backend.domain.festival.controller.docs.FestivalControllerSpecification;
+import inu.unithon.backend.domain.festival.dto.v1.FestivalInfoResponseDto;
+import inu.unithon.backend.domain.festival.dto.v1.FestivalIntroResponseDto;
+import inu.unithon.backend.domain.festival.dto.v1.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.dto.v2.request.FestivalTranslatePeriodSearchRequest;
+import inu.unithon.backend.domain.festival.dto.v2.request.FestivalTranslateSearchRequest;
+import inu.unithon.backend.domain.festival.dto.v2.response.FestivalTranslateResponse;
+import inu.unithon.backend.global.response.PageResponseDto;
 import inu.unithon.backend.global.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import inu.unithon.backend.domain.festival.service.FestivalServiceInterface;
+import inu.unithon.backend.domain.festival.service.FestivalService;
 
 @RestController
 @RequestMapping("/api/v1/festivals")
 @RequiredArgsConstructor
-public class FestivalController implements FestivalApi {
+public class FestivalController implements FestivalControllerSpecification {
 
-    private final  FestivalServiceInterface festivalService;
+    private final FestivalService festivalService;
 
     /**
      * 축제  조회
@@ -45,21 +50,41 @@ public class FestivalController implements FestivalApi {
         return ResponseEntity.ok(ResponseDto.success(response));
     }
 
+
     /**
-     * 축제 검색
+     * version - 2
+     * 축제 키워드 검색
      *
-     * @param lang      언어 코드 (기본값: "kor")
-     * @param keyword   검색 키워드
-     *  @param numOfRows 한 페이지에 표시할 항목 수 (기본값: "10")
-     *  @param pageNo    페이지 번호 (기본값: "1")
-     * @return 축제 검색 결과 응답
-     * pagination
+     * @param request : FestivalTranslateSearchRequest
+     * @param page : page number
+     * @param size : page size
+     * @return
      */
     @Override
-    public ResponseEntity<ResponseDto<?>> searchFestival(String lang, String keyword, String numOfRows, String pageNo) {
-        FestivalResponseDto response = festivalService.getSearchFestival(lang, keyword, numOfRows, pageNo);
-        return ResponseEntity.ok(ResponseDto.success(response));
+    public ResponseEntity<ResponseDto<?>> searchFestivalByKeyword(FestivalTranslateSearchRequest request,int page,int size) {
+        PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByKeyword(request, page, size);
+//        PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByKeywordEs(request, page, size);
+        return ResponseEntity
+          .ok(ResponseDto.success(response));
     }
+
+    /**
+     * version - 2
+     * 축제 기간별 검색
+     *
+     * @param request : FestivalTranslatePeriodSearchRequest
+     * @param page : page number
+     * @param size : page size
+     * @return
+     */
+    @Override
+    public ResponseEntity<ResponseDto<?>> searchFestivalByPeriod(FestivalTranslatePeriodSearchRequest request, int page, int size) {
+        PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByPeriod(request, page, size);
+//        PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByPeriodEs(request, page, size);
+        return ResponseEntity
+          .ok(ResponseDto.success(response));
+    }
+
     /**
      * 축제 상세 정보 조회
      *

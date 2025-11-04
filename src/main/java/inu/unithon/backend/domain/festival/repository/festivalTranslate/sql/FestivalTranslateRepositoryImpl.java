@@ -1,4 +1,4 @@
-package inu.unithon.backend.domain.festival.repository.festivalTranslate;
+package inu.unithon.backend.domain.festival.repository.festivalTranslate.sql;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import inu.unithon.backend.domain.festival.entity.FestivalTranslate;

@@ -1,18 +1,17 @@
 package inu.unithon.backend.domain.festival.update;
 
-
-import inu.unithon.backend.domain.festival.dto.FestivalDto;
-import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.dto.v1.FestivalDto;
+import inu.unithon.backend.domain.festival.dto.v1.FestivalResponseDto;
 import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.entity.FestivalContent;
-import inu.unithon.backend.domain.festival.repository.FestivalContentRepository;
-import inu.unithon.backend.domain.festival.service.FestivalServiceInterface;
+import inu.unithon.backend.domain.festival.repository.festival.FestivalContentRepository;
+import inu.unithon.backend.domain.festival.repository.festival.FestivalRepository;
+import inu.unithon.backend.domain.festival.service.FestivalSaveService;
+import inu.unithon.backend.domain.festival.service.FestivalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import inu.unithon.backend.domain.festival.repository.FestivalRepository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -21,7 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FestivalDetailSave {
 
-    private final FestivalServiceInterface festivalService;
+    private final FestivalService festivalService;
+    private final FestivalSaveService festivalSaveService;
     private final FestivalContentRepository festivalContentRepository;
     private final FestivalRepository festivalRepository;
     private static final DateTimeFormatter dayFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
