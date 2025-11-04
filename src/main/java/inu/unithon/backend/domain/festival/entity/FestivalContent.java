@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -17,32 +15,68 @@ public class FestivalContent extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String title;
-  private String imageUrl;
-  private String address;
-  private String content;
-  private LocalDateTime startDate;
-  private LocalDateTime endDate;
+    private Long contentId;
 
-  @Setter
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "festival_id")
-  private Festival festival;
+    private String title;
 
-  @OneToMany(mappedBy = "festivalContent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<FestivalTranslateContent> festivalTranslateContents = new ArrayList<>();
-
-  @Builder
-  public FestivalContent(String title, String imageUrl, String address, String content,
-                         LocalDateTime startDate, LocalDateTime endDate) {
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.address = address;
-    this.content = content;
-    this.startDate = startDate;
-    this.endDate = endDate;
-  }
+    private String address;
+    private String content;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    @Column(length = 1000)
+    private String overview;
+    private String playtime;
+    private String mapx;
+    private String mapy;
+    @Column(length = 1000)
+    private String firstImage;
+    @Column(length = 1000)
+    private String firstImage2;
+    private String areaCode;
+    private String addr1;
+    private String tel;
 
 
+    @Builder
+    public FestivalContent(String title, String address, String content, long contentId,
+                           LocalDateTime startDate, LocalDateTime endDate, String overview,
+                           String playtime, String mapx, String mapy, String firstImage,
+                           String firstImage2, String areaCode, String addr1, String tel) {
+        this.title = title;
+        this.address = address;
+        this.content = content;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.contentId = contentId;
+        this.overview = overview;
+        this.playtime = playtime;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.firstImage = firstImage;
+        this.firstImage2 = firstImage2;
+        this.areaCode = areaCode;
+        this.addr1 = addr1;
+        this.tel = tel;
+    }
+
+    public void updateFromInfo(
+            String title, String address,
+            LocalDateTime startDate, LocalDateTime endDate,
+            String overview, String playtime, String mapx, String mapy,
+            String firstImage, String firstImage2, String areaCode, String addr1
+    ) {
+        this.title = title;
+        this.address = address;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.overview = overview;
+        this.playtime = playtime;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.firstImage = firstImage;
+        this.firstImage2 = firstImage2;
+        this.areaCode = areaCode;
+        this.addr1 = addr1;
+        this.tel = tel;
+    }
 }
-

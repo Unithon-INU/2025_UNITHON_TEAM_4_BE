@@ -20,7 +20,7 @@ public class FestivalTranslateContent extends BaseEntity {
     private String title;
     private String imageUrl;
     private String address;
-    private String contentId;
+    private Long contentId;
     private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -34,7 +34,7 @@ public class FestivalTranslateContent extends BaseEntity {
                                     String title,
                                     String imageUrl,
                                     String address,
-                                    String contentId,
+                                    Long contentId,
                                     String content,
                                     LocalDateTime startDate,
                                     LocalDateTime endDate,

@@ -11,7 +11,7 @@ import lombok.Builder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FestivalInfoDto {
-    private String contentid;
+    private Long contentid;
     private String contenttypeid;
     private String serialnum;
     private String infoname;

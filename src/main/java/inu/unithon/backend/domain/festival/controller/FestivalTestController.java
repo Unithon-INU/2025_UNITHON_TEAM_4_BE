@@ -31,7 +31,7 @@ public class FestivalTestController {
 
     FestivalContent content = FestivalContent.builder()
       .title("테스트 축제 컨텐트 title")
-      .imageUrl("www.testContent.com")
+      .firstImage("www.testContent.com")
       .address("테스트 축제 컨텐트 address")
       .content("테스트 축제 컨텐트 content")
       .startDate(LocalDateTime.now())
@@ -43,15 +43,13 @@ public class FestivalTestController {
       .title("테스트 축제 title")
       .imageUrl("www.test.com")
       .address("테스트 축제 address")
-      .contentId("1")
+      .contentId(1)
       .content("테스트 축제 content")
       .startDate(LocalDateTime.now())
       .endDate(LocalDateTime.now())
       .festivalContent(content)
       .build();
 
-    // set festival in festival content
-    content.setFestival(festival);
 
     FestivalTranslate festivalTranslate = FestivalTranslate.builder()
       .title(festival.getTitle())

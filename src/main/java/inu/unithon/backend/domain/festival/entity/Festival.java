@@ -17,9 +17,10 @@ public class Festival extends BaseEntity {
     private Long id;
 
     private String title;
+    @Column(length = 1000)
     private String imageUrl;
     private String address;
-    private String contentId;
+    private Long contentId;
     private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
