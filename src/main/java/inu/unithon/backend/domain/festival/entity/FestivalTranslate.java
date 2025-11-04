@@ -3,7 +3,6 @@ package inu.unithon.backend.domain.festival.entity;
 import jakarta.persistence.*;
 import inu.unithon.backend.global.entity.BaseEntity;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,7 +35,7 @@ public class FestivalTranslate extends BaseEntity {
                              String title,
                              String imageUrl,
                              String address,
-                             String contentId,
+                             Long contentId,
                              String content,
                              LocalDateTime startDate,
                              LocalDateTime endDate,

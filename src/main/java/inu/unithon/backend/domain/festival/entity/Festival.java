@@ -48,7 +48,7 @@ public class Festival extends BaseEntity {
 //    }
 
     @Builder
-    public Festival(String title, String imageUrl, String address, String contentId,
+    public Festival(String title, String imageUrl, String address, Long contentId,
                     String content, LocalDateTime startDate, LocalDateTime endDate, FestivalContent festivalContent, List<FestivalTranslate> festivalTranslates) {
         this.title = title;
         this.imageUrl = imageUrl;
