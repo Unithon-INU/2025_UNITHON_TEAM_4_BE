@@ -1,27 +1,19 @@
 package inu.unithon.backend.domain.festival.service;
 
-import inu.unithon.backend.domain.festival.document.FestivalTranslateDocument;
-import inu.unithon.backend.domain.festival.dto.v1.FestivalInfoResponseDto;
-import inu.unithon.backend.domain.festival.dto.v1.FestivalIntroResponseDto;
-import inu.unithon.backend.domain.festival.dto.v1.FestivalResponseDto;
-import inu.unithon.backend.domain.festival.dto.v2.request.FestivalTranslatePeriodSearchRequest;
-import inu.unithon.backend.domain.festival.dto.v2.request.FestivalTranslateSearchRequest;
-import inu.unithon.backend.domain.festival.dto.v2.response.FestivalTranslateResponse;
+import inu.unithon.backend.domain.festival.dto.FestivalInfoResponseDto;
+import inu.unithon.backend.domain.festival.dto.FestivalIntroResponseDto;
+import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
 import inu.unithon.backend.domain.festival.entity.Festival;
-import inu.unithon.backend.domain.festival.entity.FestivalTranslate;
-import inu.unithon.backend.domain.festival.entity.TranslateLanguage;
 import inu.unithon.backend.domain.festival.mapper.FestivalMapper;
 import inu.unithon.backend.domain.festival.repository.festival.FestivalRepository;
 import inu.unithon.backend.domain.festival.repository.festivalTranslate.es.FestivalTranslateDocumentRepository;
 import inu.unithon.backend.domain.festival.repository.festivalTranslate.sql.FestivalTranslateRepository;
-import inu.unithon.backend.global.response.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,20 +24,20 @@ import inu.unithon.backend.global.exception.CustomException;
 import inu.unithon.backend.global.exception.CommonErrorCode;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static inu.unithon.backend.global.exception.FestivalErrorCode.FESTIVAL_NOT_FOUND;
+
 @Slf4j
-@Service
+@Service("festivalServiceImpl")
+//@Primary
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class FestivalServiceImpl implements FestivalService {
 
     private static final Logger logger = LoggerFactory.getLogger(FestivalServiceImpl.class);
     private final FestivalRepository festivalRepository;
-    private final FestivalTranslateRepository translateRepository;
-    private final FestivalTranslateDocumentRepository translateDocumentRepository;
-    private final FestivalMapper festivalMapper;
 
     @Value("${tourapi.service-key}")
     private String encodedServiceKey;
@@ -240,125 +232,6 @@ public class FestivalServiceImpl implements FestivalService {
         }
     }
 
-    /**
-     * 축제 키워드 검색
-     * @param festivalTranslateSearchRequest : TranslateLanguage language(ENUM), keyword
-     * @param page
-     * @param size
-     * @return
-     */
-    @Override
-    public PageResponseDto<FestivalTranslateResponse> searchFestivalsByKeyword(FestivalTranslateSearchRequest festivalTranslateSearchRequest, int page, int size) {
-        String keyWord = festivalTranslateSearchRequest.getKeyword();
-        TranslateLanguage lang = festivalTranslateSearchRequest.getLang();
-        Pageable pageable = PageRequest.of(page, size);
-        log.info("축제 키워드 검색 요청 - keyword: {}, lang: {}, page: {}, size: {}", keyWord, lang, page, size);
-
-        Page<FestivalTranslate> festivalTranslates = translateRepository.findByKeyword(
-          lang,
-          keyWord,
-          pageable
-        );
-
-        if (festivalTranslates.isEmpty()) {
-            log.info("키워드 검색 결과 없음 - keyword: {}, lang: {}", keyWord, lang);
-        }
-
-        log.info("축제 키워드 검색 결과 - totalElements: {}", festivalTranslates.getTotalElements());
-        return PageResponseDto.from(festivalTranslates.map(festivalMapper::toResponse));
-    }
-
-    /**
-     * 기간으로 축제 검색
-     *
-     * @param festivalTranslatePeriodSearchRequest : TranslateLanguage language(ENUM), StartDate, EndDate
-     * @param page
-     * @param size
-     * @return
-     */
-    @Override
-    public PageResponseDto<FestivalTranslateResponse> searchFestivalsByPeriod(FestivalTranslatePeriodSearchRequest festivalTranslatePeriodSearchRequest, int page, int size) {
-        LocalDateTime startDate = festivalTranslatePeriodSearchRequest.getStartDate();
-        LocalDateTime endDate = festivalTranslatePeriodSearchRequest.getEndDate();
-        TranslateLanguage lang = festivalTranslatePeriodSearchRequest.getLang();
-        Pageable pageable = PageRequest.of(page, size);
-        log.info("축제 기간 검색 요청 - startDate: {}, endDate: {}, lang: {}, page: {}, size: {}", startDate, endDate, lang, page, size);
-
-        Page<FestivalTranslate> festivalTranslates = translateRepository.findFestivalsByPeriod(
-          lang,
-          startDate,
-          endDate,
-          pageable
-        );
-        if (festivalTranslates.isEmpty()) {
-            log.info("기간 검색 결과 없음 - startDate: {}, endDate: {}, lang: {}", startDate, endDate, lang);
-        }
-
-        log.info("축제 기간 검색 결과 - totalElements: {}", festivalTranslates.getTotalElements());
-        return PageResponseDto.from(festivalTranslates.map(festivalMapper::toResponse));
-    }
-
-    /**
-     * 키워드로 축제 검색 - ES
-     *
-     * @param festivalTranslateSearchRequest
-     * @param page
-     * @param size
-     * @return
-     */
-    @Override
-    public PageResponseDto<FestivalTranslateResponse> searchFestivalsByKeywordEs(FestivalTranslateSearchRequest festivalTranslateSearchRequest, int page, int size) {
-        String keyWord = festivalTranslateSearchRequest.getKeyword();
-        TranslateLanguage lang = festivalTranslateSearchRequest.getLang();
-        Pageable pageable = PageRequest.of(page, size);
-        log.info("축제 키워드 검색 요청 - keyword: {}, lang: {}, page: {}, size: {}", keyWord, lang, page, size);
-
-        Page<FestivalTranslateDocument> festivalTranslateDocuments = translateDocumentRepository.searchByKeyword(
-          lang,
-          keyWord,
-          pageable
-        );
-
-        if (festivalTranslateDocuments.isEmpty()) {
-            log.info("키워드 검색 결과 없음 - keyword: {}, lang: {}", keyWord, lang);
-        }
-
-        log.info("축제 키워드 검색 결과 - totalElements: {}", festivalTranslateDocuments.getTotalElements());
-        return PageResponseDto.from(festivalTranslateDocuments.map(festivalMapper::toResponseFromDocument));
-    }
-
-    /**
-     * 기간으로 축제 검색 - ES
-     *
-     * @param festivalTranslatePeriodSearchRequest
-     * @param page
-     * @param size
-     * @return
-     */
-    @Override
-    public PageResponseDto<FestivalTranslateResponse> searchFestivalsByPeriodEs(FestivalTranslatePeriodSearchRequest festivalTranslatePeriodSearchRequest, int page, int size) {
-        LocalDateTime startDate = festivalTranslatePeriodSearchRequest.getStartDate();
-        LocalDateTime endDate = festivalTranslatePeriodSearchRequest.getEndDate();
-        TranslateLanguage lang = festivalTranslatePeriodSearchRequest.getLang();
-        Pageable pageable = PageRequest.of(page, size);
-        log.info("축제 기간 검색 요청 - startDate: {}, endDate: {}, lang: {}, page: {}, size: {}", startDate, endDate, lang, page, size);
-
-        Page<FestivalTranslateDocument> festivalTranslateDocuments = translateDocumentRepository.searchByPeriod(
-          lang,
-          startDate,
-          endDate,
-          pageable
-        );
-
-
-        if (festivalTranslateDocuments.isEmpty()) {
-            log.info("기간 검색 결과 없음 - startDate: {}, endDate: {}, lang: {}", startDate, endDate, lang);
-        }
-
-        log.info("축제 기간 검색 결과 - totalElements: {}", festivalTranslateDocuments.getTotalElements());
-        return PageResponseDto.from(festivalTranslateDocuments.map(festivalMapper::toResponseFromDocument));
-    }
-
     private String getFoodid(String lang) {
         return switch (lang.toLowerCase()) {
             case "kor" -> "39";
@@ -404,6 +277,6 @@ public class FestivalServiceImpl implements FestivalService {
      */
     public Festival getFestival(Long festivalId) {
         return festivalRepository.findById(festivalId)
-          .orElseThrow(() -> new CustomException(CommonErrorCode.FESTIVAL_NOT_FOUND));
+          .orElseThrow(() -> new CustomException(FESTIVAL_NOT_FOUND));
     }
 }

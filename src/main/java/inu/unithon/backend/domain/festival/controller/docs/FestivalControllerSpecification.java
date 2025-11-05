@@ -1,7 +1,5 @@
 package inu.unithon.backend.domain.festival.controller.docs;
 
-import inu.unithon.backend.domain.festival.dto.v2.request.FestivalTranslatePeriodSearchRequest;
-import inu.unithon.backend.domain.festival.dto.v2.request.FestivalTranslateSearchRequest;
 import inu.unithon.backend.global.response.ResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -23,38 +21,6 @@ public interface FestivalControllerSpecification {
     ResponseEntity<ResponseDto<?>> getFestivalInfo(
             @RequestParam(defaultValue = "kor") String lang,
             @RequestParam String contentId
-    );
-
-    /**
-     * version - 2
-     * 축제 키워드 검색
-     *
-     * @param request
-     * @param page
-     * @param size
-     * @return
-     */
-    @PostMapping("/search/keyword")
-    ResponseEntity<ResponseDto<?>> searchFestivalByKeyword(
-            @Valid @RequestBody FestivalTranslateSearchRequest request,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    );
-
-    /**
-     * version - 2
-     * 축제 기간별 검색
-     *
-     * @param request
-     * @param page
-     * @param size
-     * @return
-     */
-    @PostMapping("/search/period")
-    ResponseEntity<ResponseDto<?>> searchFestivalByPeriod(
-            @Valid @RequestBody FestivalTranslatePeriodSearchRequest request,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
     );
 
     @GetMapping("/detailInfo")

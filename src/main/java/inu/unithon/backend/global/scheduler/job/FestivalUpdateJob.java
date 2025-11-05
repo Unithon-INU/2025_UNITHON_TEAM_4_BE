@@ -1,13 +1,11 @@
 package inu.unithon.backend.global.scheduler.job;
 
-import inu.unithon.backend.domain.festival.dto.v1.FestivalDto;
-import inu.unithon.backend.domain.festival.dto.v1.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.dto.FestivalDto;
+import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
 import inu.unithon.backend.domain.festival.service.FestivalSaveService;
 import inu.unithon.backend.global.exception.CommonErrorCode;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import inu.unithon.backend.domain.festival.service.FestivalService;
 import java.time.LocalDate;
@@ -15,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import inu.unithon.backend.global.exception.CustomException;
-import inu.unithon.backend.global.exception.ErrorCode;
 
 @Component
 public class FestivalUpdateJob implements Job{
