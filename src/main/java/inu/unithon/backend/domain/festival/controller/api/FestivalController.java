@@ -47,7 +47,23 @@ public class FestivalController implements FestivalControllerSpecification {
         return ResponseEntity.ok(ResponseDto.success(response));
     }
 
-    /**
+  /**
+   * 축제 검색
+   *
+   * @param lang      언어 코드 (기본값: "kor")
+   * @param keyword   검색 키워드
+   *  @param numOfRows 한 페이지에 표시할 항목 수 (기본값: "10")
+   *  @param pageNo    페이지 번호 (기본값: "1")
+   * @return 축제 검색 결과 응답
+   * pagination
+   */
+  @Override
+  public ResponseEntity<ResponseDto<?>> searchFestival(String lang, String keyword, String numOfRows, String pageNo) {
+    FestivalResponseDto response = festivalService.getSearchFestival(lang, keyword, numOfRows, pageNo);
+    return ResponseEntity.ok(ResponseDto.success(response));
+  }
+
+  /**
      * 축제 상세 정보 조회
      *
      * @param lang            언어 코드 (기본값: "kor")

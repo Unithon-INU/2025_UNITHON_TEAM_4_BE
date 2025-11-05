@@ -1,5 +1,6 @@
 package inu.unithon.backend.domain.festival.controller.docs;
 
+import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
 import inu.unithon.backend.global.response.ResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,14 @@ public interface FestivalControllerSpecification {
     ResponseEntity<ResponseDto<?>> getFestivalInfo(
             @RequestParam(defaultValue = "kor") String lang,
             @RequestParam String contentId
+    );
+
+    @GetMapping("/search")
+    ResponseEntity<ResponseDto<?>> searchFestival(
+      @RequestParam(defaultValue = "kor") String lang,
+      @RequestParam(defaultValue = "10") String numOfRows,
+      @RequestParam(defaultValue = "1") String pageNo,
+      @RequestParam String keyword
     );
 
     @GetMapping("/detailInfo")
@@ -45,4 +54,6 @@ public interface FestivalControllerSpecification {
             @RequestParam String PageNo,
             @RequestParam String radius
     );
+
+    // todo : keyword 검색
 }

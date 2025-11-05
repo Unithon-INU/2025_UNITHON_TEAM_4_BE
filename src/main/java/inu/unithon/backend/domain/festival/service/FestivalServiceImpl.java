@@ -49,14 +49,14 @@ public class FestivalServiceImpl implements FestivalService {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
-            String servicePath = serviceName + "/searchFestival1";
+            String servicePath = serviceName + "/searchFestival2";
 
             String url = baseUrl + servicePath
                     + "?serviceKey=" + encodedServiceKey
                     + "&MobileApp=UnithonApp"
                     + "&MobileOS=ETC"
                     + "&arrange=A"
-                    + "&listYN=Y"
+//                    + "&listYN=Y"
                     + "&_type=json"
                     + "&numOfRows=" + numOfRows
                     + "&pageNo=" + pageNo
@@ -86,7 +86,7 @@ public class FestivalServiceImpl implements FestivalService {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
-            String servicePath = serviceName + "/detailCommon1";
+            String servicePath = serviceName + "/detailCommon2";
 
             String url = baseUrl + servicePath
                     + "?serviceKey=" + encodedServiceKey
@@ -117,8 +117,8 @@ public class FestivalServiceImpl implements FestivalService {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
-            String servicePath = serviceName + "/searchKeyword1";
-            if ("KorService1".equals(serviceName) || "JpnService1".equals(serviceName) || "ChsService1".equals(serviceName)) {
+            String servicePath = serviceName + "/searchKeyword2";
+            if ("KorService2".equals(serviceName) || "JpnService2".equals(serviceName) || "ChsService2".equals(serviceName)) {
                 keyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
             }
 
@@ -127,7 +127,7 @@ public class FestivalServiceImpl implements FestivalService {
                     + "&MobileApp=UnithonApp"
                     + "&MobileOS=ETC"
                     + "&arrange=A"
-                    + "&listYN=Y"
+//                    + "&listYN=Y"
                     + "&_type=json"
                     + "&numOfRows=" + numOfRows
                     + "&pageNo=" + pageNo
@@ -151,7 +151,7 @@ public class FestivalServiceImpl implements FestivalService {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
-            String servicePath = serviceName + "/detailIntro1";
+            String servicePath = serviceName + "/detailIntro2";
 
             String url = baseUrl + servicePath
                     + "?serviceKey=" + encodedServiceKey
@@ -178,7 +178,7 @@ public class FestivalServiceImpl implements FestivalService {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
-            String servicePath = serviceName + "/detailInfo1";
+            String servicePath = serviceName + "/detailInfo2";
 
             String url = baseUrl + servicePath
                     + "?serviceKey=" + encodedServiceKey
@@ -204,7 +204,7 @@ public class FestivalServiceImpl implements FestivalService {
         try {
             String serviceName = getServiceName(lang);
             String baseUrl = "http://apis.data.go.kr/B551011/";
-            String servicePath = serviceName + "/locationBasedList1";
+            String servicePath = serviceName + "/locationBasedList2";
 
             String url = baseUrl + servicePath
                     + "?serviceKey=" + encodedServiceKey
@@ -258,14 +258,14 @@ public class FestivalServiceImpl implements FestivalService {
     }
     private String getServiceName(String lang) {
         return switch (lang.toLowerCase()) {
-            case "kor" -> "KorService1";
-            case "jpn" -> "JpnService1";
-            case "chn" -> "ChsService1";
-            case "eng" -> "EngService1";
-            case "fra" -> "FreService1";
-            case "rus" -> "RusService1";
-            case "spa" -> "SpnService1";
-            default -> "KorService1";
+            case "kor" -> "KorService2";
+            case "jpn" -> "JpnService2";
+            case "chn" -> "ChsService2";
+            case "eng" -> "EngService2";
+            case "fra" -> "FreService2";
+            case "rus" -> "RusService2";
+            case "spa" -> "SpnService2";
+            default -> "KorService2";
         };
     }
 
