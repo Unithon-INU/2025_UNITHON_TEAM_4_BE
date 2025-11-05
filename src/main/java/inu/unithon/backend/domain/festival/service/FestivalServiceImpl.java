@@ -100,7 +100,7 @@ public class FestivalServiceImpl implements FestivalService {
                     + "&mapinfoYN=Y"
                     + "&overviewYN=Y";
 
-            logger.info("📡 도커 요청 URL: {}", url);
+            logger.info(" 도커 요청 URL: {}", url);
 
             URI uri = new URI(url);
             String jsonString = restTemplate.getForObject(uri, String.class);
