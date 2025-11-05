@@ -14,8 +14,8 @@ public class FestivalDto {
     private String addr1;
     private String addr2;
     private String areacode;
-    private String contentid;
-    private String contenttypeid;
+    private Long contentid;
+    private String contenttypeid;   //
     private String createdtime;
     private String firstimage;
     private String firstimage2;
@@ -24,8 +24,10 @@ public class FestivalDto {
     private String modifiedtime;
     private String tel;
     private String title;
-    private String zipcode;
+    private String zipcode; // 안써도 됨
     private String overview;
-    private String dist;
+    private String dist;    // 축제에서의 거리
+    private String eventstartdate;
+    private String eventenddate;
     private List<FestivalDto> item;  // 중첩된 item 지원
 }

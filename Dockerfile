@@ -5,7 +5,7 @@
 ## 2. ARG를 사용해 빌드 결과 JAR 파일의 경로를 지정
 #ARG JAR_FILE=build/libs/*.jar
 
-FROM openjdk:21
+FROM eclipse-temurin:21-jdk-alpine
 ARG JAR_FILE=build/libs/*.jar
 LABEL name="frozzun99"
 

@@ -15,6 +15,9 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static inu.unithon.backend.global.exception.CommonErrorCode.*;
+import static inu.unithon.backend.global.exception.UserErrorCode.USER_NOT_FOUND;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -26,10 +29,10 @@ public class GlobalExceptionHandler {
       .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
     return ResponseEntity
-      .status(ErrorCode.INVALID_INPUT.getStatus())
+      .status(INVALID_INPUT.getStatus())
       .body(ResponseDto.error(
-        ErrorCode.INVALID_INPUT.getStatus().value(),
-        ErrorCode.INVALID_INPUT.getMessage(),
+        INVALID_INPUT.getStatus().value(),
+        INVALID_INPUT.getMessage(),
         errors
         ));
   }
@@ -38,10 +41,10 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<ResponseDto<?>> handleBadCredentials(BadCredentialsException ex) {
     return ResponseEntity
-      .status(ErrorCode.UNAUTHORIZED_401.getStatus())
+      .status(UNAUTHORIZED_401.getStatus())
       .body(ResponseDto.error(
-        ErrorCode.UNAUTHORIZED_401.getStatus().value(),
-        ErrorCode.UNAUTHORIZED_401.getMessage()
+        UNAUTHORIZED_401.getStatus().value(),
+        UNAUTHORIZED_401.getMessage()
       ));
   }
 
@@ -49,10 +52,10 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(UsernameNotFoundException.class)
   public ResponseEntity<ResponseDto<?>> handleUsernameNotFound(UsernameNotFoundException ex) {
     return ResponseEntity
-      .status(ErrorCode.USER_NOT_FOUND.getStatus())
+      .status(USER_NOT_FOUND.getStatus())
       .body(ResponseDto.error(
-        ErrorCode.USER_NOT_FOUND.getStatus().value(),
-        ErrorCode.USER_NOT_FOUND.getMessage()
+        USER_NOT_FOUND.getStatus().value(),
+        USER_NOT_FOUND.getMessage()
       ));
   }
 
@@ -60,10 +63,10 @@ public class GlobalExceptionHandler {
   @ExceptionHandler({DisabledException.class, LockedException.class})
   public ResponseEntity<ResponseDto<?>> handleAccountStatus(AuthenticationException ex) {
     return ResponseEntity
-      .status(ErrorCode.UNAUTHORIZED_400.getStatus())
+      .status(UNAUTHORIZED_400.getStatus())
       .body(ResponseDto.error(
-        ErrorCode.UNAUTHORIZED_400.getStatus().value(),
-        ErrorCode.UNAUTHORIZED_400.getMessage()
+        UNAUTHORIZED_400.getStatus().value(),
+        UNAUTHORIZED_400.getMessage()
       ));
   }
 
@@ -71,10 +74,10 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(MaxUploadSizeExceededException.class)
   public ResponseEntity<ResponseDto<?>> handleMaxSizeException(MaxUploadSizeExceededException ex) {
     return ResponseEntity
-      .status(ErrorCode.PAYLOAD_TOO_LARGE.getStatus())
+      .status(PAYLOAD_TOO_LARGE.getStatus())
       .body(ResponseDto.error(
-        ErrorCode.PAYLOAD_TOO_LARGE.getStatus().value(),
-        ErrorCode.PAYLOAD_TOO_LARGE.getMessage()
+        PAYLOAD_TOO_LARGE.getStatus().value(),
+        PAYLOAD_TOO_LARGE.getMessage()
       ));
   }
 
@@ -94,10 +97,10 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ResponseDto<?>> handleAll(Exception ex) {
     return ResponseEntity
-      .status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus())
+      .status(INTERNAL_SERVER_ERROR.getStatus())
       .body(ResponseDto.error(
-        ErrorCode.INTERNAL_SERVER_ERROR.getStatus().value(),
-        ErrorCode.INTERNAL_SERVER_ERROR.getMessage() + ex.getMessage()
+        INTERNAL_SERVER_ERROR.getStatus().value(),
+        INTERNAL_SERVER_ERROR.getMessage() + ex.getMessage()
       ));
   }
 }

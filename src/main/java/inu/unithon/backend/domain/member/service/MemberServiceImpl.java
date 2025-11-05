@@ -10,7 +10,7 @@ import inu.unithon.backend.domain.member.entity.Role;
 import inu.unithon.backend.domain.member.repository.MemberRepository;
 import inu.unithon.backend.domain.post.dto.PostDto;
 import inu.unithon.backend.global.exception.CustomException;
-import inu.unithon.backend.global.exception.ErrorCode;
+import inu.unithon.backend.global.exception.CommonErrorCode;
 import inu.unithon.backend.global.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
 
-import static inu.unithon.backend.global.exception.ErrorCode.*;
+import static inu.unithon.backend.global.exception.CommonErrorCode.*;
+import static inu.unithon.backend.global.exception.CommonErrorCode.INVALID_PASSWORD;
+import static inu.unithon.backend.global.exception.CommonErrorCode.SAME_PASSWORD;
+import static inu.unithon.backend.global.exception.UserErrorCode.*;
 
 @Slf4j
 @Service
@@ -143,7 +146,7 @@ public class MemberServiceImpl implements MemberService{
   public Page<Member> getMembers(Long id, int page, int size) {
     // id가 ADMIN인지 체크
     Member member = getMember(id);
-    if(member.getRole()!= Role.ADMIN) throw new CustomException(ErrorCode.FORBIDDEN);
+    if(member.getRole()!= Role.ADMIN) throw new CustomException(CommonErrorCode.FORBIDDEN);
 
     Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
 
@@ -154,7 +157,7 @@ public class MemberServiceImpl implements MemberService{
   @Override
   public Long deleteMember(Long myId, Long targetId) {
     Member member = getMember(myId);
-    if(member.getRole()!= Role.ADMIN) throw new CustomException(ErrorCode.FORBIDDEN);
+    if(member.getRole()!= Role.ADMIN) throw new CustomException(CommonErrorCode.FORBIDDEN);
 
     Member targetMember = getMember(targetId);
     memberRepository.delete(targetMember);
@@ -166,7 +169,7 @@ public class MemberServiceImpl implements MemberService{
   @Override
   public Member getMember(Long id) {
     return memberRepository.findById(id)
-      .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+      .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
   }
 
   private void validateEmail(String email){

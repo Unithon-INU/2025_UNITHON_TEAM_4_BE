@@ -52,13 +52,20 @@ public class SecurityConfig {
       .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
       .authorizeHttpRequests(auth -> auth
         .requestMatchers(
+          "api/v1/test/**",
           "/api/v1/auth/**",
           "/swagger-ui/**",
           "/v3/api-docs/**"
         ).permitAll()
 
         .requestMatchers(
-          "/api/v1/festivals/**"
+          "/api/v1/festivals/*/like",
+          "/api/v1/festivals/likes"
+        ).authenticated()
+
+        .requestMatchers(
+          "/api/v1/festivals/**",
+          "/api/v2/festivals/**"
         ).permitAll()
 
         .requestMatchers(
@@ -67,6 +74,14 @@ public class SecurityConfig {
 
         .requestMatchers(
           "/api/v1/posts/**"
+        ).authenticated()
+
+        .requestMatchers(
+          "/api/v1/postLikes/**"
+        ).authenticated()
+
+        .requestMatchers(
+          "/api/v1/comments/**"
         ).authenticated()
 
         .anyRequest().authenticated()

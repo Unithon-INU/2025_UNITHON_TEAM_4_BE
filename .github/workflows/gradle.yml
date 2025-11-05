@@ -13,60 +13,60 @@ jobs:
   build-docker-image:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
         # 캐시 복원: Gradle User Home
-    - name: Restore Gradle Cache
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: gradle-cache-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          gradle-cache-${{ runner.os }}-
+      - name: Restore Gradle Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-cache-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-cache-${{ runner.os }}-
 
-    # Create application-prod.yml
-    - name: Create application-prod.yml
-      run: |
-        mkdir -p ./src/main/resources
-        echo "${{ secrets.APPLICATION_PROD }}" > ./src/main/resources/application-prod.yml
+      # Create application-prod.yml
+      - name: Create application-prod.yml
+        run: |
+          mkdir -p ./src/main/resources
+          echo "${{ secrets.APPLICATION_PROD }}" > ./src/main/resources/application-prod.yml
 
-    - name: Create docker-compose.prod.yml
-      run: echo "${{ secrets.DOCKER_COMPOSE_PROD }}" > ./docker-compose.prod.yml
-
-
-      # Java 21 세팅
-    - name: Set up JDK 21
-      uses: actions/setup-java@v3
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-
-    # Spring Boot 애플리케이션 빌드
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@v3
-      with:
-        arguments: clean bootJar
+      - name: Create docker-compose.prod.yml
+        run: echo "${{ secrets.DOCKER_COMPOSE_PROD }}" > ./docker-compose.prod.yml
 
 
-    # Docker 이미지 빌드
-    - name: docker image build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/2025_unithon_team_4_be-backend .
+        # Java 21 세팅
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
 
-    # DockerHub 로그인
-    - name: docker login
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      # Spring Boot 애플리케이션 빌드
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    # Docker Hub 이미지 푸시
-    - name: docker Hub push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/2025_unithon_team_4_be-backend
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: clean bootJar
+
+
+      # Docker 이미지 빌드
+      - name: docker image build
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/2025_unithon_team_4_be-backend .
+
+      # DockerHub 로그인
+      - name: docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      # Docker Hub 이미지 푸시
+      - name: docker Hub push
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/2025_unithon_team_4_be-backend
 
   # 위 과정에서 푸시한 이미지를 ec2에서 풀받아서 실행시키는 과정
   run-docker-image-on-ec2:
@@ -78,6 +78,23 @@ jobs:
       - name: Create docker-compose.prod.yml
         run: echo "${{ secrets.DOCKER_COMPOSE_PROD }}" > docker-compose.prod.yml
 
+
+      # [추가] Elasticsearch 진입점(Entrypoint) 스크립트 파일 동적 생성
+      - name: Create Elasticsearch entrypoint script
+        run: |
+          echo '#!/bin/bash' > es-entrypoint.sh
+          echo 'set -e' >> es-entrypoint.sh
+          echo 'echo "--- Installing Elasticsearch plugins ---"' >> es-entrypoint.sh
+          # 플러그인이 이미 설치되었는지 확인 후, 없을 경우에만 설치 (멱등성 보장)
+          echo 'bin/elasticsearch-plugin list | grep -q "analysis-nori" || bin/elasticsearch-plugin install --batch analysis-nori' >> es-entrypoint.sh
+          echo 'bin/elasticsearch-plugin list | grep -q "analysis-kuromoji" || bin/elasticsearch-plugin install --batch analysis-kuromoji' >> es-entrypoint.sh
+          echo 'bin/elasticsearch-plugin list | grep -q "analysis-smartcn" || bin/elasticsearch-plugin install --batch analysis-smartcn' >> es-entrypoint.sh
+          echo 'echo "--- Starting Elasticsearch ---"' >> es-entrypoint.sh
+          echo 'exec /usr/local/bin/docker-entrypoint.sh elasticsearch' >> es-entrypoint.sh
+          # 생성된 스크립트에 실행 권한 부여
+          chmod +x es-entrypoint.sh
+        shell: bash
+      #
       # 최신 이미지를 풀받습니다
       - name: docker pull
         run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/2025_unithon_team_4_be-backend
@@ -101,3 +118,12 @@ jobs:
       # 미사용 이미지를 정리합니다
       - name: delete old docker image
         run: sudo docker system prune -af
+
+
+      # [추가] 보안을 위해 생성된 임시 파일 삭제
+      - name: Cleanup temporary files
+        if: always()
+        run: |
+          rm -f docker-compose.prod.yml
+          rm -f es-entrypoint.sh
+      #

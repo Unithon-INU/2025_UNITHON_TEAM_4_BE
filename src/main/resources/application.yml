@@ -20,6 +20,12 @@ spring:
       max-file-size: 5MB
       max-request-size: 20MB
 
+  rabbitmq:
+    host: ${RABBITMQ_HOST:rabbitmq}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
   jpa:
     properties:
       hibernate.hibernate.show_sql: true
@@ -27,11 +33,62 @@ spring:
     hibernate:
       ddl-auto: create-drop
     database-platform: org.hibernate.dialect.MySQLDialect
-
   datasource:
     url: ${MYSQL_URL}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: simpleScheduler
+            instancedId: AUTO
+          jobstore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            useProperties: false
+            tablePrefix: QRTZ_
+            isClustered: false # 클러스터링할 거면 true
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 5
+            threadPriority: 5
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_ID}
+    password: ${EMAIL_PW}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  data:
+    elasticsearch:
+      client:
+        rest:
+          uris: ${ELASTICSEARCH_URIS}
+
+rabbitmq:
+  exchange:
+    name: festival.exchange
+  queues:
+    detail:
+      name: festival.detail.queue
+      routing-key: festival.detail
+    translate:
+        name: festival.translate.queue
+        routing-key: festival.translate
+    detail-translate:
+        name: festival.detail-translate.queue
+        routing-key: festival.detail-translate
+
 
 springdoc:
   api-docs:

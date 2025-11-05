@@ -5,11 +5,13 @@ import inu.unithon.backend.domain.festivalLike.repository.FestivalLikeRepository
 import inu.unithon.backend.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class FestivalLikeService {
 
@@ -39,6 +41,7 @@ public class FestivalLikeService {
     }
 
 
+    @Transactional(readOnly = true)
     public List<FestivalLike> getLikedFestivals(Member member) {
         return festivalLikeRepository.findAllByMember(member);
     }
