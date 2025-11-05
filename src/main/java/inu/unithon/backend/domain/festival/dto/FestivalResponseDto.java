@@ -1,4 +1,4 @@
-package inu.unithon.backend.domain.festival.dto.v1;
+package inu.unithon.backend.domain.festival.dto;
 
 
 import lombok.Getter;

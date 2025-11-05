@@ -1,10 +1,9 @@
 package inu.unithon.backend.domain.festival.controller;
 
-import inu.unithon.backend.domain.festival.entity.Festival;
-import inu.unithon.backend.domain.festival.entity.FestivalContent;
-import inu.unithon.backend.domain.festival.entity.FestivalTranslate;
+import inu.unithon.backend.domain.festival.entity.*;
 import inu.unithon.backend.domain.festival.repository.festival.FestivalContentRepository;
 import inu.unithon.backend.domain.festival.repository.festival.FestivalRepository;
+import inu.unithon.backend.domain.festival.repository.festivalTranslate.sql.FestivalContentTranslateRepository;
 import inu.unithon.backend.domain.festival.service.FestivalCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,16 +23,25 @@ public class FestivalTestController {
 
   private final FestivalRepository festivalRepository;
   private final FestivalContentRepository contentRepository;
-  FestivalCommandService festivalCommandService;
+  private final FestivalCommandService festivalCommandService;
+  private final FestivalContentTranslateRepository translateRepository;
 
   @GetMapping("/putFestival")
   public void putFestival() {
 
     FestivalContent content = FestivalContent.builder()
       .title("테스트 축제 컨텐트 title")
-      .firstImage("www.testContent.com")
-      .address("테스트 축제 컨텐트 address")
+      .address("test address")
       .content("테스트 축제 컨텐트 content")
+      .overview("OverView")
+      .playtime("test playtime")
+      .mapx("mapx")
+      .mapy("mapy")
+      .firstImage("www.testContent.com")
+      .firstImage2("image2")
+      .areaCode("areaCode")
+      .addr1("addr1")
+      .tel("0101010111")
       .startDate(LocalDateTime.now())
       .endDate(LocalDateTime.now())
       .build();
@@ -52,6 +60,7 @@ public class FestivalTestController {
 
 
     FestivalTranslate festivalTranslate = FestivalTranslate.builder()
+      .language(TranslateLanguage.kor)
       .title(festival.getTitle())
       .imageUrl(festival.getImageUrl())
       .address(festival.getAddress())
@@ -59,11 +68,29 @@ public class FestivalTestController {
       .content(festival.getContent())
       .startDate(festival.getStartDate())
       .endDate(festival.getEndDate())
-      .festival(festival).build();
+      .festival(festival)
+      .build();
 
-    festivalCommandService.createFestivalTranslate(festivalTranslate);
+    FestivalContentTranslate festivalContentTranslate = FestivalContentTranslate.builder()
+      .language(TranslateLanguage.kor)
+      .contentId(1L)
+      .title("테스트 축제 번역 컨텐츠 제목")
+      .address("서울특별시 중구")
+      .content("한글 번역 내용입니다.")
+      .overview("테스트 축제에 대한 간단한 설명")
+      .playtime("09:00 ~ 18:00")
+      .firstImage("https://example.com/test.jpg")
+      .startDate(LocalDateTime.now())
+      .endDate(LocalDateTime.now().plusDays(3))
+      .festivalContent(content) // 연관관계 객체 주입
+      .build();
+
+    /* 이것도 아래 처럼 바꿔야됨 */
+
     contentRepository.save(content);
     festivalRepository.save(festival);
+    festivalCommandService.createFestivalTranslate(festivalTranslate);
+    translateRepository.save(festivalContentTranslate);
 
   }
 }

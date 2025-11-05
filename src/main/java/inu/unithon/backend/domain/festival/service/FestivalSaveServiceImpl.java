@@ -1,6 +1,6 @@
 package inu.unithon.backend.domain.festival.service;
 
-import inu.unithon.backend.domain.festival.dto.v1.FestivalDto;
+import inu.unithon.backend.domain.festival.dto.FestivalDto;
 import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.repository.festival.FestivalRepository;
 import inu.unithon.backend.global.exception.CommonErrorCode;

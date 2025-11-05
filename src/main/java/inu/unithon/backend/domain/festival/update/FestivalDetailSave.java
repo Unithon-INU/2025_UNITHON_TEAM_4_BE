@@ -1,7 +1,7 @@
 package inu.unithon.backend.domain.festival.update;
 
-import inu.unithon.backend.domain.festival.dto.v1.FestivalDto;
-import inu.unithon.backend.domain.festival.dto.v1.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.dto.FestivalDto;
+import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
 import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.entity.FestivalContent;
 import inu.unithon.backend.domain.festival.repository.festival.FestivalContentRepository;

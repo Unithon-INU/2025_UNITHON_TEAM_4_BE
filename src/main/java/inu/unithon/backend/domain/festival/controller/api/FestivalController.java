@@ -1,13 +1,10 @@
 package inu.unithon.backend.domain.festival.controller.api;
 
 import inu.unithon.backend.domain.festival.controller.docs.FestivalControllerSpecification;
-import inu.unithon.backend.domain.festival.dto.v1.FestivalInfoResponseDto;
-import inu.unithon.backend.domain.festival.dto.v1.FestivalIntroResponseDto;
-import inu.unithon.backend.domain.festival.dto.v1.FestivalResponseDto;
-import inu.unithon.backend.domain.festival.dto.v2.request.FestivalTranslatePeriodSearchRequest;
-import inu.unithon.backend.domain.festival.dto.v2.request.FestivalTranslateSearchRequest;
-import inu.unithon.backend.domain.festival.dto.v2.response.FestivalTranslateResponse;
-import inu.unithon.backend.global.response.PageResponseDto;
+import inu.unithon.backend.domain.festival.dto.FestivalInfoResponseDto;
+import inu.unithon.backend.domain.festival.dto.FestivalIntroResponseDto;
+import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.service.FestivalServiceImpl;
 import inu.unithon.backend.global.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +16,7 @@ import inu.unithon.backend.domain.festival.service.FestivalService;
 @RequiredArgsConstructor
 public class FestivalController implements FestivalControllerSpecification {
 
-    private final FestivalService festivalService;
+  private final FestivalServiceImpl festivalService;
 
     /**
      * 축제  조회
@@ -48,41 +45,6 @@ public class FestivalController implements FestivalControllerSpecification {
     public ResponseEntity<ResponseDto<?>> getFestivalInfo(String lang, String contentId) {
         FestivalResponseDto response = festivalService.getFestivalInfo(lang, contentId);
         return ResponseEntity.ok(ResponseDto.success(response));
-    }
-
-
-    /**
-     * version - 2
-     * 축제 키워드 검색
-     *
-     * @param request : FestivalTranslateSearchRequest
-     * @param page : page number
-     * @param size : page size
-     * @return
-     */
-    @Override
-    public ResponseEntity<ResponseDto<?>> searchFestivalByKeyword(FestivalTranslateSearchRequest request,int page,int size) {
-        PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByKeyword(request, page, size);
-//        PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByKeywordEs(request, page, size);
-        return ResponseEntity
-          .ok(ResponseDto.success(response));
-    }
-
-    /**
-     * version - 2
-     * 축제 기간별 검색
-     *
-     * @param request : FestivalTranslatePeriodSearchRequest
-     * @param page : page number
-     * @param size : page size
-     * @return
-     */
-    @Override
-    public ResponseEntity<ResponseDto<?>> searchFestivalByPeriod(FestivalTranslatePeriodSearchRequest request, int page, int size) {
-        PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByPeriod(request, page, size);
-//        PageResponseDto<FestivalTranslateResponse> response = festivalService.searchFestivalsByPeriodEs(request, page, size);
-        return ResponseEntity
-          .ok(ResponseDto.success(response));
     }
 
     /**

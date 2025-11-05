@@ -70,4 +70,29 @@ public class FestivalTranslateRepositoryImpl implements FestivalTranslateReposit
       .fetchOne();
     return new PageImpl<>(content, pageable, count != null ? count : 0);
   }
+
+  /**
+   * 언어별 페이징 조회 (축제 목록)
+   *
+   * @param language
+   * @param pageable
+   * @return
+   */
+  @Override
+  public Page<FestivalTranslate> findByLanguage(TranslateLanguage language, Pageable pageable) {
+    List<FestivalTranslate> content = queryFactory
+      .selectFrom(festivalTranslate)
+      .where(festivalTranslate.language.eq(language))
+      .offset(pageable.getOffset())
+      .limit(pageable.getPageSize())
+      .fetch();
+
+    Long count = queryFactory
+      .select(festivalTranslate.count())
+      .from(festivalTranslate)
+      .where(festivalTranslate.language.eq(language))
+      .fetchOne();
+
+    return new PageImpl<>(content, pageable, count != null ? count : 0);
+  }
 }

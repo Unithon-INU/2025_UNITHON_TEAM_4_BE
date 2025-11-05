@@ -31,4 +31,12 @@ public interface FestivalTranslateRepositoryCustom {
    * @return Page<FestivalTranslate>
    */
   Page<FestivalTranslate> findFestivalsByPeriod(TranslateLanguage language, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+  /**
+   * 언어별 페이징 조회 (축제 목록)
+   * @param language
+   * @param pageable
+   * @return
+   */
+  Page<FestivalTranslate> findByLanguage(TranslateLanguage language, Pageable pageable);
 }
