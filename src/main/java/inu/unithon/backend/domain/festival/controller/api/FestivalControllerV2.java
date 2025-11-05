@@ -33,6 +33,12 @@ public class FestivalControllerV2 implements FestivalControllerSpecification {
   }
 
   @Override
+  public ResponseEntity<ResponseDto<?>> searchFestival(String lang, String keyword, String numOfRows, String pageNo) {
+    FestivalResponseDto response = festivalService.getSearchFestival(lang, keyword, numOfRows, pageNo);
+    return ResponseEntity.ok(ResponseDto.success(response));
+  }
+
+  @Override
   public ResponseEntity<ResponseDto<?>> getFestivalDetailInfo(String lang, String contentId, String contentTypeId) {
     FestivalInfoResponseDto response = festivalService.getFestivalDetailInfo(lang, contentId, contentTypeId);
     return ResponseEntity.ok(ResponseDto.success(response));
