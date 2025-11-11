@@ -35,7 +35,7 @@ public class QuartzConfig {
 
     @Bean
     public Trigger festivalTrigger() {
-        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule("0 0 2 ? * Mon");
+        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule("0 30 15 ? * tue");// 매주 화요일 오후 3시 30분에 실행
 
         return TriggerBuilder.newTrigger()
                 .forJob(festivalJobDetail())
