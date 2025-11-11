@@ -95,29 +95,26 @@ jobs:
           chmod +x es-entrypoint.sh
         shell: bash
       #
-      # 최신 이미지를 풀받습니다
-      - name: docker pull
+      # 1. 최신 백엔드 이미지만 풀(pull) 받습니다.
+      - name: Docker pull latest backend image
         run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/2025_unithon_team_4_be-backend
 
-      # 기존의 컨테이너를 중지시킵니다
-      - name: docker stop container
-        run: sudo docker ps -q | xargs -r sudo docker stop
+      # --- [제거] 기존의 불필요한 컨테이너 중지 및 삭제 단계 ---
+      # - name: docker stop container
+      #   run: sudo docker ps -q | xargs -r sudo docker stop
+      #
+      # - name: remove all container
+      #   run: sudo docker ps -aq | xargs -r sudo docker rm -f
+      # --- 위 두 단계는 반드시 삭제해야 합니다. ---
 
-      # 모든 컨테이너 삭제
-      - name: remove all container
-        run: sudo docker ps -aq | xargs -r sudo docker rm -f
-
-      # app-network 가 없으면 생성
       - name: Ensure Docker Network Exists
         run: sudo docker network inspect app-network >/dev/null 2>&1 || sudo docker network create app-network
 
-      # docker-compose 실행
-      - name: Run with docker-compose
-        run: sudo docker compose -f docker-compose.prod.yml up -d --build
-
-      # 미사용 이미지를 정리합니다
-      - name: delete old docker image
-        run: sudo docker system prune -af
+      # 2. docker-compose up 명령어로 모든 서비스를 '조정(reconcile)'합니다.
+      #    - 변경된 백엔드 이미지를 감지하여 해당 컨테이너만 재시작합니다.
+      #    - 나머지 컨테이너는 변경점이 없으므로 그대로 유지됩니다.
+      - name: Run and update services with docker-compose
+        run: sudo docker compose -f docker-compose.prod.yml up -d
 
 
       # [추가] 보안을 위해 생성된 임시 파일 삭제
