@@ -127,7 +127,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"  # or "prometheus"
+        include: "prometheus"
   metrics:
     export:
       prometheus:
