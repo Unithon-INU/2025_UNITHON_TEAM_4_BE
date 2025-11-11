@@ -1,5 +1,6 @@
 package inu.unithon.backend.domain.festival.entity;
 
+import inu.unithon.backend.domain.translate.entity.FestivalTranslate;
 import jakarta.persistence.*;
 import inu.unithon.backend.global.entity.BaseEntity;
 import lombok.*;
