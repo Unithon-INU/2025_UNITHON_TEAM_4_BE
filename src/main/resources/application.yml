@@ -122,3 +122,14 @@ cloud:
 default:
   profile:
     image: ${DEFAULT_PROFILE_IMAGE}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # 'prometheus'만 노출하거나, '*'로 모든 엔드포인트를 노출할 수 있습니다.
+        include: "*" # 또는 "health,prometheus"
+  endpoint:
+    prometheus:
+      # 프로메테우스 엔드포인트 활성화
+      enabled: true
