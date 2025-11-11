@@ -11,9 +11,12 @@ import inu.unithon.backend.domain.festival.service.FestivalService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import inu.unithon.backend.global.exception.CustomException;
 
+@Slf4j
 @Component
 public class FestivalUpdateJob implements Job{
 
@@ -28,11 +31,13 @@ public class FestivalUpdateJob implements Job{
     @Override
     public void execute(JobExecutionContext context) {
         try{
+            log.info("start@_@_@_@_@");
             String pageNum = "1";
             String numOfRows = "600";
             String startDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             FestivalResponseDto response = festivalService.getFestivalList("kor", numOfRows, pageNum, startDate, null,null);
             List<FestivalDto> dtoList = response.getResponse().getBody().getItems().getItem();
+            log.info("count  [nums={}]", response.getResponse().getBody().getTotalCount());
             festivalSaveService.saveFestivalList(dtoList);
 
 
