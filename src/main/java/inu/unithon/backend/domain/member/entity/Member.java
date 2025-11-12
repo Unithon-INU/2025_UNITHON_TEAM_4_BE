@@ -1,8 +1,6 @@
 package inu.unithon.backend.domain.member.entity;
 
-import inu.unithon.backend.domain.festivalLike.entity.FestivalLike;
-import inu.unithon.backend.domain.member.dto.request.UpdateProfileRequestDto;
-import inu.unithon.backend.domain.member.dto.response.ProfileResponseDto;
+import inu.unithon.backend.domain.like.festivalLike.entity.FestivalLike;
 import inu.unithon.backend.domain.post.entity.Post;
 import inu.unithon.backend.global.entity.BaseEntity;
 import jakarta.persistence.*;

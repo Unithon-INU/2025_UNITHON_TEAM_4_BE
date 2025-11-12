@@ -1,10 +1,10 @@
 package inu.unithon.backend.domain.festival.service;
 
 import inu.unithon.backend.domain.festival.document.FestivalTranslateDocument;
-import inu.unithon.backend.domain.festival.entity.FestivalTranslate;
+import inu.unithon.backend.domain.translate.entity.FestivalTranslate;
 import inu.unithon.backend.domain.festival.mapper.FestivalMapper;
-import inu.unithon.backend.domain.festival.repository.festivalTranslate.es.FestivalTranslateDocumentRepository;
-import inu.unithon.backend.domain.festival.repository.festivalTranslate.sql.FestivalTranslateRepository;
+import inu.unithon.backend.domain.translate.repository.es.festivalTranslate.FestivalTranslateDocumentRepository;
+import inu.unithon.backend.domain.translate.repository.sql.festivalTranslate.FestivalTranslateRepository;
 import inu.unithon.backend.global.exception.CustomException;
 import inu.unithon.backend.global.exception.FestivalErrorCode;
 import lombok.RequiredArgsConstructor;
