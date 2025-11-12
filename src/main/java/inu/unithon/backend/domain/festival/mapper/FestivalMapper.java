@@ -42,7 +42,7 @@ public interface FestivalMapper {
     @Mapping(target = "dist", constant = " "),
     @Mapping(source = "startDate", target = "eventstartdate", dateFormat = "yyyy-MM-dd"),
     @Mapping(source = "endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd"),
-    @Mapping(target = "item", ignore = true)
+//    @Mapping(target = "item", ignore = true)
   })
   FestivalDto toDtoFromFestival(FestivalTranslate festival);
   /**
@@ -68,7 +68,7 @@ public interface FestivalMapper {
     @Mapping(source = "endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd"),
     @Mapping(target = "title", defaultValue = " "),
     @Mapping(target = "addr1", constant = " "),
-    @Mapping(target = "item", ignore = true)
+//    @Mapping(target = "item", ignore = true)
   })
   FestivalDto toDtoFromFestivalContent(FestivalContentTranslate content);
 

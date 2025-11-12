@@ -66,7 +66,6 @@ public class FestivalSaveServiceImpl implements  FestivalSaveService{
       logger.info(" 새로운 축제 정보 저장 완료: {}", festivalsToSave.size());
       festivalsToSave.forEach(f -> rabbitMqProducer.detailSend(String.valueOf(f.getContentId())));
       // 앞서 저장된 객체 리스트들을 각자 하나씩 rabbitMqProducer를 통해 detailSend 메소드를 등록
-      logger.info(" RabbitMQ로 축제 상세 정보 전송 완료: {}", festivalsToSave.size());
     } else {
       logger.info(" nothing to new");
     }
