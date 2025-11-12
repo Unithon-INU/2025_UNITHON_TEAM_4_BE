@@ -123,6 +123,16 @@ default:
   profile:
     image: ${DEFAULT_PROFILE_IMAGE}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
 ncp:
   api:
     papago:
