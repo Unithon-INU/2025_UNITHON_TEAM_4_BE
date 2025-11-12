@@ -12,6 +12,6 @@ public interface FestivalRepository extends JpaRepository<Festival, Long>, Festi
   Optional<Festival> findByContentId(long contentId);
 
   @Query("SELECT f.contentId FROM Festival f WHERE f.contentId IN :contentIds")
-  List<Long> findContentIdsByContentIds(@Param("contentId") List<Long> contentIds);
+  List<Long> findContentIdsByContentIds(@Param("contentIds") List<Long> contentIds);
 
 }

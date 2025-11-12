@@ -29,5 +29,5 @@ public class FestivalDto {
     private String dist;    // 축제에서의 거리
     private String eventstartdate;
     private String eventenddate;
-    private List<FestivalDto> item;  // 중첩된 item 지원
+//    private List<FestivalDto> item;  // 중첩된 item 지원
 }

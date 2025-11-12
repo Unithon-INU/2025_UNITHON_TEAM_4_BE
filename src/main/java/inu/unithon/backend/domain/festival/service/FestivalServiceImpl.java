@@ -77,7 +77,7 @@ public class FestivalServiceImpl implements FestivalService {
             return objectMapper.readValue(jsonString, FestivalResponseDto.class);
 
         } catch (Exception e) {
-            logger.error("Festival List error : ", e);
+            logger.error("Festival List error: {}", e.getMessage(), e);
             throw new CustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
