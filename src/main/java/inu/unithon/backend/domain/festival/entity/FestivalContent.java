@@ -36,13 +36,13 @@ public class FestivalContent extends BaseEntity {
   private String addr1;
   private String tel;
   private String dist;
-
+  private String infoText;
 
     @Builder
     public FestivalContent(String title, String address, String content, long contentId,
                            LocalDateTime startDate, LocalDateTime endDate, String overview,
                            String playtime, String mapx, String mapy, String firstImage,
-                           String firstImage2, String areaCode, String addr1, String tel, String dist) {
+                           String firstImage2, String areaCode, String addr1, String tel, String dist, String infoText) {
         this.title = title;
         this.address = address;
         this.content = content;
@@ -59,14 +59,14 @@ public class FestivalContent extends BaseEntity {
         this.addr1 = addr1;
         this.tel = tel;
         this.dist = dist;
+        this.infoText = infoText;
     }
 
     public void updateFromInfo(
             String title, String address,
             LocalDateTime startDate, LocalDateTime endDate,
             String overview, String playtime, String mapx, String mapy,
-            String firstImage, String firstImage2, String areaCode, String addr1
-    ) {
+            String firstImage, String firstImage2, String areaCode, String addr1, String tel, String infoText) {
         this.title = title;
         this.address = address;
         this.startDate = startDate;
@@ -80,5 +80,6 @@ public class FestivalContent extends BaseEntity {
         this.areaCode = areaCode;
         this.addr1 = addr1;
         this.tel = tel;
+        this.infoText = infoText;
     }
 }
