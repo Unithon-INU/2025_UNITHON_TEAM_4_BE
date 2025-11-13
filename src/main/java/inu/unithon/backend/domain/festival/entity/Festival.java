@@ -25,13 +25,6 @@ public class Festival extends BaseEntity {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "festival_content_id")
-    private FestivalContent festivalContent;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "festival_id")
-    private List<FestivalTranslate> festivalTranslates = new ArrayList<>();
 
 //    @Builder
 //    public Festival(String title, String imageUrl, String address, String contentId,
@@ -57,7 +50,5 @@ public class Festival extends BaseEntity {
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.festivalContent = festivalContent;
-        this.festivalTranslates = festivalTranslates;
     }
 }

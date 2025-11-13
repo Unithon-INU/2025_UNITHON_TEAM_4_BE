@@ -48,7 +48,7 @@ public class FestivalDetailSave {
         FestivalInfoResponseDto infov2 = festivalService.getFestivalDetailInfo("kor", contentIdStr, "15");
         FestivalIntroResponseDto intro = festivalService.getFestivalDetailIntro("kor", contentIdStr, "15");
         FestivalDto item = FirstItem(info);
-        FestivalIntroDto introItem = FirstItem(intro);
+        FestivalIntroDto introItem = intro.getResponse().getBody().getItems().getItem().getFirst();
         if(item == null) {
             return;
         }
