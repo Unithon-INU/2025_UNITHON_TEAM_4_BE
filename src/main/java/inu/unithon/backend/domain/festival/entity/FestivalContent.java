@@ -36,6 +36,7 @@ public class FestivalContent extends BaseEntity {
   private String addr1;
   private String tel;
   private String dist;
+  @Column(length = 1000)
   private String infoText;
 
     @Builder

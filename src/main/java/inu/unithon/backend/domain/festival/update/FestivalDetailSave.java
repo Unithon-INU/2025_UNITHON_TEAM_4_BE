@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static org.hibernate.query.sqm.tree.SqmNode.log;
+
 @Service
 @RequiredArgsConstructor
 public class FestivalDetailSave {
@@ -80,5 +82,6 @@ public class FestivalDetailSave {
                 firstImage, firstImage2, areaCode, addr1, tel, infoText
         );
         festivalContentRepository.save(entity);
+        log.info("Saved FestivalContent for contentId: " + contentId);
     }
 }
