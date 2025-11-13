@@ -34,12 +34,10 @@ public class FestivalUpdateJob implements Job{
         try{
             log.info("start@_@_@_@_@");
             String pageNum = "1";
-            String numOfRows = "100";
+            String numOfRows = "1";
             String startDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             log.info("[CALL] before getFestivalList()");
             FestivalResponseDto response = festivalService.getFestivalList("kor", numOfRows, pageNum, startDate, null,null);
-            log.info("[CALL] after getFestivalList(): resNull? {}", response == null);
-            log.info("[BEAN] festivalService bean = {}", festivalService.getClass().getName());
             List<FestivalDto> dtoList = response.getResponse().getBody().getItems().getItem();
             log.info("count  [nums={}]", response.getResponse().getBody().getTotalCount());
             if(response.getResponse().getBody().getTotalCount() == 0){

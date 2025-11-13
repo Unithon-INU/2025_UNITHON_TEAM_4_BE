@@ -1,5 +1,6 @@
 package inu.unithon.backend.domain.festival.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.*;
@@ -10,6 +11,7 @@ import lombok.Builder;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FestivalDto {
     private String addr1;
     private String addr2;

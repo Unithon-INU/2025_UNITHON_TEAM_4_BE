@@ -19,30 +19,16 @@ public class Festival extends BaseEntity {
     private String title;
     @Column(length = 1000)
     private String imageUrl;
+    @Column(length = 1000)
     private String address;
     private Long contentId;
     private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-
-//    @Builder
-//    public Festival(String title, String imageUrl, String address, String contentId,
-//                    String content, String startDate, String endDate, FestivalContent festivalContent, List<FestivalTranslate> festivalTranslates) {
-//        this.title = title;
-//        this.imageUrl = imageUrl;
-//        this.address = address;
-//        this.contentId = contentId;
-//        this.content = content;
-//        this.startDate = startDate;
-//        this.endDate = endDate;
-//        this.festivalContent = festivalContent;
-//        this.festivalTranslates = festivalTranslates;
-//    }
-
     @Builder
     public Festival(String title, String imageUrl, String address, Long contentId,
-                    String content, LocalDateTime startDate, LocalDateTime endDate, FestivalContent festivalContent, List<FestivalTranslate> festivalTranslates) {
+                    String content, LocalDateTime startDate, LocalDateTime endDate) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.address = address;

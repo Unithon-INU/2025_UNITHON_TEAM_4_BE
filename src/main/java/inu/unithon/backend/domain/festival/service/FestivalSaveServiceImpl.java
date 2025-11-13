@@ -82,6 +82,7 @@ public class FestivalSaveServiceImpl implements  FestivalSaveService{
         .startDate(startDate)
         .endDate(endDate)
         .imageUrl(dto.getFirstimage())
+        .address(dto.getAddr1())
         .build();
     } catch (Exception e) {
       throw new CustomException(CommonErrorCode.DATE_PARSE_FAILED);
