@@ -1,5 +1,6 @@
 package inu.unithon.backend.domain.festival.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Builder;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FestivalInfoDto {
     private Long contentid;
     private String contenttypeid;

@@ -4,6 +4,7 @@ import inu.unithon.backend.domain.festival.dto.FestivalDto;
 import inu.unithon.backend.domain.festival.dto.FestivalInfoResponseDto;
 import inu.unithon.backend.domain.festival.dto.FestivalIntroResponseDto;
 import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.repository.FestivalRepository;
 import inu.unithon.backend.domain.translate.entity.FestivalContentTranslate;
 import inu.unithon.backend.domain.translate.entity.FestivalTranslate;
 import inu.unithon.backend.domain.translate.entity.TranslateLanguage;
@@ -13,6 +14,7 @@ import inu.unithon.backend.domain.translate.repository.sql.festivalTranslate.Fes
 import inu.unithon.backend.global.exception.CustomException;
 import inu.unithon.backend.global.exception.FestivalErrorCode;
 import lombok.RequiredArgsConstructor;
+import inu.unithon.backend.domain.festival.entity.Festival;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.context.annotation.Primary;
@@ -22,6 +24,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static inu.unithon.backend.global.exception.FestivalErrorCode.FESTIVAL_DB_SEARCH_ERROR;
@@ -36,6 +41,7 @@ public class FestivalServiceImplV2 implements FestivalService {
   private final FestivalMapper festivalMapper;
   private final FestivalTranslateRepository translateRepository;
   private final FestivalContentTranslateRepository contentTranslateRepository;
+  private final FestivalRepository festivalRepository;
 
 
   @Override // festival entity
@@ -44,17 +50,34 @@ public class FestivalServiceImplV2 implements FestivalService {
       int page = Integer.parseInt(pageNo);
       int size = Integer.parseInt(numOfRows);
       Pageable pageable = PageRequest.of(page - 1, size);
+      LocalDateTime startParam = parseStart(eventStartDate);
+      LocalDateTime endParam = parseEnd(eventEndDate);
 
       // 언어 필터로 페스티벌 목록 조회
-      Page<FestivalTranslate> results = translateRepository.findByLanguage(
-        TranslateLanguage.valueOf(lang), pageable
-      );
+      if(!"kor".equalsIgnoreCase(lang)) {
+        Page<FestivalTranslate> results = translateRepository.findByLanguage(
+                TranslateLanguage.valueOf(lang), pageable
+        );
 
-      List<FestivalDto> items = results.getContent().stream()
-        .map(festivalMapper::toDtoFromFestival)
-        .toList();
 
-      return buildFestivalResponse(items, page, size, (int) results.getTotalElements());
+        List<FestivalDto> items = results.getContent().stream()
+                .map(festivalMapper::toDtoFromFestival)
+                .toList();
+        return buildFestivalResponse(items, page, size, (int) results.getTotalElements());
+
+      }else{
+        Page<Festival> res = festivalRepository.findAllOverlapping(startParam, endParam, pageable);
+
+        List<FestivalDto> stuffs = res.getContent().stream()
+                .map(festivalMapper::toDtoFromOriginalFestival)
+                .toList();
+
+        return buildFestivalResponse(stuffs, page, size, (int) res.getTotalElements());
+      }
+
+
+
+
     } catch (Exception e) {
       log.error("Festival List DB Search error", e);
       throw new CustomException(FESTIVAL_DB_SEARCH_ERROR);
@@ -158,5 +181,17 @@ public class FestivalServiceImplV2 implements FestivalService {
     return FestivalResponseDto.builder()
       .response(response)
       .build();
+  }
+
+  /** yyyyMMdd -> 00:00:00 (null/blank 허용) */
+  private static final DateTimeFormatter YMD = DateTimeFormatter.ofPattern("yyyyMMdd");
+  private LocalDateTime parseStart(String ymd) {
+    if (ymd == null || ymd.isBlank()) return null;
+    return LocalDate.parse(ymd, YMD).atStartOfDay();
+  }
+  /** yyyyMMdd -> 23:59:59.999999999 (null/blank 허용) */
+  private LocalDateTime parseEnd(String ymd) {
+    if (ymd == null || ymd.isBlank()) return null;
+    return LocalDate.parse(ymd, YMD).atTime(23, 59, 59, 999_999_999);
   }
 }

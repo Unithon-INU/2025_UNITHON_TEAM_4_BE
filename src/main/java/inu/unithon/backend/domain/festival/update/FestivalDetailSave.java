@@ -1,13 +1,12 @@
 package inu.unithon.backend.domain.festival.update;
 
-import inu.unithon.backend.domain.festival.dto.FestivalDto;
-import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
+import inu.unithon.backend.domain.festival.dto.*;
 import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.entity.FestivalContent;
 import inu.unithon.backend.domain.festival.repository.FestivalContentRepository;
 import inu.unithon.backend.domain.festival.repository.FestivalRepository;
 import inu.unithon.backend.domain.festival.service.FestivalSaveService;
-import inu.unithon.backend.domain.festival.service.FestivalService;
+import inu.unithon.backend.domain.festival.service.FestivalServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,24 +15,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static org.hibernate.query.sqm.tree.SqmNode.log;
+
 @Service
 @RequiredArgsConstructor
 public class FestivalDetailSave {
 
-    private final FestivalService festivalService;
+    private final FestivalServiceImpl festivalService;
     private final FestivalSaveService festivalSaveService;
     private final FestivalContentRepository festivalContentRepository;
     private final FestivalRepository festivalRepository;
-    private static final DateTimeFormatter dayFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
-
-
-//    private LocalDateTime TimeSetting(String date) {
-//        if (date == null || date.isBlank()) {
-//            return null;
-//        }
-//        return LocalDate.parse(date, dayFormat).atStartOfDay();
-//    }
-
     private FestivalDto FirstItem(FestivalResponseDto data) {
         if(data == null || data.getResponse() == null) return null;
         var body = data.getResponse().getBody();
@@ -47,6 +38,7 @@ public class FestivalDetailSave {
         // 그냥 리스폰스 자체를 사용하게 된다면 객체가 아닌 객체리스트로 받기떄문에 item.item.item 이런식으로 갈수있기때문에 오류 방지하고자
     }
 
+
     @Transactional
     public void saveDetail(String contentIdStr) {
 
@@ -54,16 +46,15 @@ public class FestivalDetailSave {
 
         Festival parent = festivalRepository.findByContentId(contentId)
                 .orElseThrow();
-        // detail common APi 에서 축제 시작일과 종료일을 주는줄 알았는데 주지않아서 기존 리스트에서 호출해서 받아온 값을 사용하기 위해
-        // 그냥 festival repo 에서 현재 ContentId 일치하는 Data에서 시작일과 종료일 추출
-
-
-
         FestivalResponseDto info = festivalService.getFestivalInfo("kor", contentIdStr);
+        FestivalInfoResponseDto infov2 = festivalService.getFestivalDetailInfo("kor", contentIdStr, "15");
+        FestivalIntroResponseDto intro = festivalService.getFestivalDetailIntro("kor", contentIdStr, "15");
         FestivalDto item = FirstItem(info);
+        FestivalIntroDto introItem = intro.getResponse().getBody().getItems().getItem().getFirst();
         if(item == null) {
             return;
         }
+        FestivalInfoDto infoItem  = infov2.getResponse().getBody().getItems().getItem().get(1);
 
         String title       = item.getTitle();
         String address     = item.getAddr1();
@@ -75,18 +66,22 @@ public class FestivalDetailSave {
         String areaCode    = item.getAreacode();
         String addr1       = item.getAddr1();
         String tel         = item.getTel();
-        LocalDateTime start = parent.getStartDate();
-        LocalDateTime end   = parent.getEndDate();
+        LocalDateTime startDate = parent.getStartDate();
+        LocalDateTime endDate   = parent.getEndDate();
+        String infoText =  infoItem.getInfotext();
+        String playtime = introItem.getPlaytime();
 
 
         FestivalContent entity = festivalContentRepository.findByContentId(contentId)
                 .orElseGet(() -> FestivalContent.builder().contentId(contentId).build());
 
         entity.updateFromInfo(
-                title, address, start, end, overview,
-                mapx, mapy,
-                firstImage, firstImage2, areaCode, addr1, tel
+                title,address,
+                startDate, endDate,
+                overview, playtime, mapx, mapy,
+                firstImage, firstImage2, areaCode, addr1, tel, infoText
         );
         festivalContentRepository.save(entity);
+        log.info("Saved FestivalContent for contentId: " + contentId);
     }
 }

@@ -71,6 +71,8 @@ public class QuartzService {
     scheduledJobRepository.delete(job);
   }
 
+
+
   // 중복 확인 메서드
   public boolean existsJob(Long userId, Long festivalId, FestivalNotificationType type) {
     return scheduledJobRepository.existsByUserIdAndFestivalIdAndType(userId, festivalId, type);

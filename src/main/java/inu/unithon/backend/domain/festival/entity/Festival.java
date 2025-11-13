@@ -20,6 +20,7 @@ public class Festival extends BaseEntity {
     private String title;
     @Column(length = 1000)
     private String imageUrl;
+    @Column(length = 1000)
     private String address;
     private Long contentId;
     private String content;
@@ -27,30 +28,16 @@ public class Festival extends BaseEntity {
     private LocalDateTime endDate;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "festival_content_id")
+    @JoinColumn(name = "id")
     private FestivalContent festivalContent;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "festival_id")
-    private List<FestivalTranslate> festivalTranslates = new ArrayList<>();
-
-//    @Builder
-//    public Festival(String title, String imageUrl, String address, String contentId,
-//                    String content, String startDate, String endDate, FestivalContent festivalContent, List<FestivalTranslate> festivalTranslates) {
-//        this.title = title;
-//        this.imageUrl = imageUrl;
-//        this.address = address;
-//        this.contentId = contentId;
-//        this.content = content;
-//        this.startDate = startDate;
-//        this.endDate = endDate;
-//        this.festivalContent = festivalContent;
-//        this.festivalTranslates = festivalTranslates;
-//    }
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private FestivalTranslate festivalTranslates;
 
     @Builder
     public Festival(String title, String imageUrl, String address, Long contentId,
-                    String content, LocalDateTime startDate, LocalDateTime endDate, FestivalContent festivalContent, List<FestivalTranslate> festivalTranslates) {
+                    String content, LocalDateTime startDate, LocalDateTime endDate, FestivalContent festivalContent, FestivalTranslate festivalTranslates) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.address = address;
@@ -58,7 +45,7 @@ public class Festival extends BaseEntity {
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.festivalContent = festivalContent;
-        this.festivalTranslates = festivalTranslates;
+//        this.festivalContent = festivalContent;
+//        this.festivalTranslates = festivalTranslates;
     }
 }
