@@ -53,7 +53,7 @@ public interface FestivalMapper {
    * (상세 컨텐츠 정보)
    */
   @Mappings({
-    @Mapping(source = "addr1", target = "addr1", defaultValue = " "),
+    @Mapping(source = "addr1", target = "addr2", defaultValue = " "),
     @Mapping(source = "areaCode", target = "areacode", defaultValue = " "),
     @Mapping(source = "contentId", target = "contentid"),
     @Mapping(target = "contenttypeid", constant = " "),
