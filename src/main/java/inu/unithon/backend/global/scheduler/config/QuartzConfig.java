@@ -61,7 +61,7 @@ public class QuartzConfig {
     @Bean
     public Trigger festivalTrigger() {
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
-                .cronSchedule("0 49 17 ? * WED") // 매주 수요일 오후 5시
+                .cronSchedule("0 0 16 ? * THU") // 매주 목요일 오후 4시
                 .inTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
                 .withMisfireHandlingInstructionDoNothing();
 

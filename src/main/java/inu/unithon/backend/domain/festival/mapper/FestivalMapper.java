@@ -7,11 +7,13 @@ import inu.unithon.backend.domain.festival.dto.FestivalIntroResponseDto;
 import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.entity.FestivalContentTranslate;
 import inu.unithon.backend.domain.festival.entity.FestivalTranslate;
+import jakarta.persistence.Column;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -45,14 +47,13 @@ public interface FestivalMapper {
     @Mapping(source = "endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd"),
 //    @Mapping(target = "item", ignore = true)
   })
-
   FestivalDto toDtoFromFestival(FestivalTranslate festival);
   /**
    * FestivalContentTranslate → FestivalDto 변환
    * (상세 컨텐츠 정보)
    */
   @Mappings({
-    @Mapping(source = "addr1", target = "addr2", defaultValue = " "),
+    @Mapping(source = "addr1", target = "addr1", defaultValue = " "),
     @Mapping(source = "areaCode", target = "areacode", defaultValue = " "),
     @Mapping(source = "contentId", target = "contentid"),
     @Mapping(target = "contenttypeid", constant = " "),
@@ -71,9 +72,7 @@ public interface FestivalMapper {
     @Mapping(target = "title", defaultValue = " "),
     @Mapping(target = "addr1", constant = " "),
 //    @Mapping(target = "item", ignore = true)
-  })
-  FestivalDto toDtoFromOriginalFestival(Festival festival);
-
+  }) FestivalDto toDtoFromFestivalContent(FestivalContentTranslate content);
   /**
    * Festival → FestivalDto 변환
    * (한국어 원본)
@@ -81,24 +80,14 @@ public interface FestivalMapper {
   @Mappings({
           @Mapping(source = "title", target = "title", defaultValue = " "),
           @Mapping(source = "address", target = "addr1", defaultValue = " "),
-          @Mapping(target = "addr2", constant = " "),
           @Mapping(source = "imageUrl", target = "firstimage", defaultValue = " "),
           @Mapping(source = "contentId", target = "contentid"),
-          @Mapping(target = "areacode", constant = " "),
-          @Mapping(target = "contenttypeid", constant = " "),
           @Mapping(target = "createdtime", constant = " "),
-          @Mapping(target = "firstimage2", constant = " "),
-          @Mapping(target = "mapx", constant = " "),
-          @Mapping(target = "mapy", constant = " "),
           @Mapping(target = "modifiedtime", constant = " "),
-          @Mapping(target = "tel", constant = " "),
-          @Mapping(target = "zipcode", constant = " "),
-          @Mapping(source = "content", target = "overview", defaultValue = " "),
-          @Mapping(target = "dist", constant = " "),
           @Mapping(source = "startDate", target = "eventstartdate", dateFormat = "yyyy-MM-dd"),
           @Mapping(source = "endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd"),
   })
-  FestivalDto toDtoFromFestivalContent(FestivalContentTranslate content);
+  FestivalDto toDtoFromOriginalFestival(Festival festival);
 
   // FestivalContentTranslate → FestivalIntroResponseDto
   default FestivalIntroResponseDto toIntroFromFestivalContent(FestivalContentTranslate content) {
