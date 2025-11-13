@@ -2,7 +2,7 @@ package inu.unithon.backend.domain.festival.service;
 
 import inu.unithon.backend.domain.festival.dto.FestivalDto;
 import inu.unithon.backend.domain.festival.entity.Festival;
-import inu.unithon.backend.domain.festival.repository.festival.FestivalRepository;
+import inu.unithon.backend.domain.festival.repository.FestivalRepository;
 import inu.unithon.backend.global.exception.CommonErrorCode;
 import inu.unithon.backend.global.exception.CustomException;
 import inu.unithon.backend.global.rabbitMq.RabbitMqProducer;

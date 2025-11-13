@@ -1,5 +1,6 @@
 package inu.unithon.backend.domain.festival.entity;
 
+import inu.unithon.backend.domain.translate.entity.FestivalTranslate;
 import jakarta.persistence.*;
 import inu.unithon.backend.global.entity.BaseEntity;
 import lombok.*;
@@ -26,9 +27,17 @@ public class Festival extends BaseEntity {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private FestivalContent festivalContent;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private FestivalTranslate festivalTranslates;
+
     @Builder
     public Festival(String title, String imageUrl, String address, Long contentId,
-                    String content, LocalDateTime startDate, LocalDateTime endDate) {
+                    String content, LocalDateTime startDate, LocalDateTime endDate, FestivalContent festivalContent, FestivalTranslate festivalTranslates) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.address = address;
@@ -36,5 +45,7 @@ public class Festival extends BaseEntity {
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.festivalContent = festivalContent;
+        this.festivalTranslates = festivalTranslates;
     }
 }

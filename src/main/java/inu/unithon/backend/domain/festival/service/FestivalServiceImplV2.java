@@ -4,17 +4,17 @@ import inu.unithon.backend.domain.festival.dto.FestivalDto;
 import inu.unithon.backend.domain.festival.dto.FestivalInfoResponseDto;
 import inu.unithon.backend.domain.festival.dto.FestivalIntroResponseDto;
 import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
-import inu.unithon.backend.domain.festival.entity.Festival;
-import inu.unithon.backend.domain.festival.entity.FestivalContentTranslate;
-import inu.unithon.backend.domain.festival.entity.FestivalTranslate;
-import inu.unithon.backend.domain.festival.entity.TranslateLanguage;
+import inu.unithon.backend.domain.festival.repository.FestivalRepository;
+import inu.unithon.backend.domain.translate.entity.FestivalContentTranslate;
+import inu.unithon.backend.domain.translate.entity.FestivalTranslate;
+import inu.unithon.backend.domain.translate.entity.TranslateLanguage;
 import inu.unithon.backend.domain.festival.mapper.FestivalMapper;
-import inu.unithon.backend.domain.festival.repository.festival.FestivalRepository;
-import inu.unithon.backend.domain.festival.repository.festivalTranslate.sql.FestivalContentTranslateRepository;
-import inu.unithon.backend.domain.festival.repository.festivalTranslate.sql.FestivalTranslateRepository;
+import inu.unithon.backend.domain.translate.repository.sql.festivalContentTranslate.FestivalContentTranslateRepository;
+import inu.unithon.backend.domain.translate.repository.sql.festivalTranslate.FestivalTranslateRepository;
 import inu.unithon.backend.global.exception.CustomException;
 import inu.unithon.backend.global.exception.FestivalErrorCode;
 import lombok.RequiredArgsConstructor;
+import inu.unithon.backend.domain.festival.entity.Festival;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.context.annotation.Primary;
@@ -50,8 +50,8 @@ public class FestivalServiceImplV2 implements FestivalService {
       int page = Integer.parseInt(pageNo);
       int size = Integer.parseInt(numOfRows);
       Pageable pageable = PageRequest.of(page - 1, size);
-      LocalDateTime startParam = parseStart(eventStartDate); // 00:00:00
-      LocalDateTime endParam   = parseEnd(eventEndDate);
+      LocalDateTime startParam = parseStart(eventStartDate);
+      LocalDateTime endParam = parseEnd(eventEndDate);
 
       // 언어 필터로 페스티벌 목록 조회
       if(!"kor".equalsIgnoreCase(lang)) {

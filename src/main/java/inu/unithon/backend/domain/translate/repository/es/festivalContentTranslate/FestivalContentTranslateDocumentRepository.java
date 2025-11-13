@@ -1,0 +1,7 @@
+package inu.unithon.backend.domain.translate.repository.es.festivalContentTranslate;
+
+import inu.unithon.backend.domain.festival.document.FestivalContentTranslateDocument;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+
+public interface FestivalContentTranslateDocumentRepository extends ElasticsearchRepository<FestivalContentTranslateDocument, String>, FestivalContentTranslateDocumentRepositoryCustom {
+}

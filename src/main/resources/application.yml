@@ -122,3 +122,20 @@ cloud:
 default:
   profile:
     image: ${DEFAULT_PROFILE_IMAGE}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+ncp:
+  api:
+    papago:
+      translate-url: https://papago.apigw.ntruss.com/nmt/v1/translation
+      client-id: ${PAPAGO_CLIENT_ID}
+      client-secret: ${PAPAGO_CLIENT_SECRET}

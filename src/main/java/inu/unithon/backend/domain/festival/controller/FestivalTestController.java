@@ -1,9 +1,12 @@
 package inu.unithon.backend.domain.festival.controller;
 
 import inu.unithon.backend.domain.festival.entity.*;
-import inu.unithon.backend.domain.festival.repository.festival.FestivalContentRepository;
-import inu.unithon.backend.domain.festival.repository.festival.FestivalRepository;
-import inu.unithon.backend.domain.festival.repository.festivalTranslate.sql.FestivalContentTranslateRepository;
+import inu.unithon.backend.domain.festival.repository.FestivalContentRepository;
+import inu.unithon.backend.domain.festival.repository.FestivalRepository;
+import inu.unithon.backend.domain.translate.entity.FestivalContentTranslate;
+import inu.unithon.backend.domain.translate.entity.FestivalTranslate;
+import inu.unithon.backend.domain.translate.entity.TranslateLanguage;
+import inu.unithon.backend.domain.translate.repository.sql.festivalContentTranslate.FestivalContentTranslateRepository;
 import inu.unithon.backend.domain.festival.service.FestivalCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

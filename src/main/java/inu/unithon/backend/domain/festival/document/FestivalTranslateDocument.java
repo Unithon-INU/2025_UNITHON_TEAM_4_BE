@@ -1,6 +1,6 @@
 package inu.unithon.backend.domain.festival.document;
 
-import inu.unithon.backend.domain.festival.entity.TranslateLanguage;
+import inu.unithon.backend.domain.translate.entity.TranslateLanguage;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
