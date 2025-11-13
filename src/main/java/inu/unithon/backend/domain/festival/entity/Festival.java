@@ -45,7 +45,7 @@ public class Festival extends BaseEntity {
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.festivalContent = festivalContent;
-        this.festivalTranslates = festivalTranslates;
+//        this.festivalContent = festivalContent;
+//        this.festivalTranslates = festivalTranslates;
     }
 }

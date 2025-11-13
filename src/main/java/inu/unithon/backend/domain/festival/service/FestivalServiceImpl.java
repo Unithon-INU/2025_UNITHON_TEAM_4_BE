@@ -65,7 +65,7 @@ public class FestivalServiceImpl implements FestivalService {
                 url += "&areaCode=" + areaCode;
             }
 
-            logger.info("📡 도커 요청 URL: {}", url);
+            logger.info(" 도커 요청 URL: {}", url);
 
             URI uri = new URI(url);
             String jsonString = restTemplate.getForObject(uri, String.class);
@@ -125,7 +125,7 @@ public class FestivalServiceImpl implements FestivalService {
                     + "&contentTypeId=" + getContentid(lang)
                     + "&keyword=" + keyword;
 
-            logger.info("📡 도커 요청 URL: {}", url);
+            logger.info(" 도커 요청 URL: {}", url);
 
             URI uri = new URI(url);
             String jsonString = restTemplate.getForObject(uri, String.class);
@@ -152,7 +152,7 @@ public class FestivalServiceImpl implements FestivalService {
                     + "&contentTypeId=" + contentTypeId
                     + "&_type=json";
 
-            logger.info("📡 도커 요청 URL: {}", url);
+            logger.info(" 도커 요청 URL: {}", url);
 
             URI uri = new URI(url);
             String jsonString = restTemplate.getForObject(uri, String.class);
@@ -179,7 +179,7 @@ public class FestivalServiceImpl implements FestivalService {
                     + "&contentTypeId=" + contentTypeId
                     + "&_type=json";
 
-            logger.info("📡 도커 요청 URL: {}", url);
+            logger.info(" 도커 요청 URL: {}", url);
 
             URI uri = new URI(url);
             String jsonString = restTemplate.getForObject(uri, String.class);
@@ -210,7 +210,7 @@ public class FestivalServiceImpl implements FestivalService {
                     + "&radius=1000"
                     + "&contentTypeId=" + getFoodid(lang);
 
-            logger.info("📡 도커 요청 URL: {}", url);
+            logger.info(" 도커 요청 URL: {}", url);
 
             URI uri = new URI(url);
             String jsonString = restTemplate.getForObject(uri, String.class);
