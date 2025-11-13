@@ -93,12 +93,7 @@ public class FestivalServiceImpl implements FestivalService {
                     + "&MobileApp=UnithonApp"
                     + "&MobileOS=ETC"
                     + "&contentId=" + contentId
-                    + "&_type=json"
-                    + "&defaultYN=Y"
-                    + "&firstImageYN=Y"
-                    + "&addrinfoYN=Y"
-                    + "&mapinfoYN=Y"
-                    + "&overviewYN=Y";
+                    + "&_type=json";
 
             logger.info(" 도커 요청 URL: {}", url);
 

@@ -7,7 +7,7 @@ import inu.unithon.backend.domain.festival.entity.FestivalContent;
 import inu.unithon.backend.domain.festival.repository.festival.FestivalContentRepository;
 import inu.unithon.backend.domain.festival.repository.festival.FestivalRepository;
 import inu.unithon.backend.domain.festival.service.FestivalSaveService;
-import inu.unithon.backend.domain.festival.service.FestivalService;
+import inu.unithon.backend.domain.festival.service.FestivalServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FestivalDetailSave {
 
-    private final FestivalService festivalService;
+    private final FestivalServiceImpl festivalService;
     private final FestivalSaveService festivalSaveService;
     private final FestivalContentRepository festivalContentRepository;
     private final FestivalRepository festivalRepository;
@@ -54,11 +54,6 @@ public class FestivalDetailSave {
 
         Festival parent = festivalRepository.findByContentId(contentId)
                 .orElseThrow();
-        // detail common APi 에서 축제 시작일과 종료일을 주는줄 알았는데 주지않아서 기존 리스트에서 호출해서 받아온 값을 사용하기 위해
-        // 그냥 festival repo 에서 현재 ContentId 일치하는 Data에서 시작일과 종료일 추출
-
-
-
         FestivalResponseDto info = festivalService.getFestivalInfo("kor", contentIdStr);
         FestivalDto item = FirstItem(info);
         if(item == null) {

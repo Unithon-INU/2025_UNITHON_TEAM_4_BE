@@ -54,6 +54,8 @@ public class FestivalServiceImplV2 implements FestivalService {
         .map(festivalMapper::toDtoFromFestival)
         .toList();
 
+      log.info("Festival List DB Search success: lang={}, numOfRows={}, pageNo={}, eventStartDate={}, areaCode={}, eventEndDate={}",
+        lang, numOfRows, pageNo, eventStartDate, areaCode, eventEndDate);
       return buildFestivalResponse(items, page, size, (int) results.getTotalElements());
     } catch (Exception e) {
       log.error("Festival List DB Search error", e);
