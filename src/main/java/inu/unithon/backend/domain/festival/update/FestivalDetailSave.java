@@ -7,7 +7,9 @@ import inu.unithon.backend.domain.festival.repository.FestivalContentRepository;
 import inu.unithon.backend.domain.festival.repository.FestivalRepository;
 import inu.unithon.backend.domain.festival.service.FestivalSaveService;
 import inu.unithon.backend.domain.festival.service.FestivalServiceImpl;
+import inu.unithon.backend.domain.translate.service.TranslationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,14 +19,17 @@ import java.util.List;
 
 import static org.hibernate.query.sqm.tree.SqmNode.log;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FestivalDetailSave {
 
     private final FestivalServiceImpl festivalService;
     private final FestivalSaveService festivalSaveService;
+    private final TranslationService translationService;
     private final FestivalContentRepository festivalContentRepository;
     private final FestivalRepository festivalRepository;
+
     private FestivalDto FirstItem(FestivalResponseDto data) {
         if(data == null || data.getResponse() == null) return null;
         var body = data.getResponse().getBody();
@@ -82,6 +87,9 @@ public class FestivalDetailSave {
                 firstImage, firstImage2, areaCode, addr1, tel, infoText
         );
         festivalContentRepository.save(entity);
-        log.info("Saved FestivalContent for contentId: " + contentId);
+        log.info("Saved FestivalContent for contentId: {}", contentId);
+
+        translationService.TranslateFestival(contentId);
+        log.info("Translated FestivalContent for contentId: {}", contentId);
     }
 }
