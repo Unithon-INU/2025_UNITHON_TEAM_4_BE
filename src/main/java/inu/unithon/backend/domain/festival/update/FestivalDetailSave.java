@@ -91,5 +91,7 @@ public class FestivalDetailSave {
 
         translationService.TranslateFestival(contentId);
         log.info("Translated FestivalContent for contentId: {}", contentId);
+
+        // todo : es save
     }
 }

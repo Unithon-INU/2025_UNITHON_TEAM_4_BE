@@ -1,0 +1,1 @@
+// 일단 이 festival content translate 관련 엘라스틱은 사용 하지 않음.

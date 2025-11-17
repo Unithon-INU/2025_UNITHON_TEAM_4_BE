@@ -4,6 +4,7 @@ import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.entity.FestivalContent;
 import inu.unithon.backend.domain.festival.repository.FestivalContentRepository;
 import inu.unithon.backend.domain.festival.repository.FestivalRepository;
+import inu.unithon.backend.domain.festival.service.FestivalCommandService;
 import inu.unithon.backend.domain.translate.client.PapagoClient;
 import inu.unithon.backend.domain.translate.entity.FestivalContentTranslate;
 import inu.unithon.backend.domain.translate.entity.FestivalTranslate;
@@ -33,6 +34,9 @@ public class TranslationServiceImpl implements TranslationService{
   private final FestivalContentTranslateRepository festivalContentTranslateRepository;
   private final FestivalTranslateDocumentRepository translateDocumentRepository;
   private final FestivalContentTranslateDocumentRepository contentTranslateDocumentRepository;
+
+  private final FestivalCommandService festivalCommandService;
+
   private final PapagoClient papagoClient;
 
 
@@ -86,7 +90,7 @@ public class TranslationServiceImpl implements TranslationService{
    */
   private void saveOriginalTranslations(Festival festival, FestivalContent content, Long contentId, TranslateLanguage lang) {
     FestivalTranslate festivalTranslate = FestivalTranslate.builder()
-      .language(lang)
+      .language(lang) // kor
       .title(festival.getTitle())
       .imageUrl(festival.getImageUrl())
       .address(festival.getAddress())
@@ -99,6 +103,10 @@ public class TranslationServiceImpl implements TranslationService{
 
     festivalTranslateRepository.save(festivalTranslate);
     log.debug("[TranslationService] Saved original FestivalTranslate for contentId={}, lang={}", contentId, lang);
+
+    /* Save to Es */
+    festivalCommandService.createFestivalTranslate(festivalTranslate);
+    log.debug("[TranslationService] Saved Elastic FestivalTranslate for contentId={}, lang={}", contentId, lang);
 
     if (content != null) {
       FestivalContentTranslate contentTranslate = buildFestivalContentTranslate(content, contentId, lang, false);
@@ -130,6 +138,10 @@ public class TranslationServiceImpl implements TranslationService{
 
       festivalTranslateRepository.save(translatedFestival);
       log.debug("[TranslationService] Saved translated FestivalTranslate for contentId={}, lang={}", contentId, lang);
+
+      /* Save to Es */
+      festivalCommandService.createFestivalTranslate(translatedFestival);
+      log.debug("[TranslationService] Saved Elastic FestivalTranslate for contentId={}, lang={}", contentId, lang);
 
       if (content != null) {
         FestivalContentTranslate translatedContent = buildFestivalContentTranslate(content, contentId, lang, true);

@@ -1,4 +1,4 @@
-package inu.unithon.backend.domain.festival.document;
+package inu.unithon.backend.domain.translate.document;
 
 import inu.unithon.backend.domain.translate.entity.TranslateLanguage;
 import jakarta.persistence.Id;
@@ -17,7 +17,7 @@ public class FestivalTranslateDocument {
 
   /**
    * Elasticsearch 문서의 고유 ID
-   * -> festivalId + "_" + language 로 구성 (예: "123_kor")
+   * -> contentId + "_" + language 로 구성 (예: "123_kor")
    */
   @Id
   private String id;   // Elasticsearch는 String ID 권장
@@ -87,7 +87,7 @@ public class FestivalTranslateDocument {
     this.festivalId = festivalId;
   }
 
-  private static String generateId(Long festivalId, TranslateLanguage language) {
-    return festivalId + "_" + language.name();
+  private static String generateId(Long contentId, TranslateLanguage language) {
+    return contentId + "_" + language.name();
   }
 }

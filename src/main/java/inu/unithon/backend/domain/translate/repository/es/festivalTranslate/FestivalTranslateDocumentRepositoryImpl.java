@@ -2,7 +2,7 @@ package inu.unithon.backend.domain.translate.repository.es.festivalTranslate;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.json.JsonData;
-import inu.unithon.backend.domain.festival.document.FestivalTranslateDocument;
+import inu.unithon.backend.domain.translate.document.FestivalTranslateDocument;
 import inu.unithon.backend.domain.translate.entity.TranslateLanguage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
