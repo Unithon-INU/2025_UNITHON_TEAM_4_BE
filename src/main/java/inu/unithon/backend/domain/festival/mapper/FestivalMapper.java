@@ -14,7 +14,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
 
 @Mapper(componentModel = "spring")
 public interface FestivalMapper {
@@ -45,9 +47,26 @@ public interface FestivalMapper {
     @Mapping(target = "dist", constant = " "),
     @Mapping(source = "startDate", target = "eventstartdate", dateFormat = "yyyy-MM-dd"),
     @Mapping(source = "endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd"),
-    @Mapping(target = "item", ignore = true)
+//    @Mapping(target = "item", ignore = true)
   })
   FestivalDto toDtoFromFestival(FestivalTranslate festival);
+
+  /**
+   * Festival → FestivalDto 변환
+   * (한국어 원본)
+   */
+  @Mappings({
+          @Mapping(source = "title", target = "title", defaultValue = " "),
+          @Mapping(source = "address", target = "addr1", defaultValue = " "),
+          @Mapping(source = "imageUrl", target = "firstimage", defaultValue = " "),
+          @Mapping(source = "contentId", target = "contentid"),
+          @Mapping(target = "createdtime", constant = " "),
+          @Mapping(target = "modifiedtime", constant = " "),
+          @Mapping(source = "startDate", target = "eventstartdate", dateFormat = "yyyy-MM-dd"),
+          @Mapping(source = "endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd"),
+  })
+  FestivalDto toDtoFromOriginalFestival(Festival festival);
+
   /**
    * FestivalContentTranslate → FestivalDto 변환
    * (상세 컨텐츠 정보)
@@ -71,7 +90,7 @@ public interface FestivalMapper {
     @Mapping(source = "endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd"),
     @Mapping(target = "title", defaultValue = " "),
     @Mapping(target = "addr1", constant = " "),
-    @Mapping(target = "item", ignore = true)
+//    @Mapping(target = "item", ignore = true)
   })
   FestivalDto toDtoFromFestivalContent(FestivalContentTranslate content);
 

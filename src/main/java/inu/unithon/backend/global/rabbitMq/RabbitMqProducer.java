@@ -11,6 +11,7 @@ public class RabbitMqProducer {
     private final RabbitTemplate rabbitTemplate;
     private final RabbitMqConfig rabbitMqConfig;
 
+
     public void detailSend(String contentId){
         rabbitTemplate.convertAndSend(
                 rabbitMqConfig.getExchangeName(),

@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import inu.unithon.backend.global.rabbitMq.RabbitMqListnerConfig;
+
 
 @Slf4j
 @Component
@@ -13,7 +15,8 @@ public class RabbitMqConsumer {
 
     private final FestivalDetailSave festivalDetailSave;
 
-    @RabbitListener(queues = "#{@rabbitMqConfig.detailQueueName}")
+    @RabbitListener(queues = "#{@rabbitMqConfig.detailQueueName}",
+    containerFactory = "ListenerFactory")
     public void detailReceive(String contentId){
         log.info("전달받은 contentId: {}", contentId);
         try{
