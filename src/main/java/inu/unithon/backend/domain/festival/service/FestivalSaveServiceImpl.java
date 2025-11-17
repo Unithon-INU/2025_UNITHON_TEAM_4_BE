@@ -3,6 +3,7 @@ package inu.unithon.backend.domain.festival.service;
 import inu.unithon.backend.domain.festival.dto.FestivalDto;
 import inu.unithon.backend.domain.festival.entity.Festival;
 import inu.unithon.backend.domain.festival.repository.FestivalRepository;
+import inu.unithon.backend.domain.translate.service.TranslationService;
 import inu.unithon.backend.global.exception.CommonErrorCode;
 import inu.unithon.backend.global.exception.CustomException;
 import inu.unithon.backend.global.rabbitMq.RabbitMqProducer;
@@ -30,6 +31,7 @@ public class FestivalSaveServiceImpl implements  FestivalSaveService{
 
   private static final DateTimeFormatter ymeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
   private final RabbitMqProducer rabbitMqProducer;
+  private final TranslationService translationService;
 
   private LocalDateTime parseYmdToDay(String ymd) {
     if (ymd == null || ymd.isBlank()) return null;
