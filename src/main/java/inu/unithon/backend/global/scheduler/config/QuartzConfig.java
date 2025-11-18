@@ -71,7 +71,7 @@ public class QuartzConfig {
     public Trigger festivalTrigger(JobDetail festivalJobDetail) {
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
                 // .cronSchedule("0 0 22 ? * MON")
-                .cronSchedule("0 10 18 ? * TUE") // 화요일 16:45 (주석은 15:00인데, 맞게 고쳐줘야 헷갈리지 않음)
+                .cronSchedule("0 10 18 ? * TUE") //
                 .inTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
                 .withMisfireHandlingInstructionDoNothing();
 
