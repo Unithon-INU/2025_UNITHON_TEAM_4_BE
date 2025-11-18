@@ -5,10 +5,12 @@ import inu.unithon.backend.domain.festival.dto.FestivalInfoResponseDto;
 import inu.unithon.backend.domain.festival.dto.FestivalIntroResponseDto;
 import inu.unithon.backend.domain.festival.dto.FestivalResponseDto;
 import inu.unithon.backend.domain.festival.repository.FestivalRepository;
+import inu.unithon.backend.domain.translate.document.FestivalTranslateDocument;
 import inu.unithon.backend.domain.translate.entity.FestivalContentTranslate;
 import inu.unithon.backend.domain.translate.entity.FestivalTranslate;
 import inu.unithon.backend.domain.translate.entity.TranslateLanguage;
 import inu.unithon.backend.domain.festival.mapper.FestivalMapper;
+import inu.unithon.backend.domain.translate.repository.es.festivalTranslate.FestivalTranslateDocumentRepository;
 import inu.unithon.backend.domain.translate.repository.sql.festivalContentTranslate.FestivalContentTranslateRepository;
 import inu.unithon.backend.domain.translate.repository.sql.festivalTranslate.FestivalTranslateRepository;
 import inu.unithon.backend.global.exception.CustomException;
@@ -30,6 +32,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static inu.unithon.backend.global.exception.FestivalErrorCode.FESTIVAL_DB_SEARCH_ERROR;
+import static inu.unithon.backend.global.exception.FestivalErrorCode.FESTIVAL_ES_SEARCH_ERROR;
 
 @Primary
 @Slf4j
@@ -40,10 +43,12 @@ public class FestivalServiceImplV2 implements FestivalService {
 
   private final FestivalMapper festivalMapper;
   private final FestivalTranslateRepository translateRepository;
+  private final FestivalTranslateDocumentRepository translateDocumentRepository;
   private final FestivalContentTranslateRepository contentTranslateRepository;
   private final FestivalRepository festivalRepository;
 
 
+  // FIXME : 현재는 그냥 DB에서 가져오는데 ES에서 가져오는 방식으로 바꿔야됨.
   @Override // festival entity
   public FestivalResponseDto getFestivalList(String lang, String numOfRows, String pageNo, String eventStartDate, String areaCode, String eventEndDate) {
     try {
@@ -75,9 +80,6 @@ public class FestivalServiceImplV2 implements FestivalService {
         return buildFestivalResponse(stuffs, page, size, (int) res.getTotalElements());
       }
 
-
-
-
     } catch (Exception e) {
       log.error("Festival List DB Search error", e);
       throw new CustomException(FESTIVAL_DB_SEARCH_ERROR);
@@ -101,25 +103,48 @@ public class FestivalServiceImplV2 implements FestivalService {
     }
   }
 
+  /**
+   * ElasticSearch 사용 축제 키워드 검색
+   * @param lang
+   * @param keyword
+   * @param numOfRows
+   * @param pageNo
+   * @return
+   */
   @Override // festival entity
   public FestivalResponseDto getSearchFestival(String lang, String keyword, String numOfRows, String pageNo) {
-    try {
-      int page = Integer.parseInt(pageNo);
-      int size = Integer.parseInt(numOfRows);
-      Pageable pageable = PageRequest.of(page - 1, size);
 
-      // title / address / content에서 keyword 검색
-      Page<FestivalTranslate> results = translateRepository
-        .findByKeyword(TranslateLanguage.valueOf(lang), keyword, pageable);
+    int page = Integer.parseInt(pageNo);
+    int size = Integer.parseInt(numOfRows);
+    Pageable pageable = PageRequest.of(page - 1, size);
 
-      List<FestivalDto> items = results.getContent().stream()
-        .map(festivalMapper::toDtoFromFestival)
+//    try { // title / address / content 에서 keyword 검색
+//
+//      // My SQL 사용
+//      Page<FestivalTranslate> results = translateRepository
+//        .findByKeyword(TranslateLanguage.valueOf(lang), keyword, pageable);
+//      List<FestivalDto> items = results.getContent().stream()
+//        .map(festivalMapper::toDtoFromFestival)
+//        .toList();
+//
+//
+//
+//      return buildFestivalResponse(items, page, size, (int) results.getTotalElements());
+//    } catch (Exception e) {
+//      log.error("Festival DB Search error", e);
+//      throw new CustomException(FESTIVAL_DB_SEARCH_ERROR);
+//    }
+    try { // title / address / content 에서 keyword 검색
+      // Elastic search 사용
+      Page<FestivalTranslateDocument> docResults = translateDocumentRepository
+        .searchByKeyword(TranslateLanguage.valueOf(lang), keyword, pageable);
+      List<FestivalDto> docItems = docResults.getContent().stream()
+        .map(festivalMapper::toDtoFromFestivalDocument)
         .toList();
-
-      return buildFestivalResponse(items, page, size, (int) results.getTotalElements());
+      return buildFestivalResponse(docItems, page, size, (int) docResults.getTotalElements());
     } catch (Exception e) {
-      log.error("Festival DB Search error", e);
-      throw new CustomException(FESTIVAL_DB_SEARCH_ERROR);
+      log.error("Festival ES Search error", e);
+      throw new CustomException(FESTIVAL_ES_SEARCH_ERROR);
     }
   }
 

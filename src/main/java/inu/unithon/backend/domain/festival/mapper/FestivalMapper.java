@@ -1,29 +1,36 @@
 package inu.unithon.backend.domain.festival.mapper;
 
-import inu.unithon.backend.domain.festival.document.FestivalTranslateDocument;
+import inu.unithon.backend.domain.translate.document.FestivalContentTranslateDocument;
+import inu.unithon.backend.domain.translate.document.FestivalTranslateDocument;
 import inu.unithon.backend.domain.festival.dto.FestivalDto;
 import inu.unithon.backend.domain.festival.dto.FestivalInfoResponseDto;
 import inu.unithon.backend.domain.festival.dto.FestivalIntroResponseDto;
 import inu.unithon.backend.domain.festival.entity.Festival;
-import inu.unithon.backend.domain.festival.entity.FestivalContent;
 import inu.unithon.backend.domain.translate.entity.FestivalContentTranslate;
 import inu.unithon.backend.domain.translate.entity.FestivalTranslate;
-import inu.unithon.backend.domain.translate.entity.TranslateLanguage;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+import org.mapstruct.Named;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
 @Mapper(componentModel = "spring")
 public interface FestivalMapper {
 
-  @Mapping(target = "id", expression = "java(festivalTranslate.getFestival().getId() + \"_\" + festivalTranslate.getLanguage().name())")
-  @Mapping(target = "festivalId", expression = "java(festivalTranslate.getFestival() != null ? festivalTranslate.getFestival().getId() : null)")
+  @Mapping(target = "id",
+    expression = "java(festivalTranslate.getContentId() + \"_\" + festivalTranslate.getLanguage().name())")
+  @Mapping(target = "festivalId",
+    expression = "java(festivalTranslate.getFestival() != null ? festivalTranslate.getFestival().getId() : null)")
   FestivalTranslateDocument toDocumentFromFestivalTranslate(FestivalTranslate festivalTranslate);
+
+  @Mapping(target = "id",
+    expression = "java(festivalContentTranslate.getContentId() + \"_\" + festivalContentTranslate.getLanguage().name())")
+  @Mapping(target = "festivalContentId",
+    expression = "java(festivalContentTranslate.getFestivalContent() != null ? festivalContentTranslate.getFestivalContent().getId() : null)")
+  FestivalContentTranslateDocument toDocumentFromFestivalContentTranslate(FestivalContentTranslate festivalContentTranslate);
   /**
    * FestivalTranslate → FestivalDto 변환
    * (축제 기본 정보)
@@ -50,6 +57,28 @@ public interface FestivalMapper {
 //    @Mapping(target = "item", ignore = true)
   })
   FestivalDto toDtoFromFestival(FestivalTranslate festival);
+
+  @Mappings({
+    @Mapping(source = "title", target = "title", defaultValue = " "),
+    @Mapping(source = "address", target = "addr1", defaultValue = " "),
+    @Mapping(target = "addr2", constant = " "),
+    @Mapping(target = "areacode", constant = " "),
+    @Mapping(source = "contentId", target = "contentid", qualifiedByName = "stringToLong"),
+    @Mapping(target = "contenttypeid", constant = " "),
+    @Mapping(target = "createdtime", constant = " "),
+    @Mapping(source = "imageUrl", target = "firstimage", defaultValue = " "),
+    @Mapping(target = "firstimage2", constant = " "),
+    @Mapping(target = "mapx", constant = " "),
+    @Mapping(target = "mapy", constant = " "),
+    @Mapping(target = "modifiedtime", constant = " "),
+    @Mapping(target = "tel", constant = " "),
+    @Mapping(target = "zipcode", constant = " "),
+    @Mapping(source = "content", target = "overview", defaultValue = " "),
+    @Mapping(target = "dist", constant = " "),
+    @Mapping(source = "startDate", target = "eventstartdate", dateFormat = "yyyy-MM-dd"),
+    @Mapping(source = "endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd")
+  })
+  FestivalDto toDtoFromFestivalDocument(FestivalTranslateDocument doc);
 
   /**
    * Festival → FestivalDto 변환
@@ -154,5 +183,11 @@ public interface FestivalMapper {
     } catch (IllegalAccessException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Named("stringToLong")
+  default Long stringToLong(String value) {
+    if (value == null || value.isEmpty()) return null;
+    return Long.parseLong(value);
   }
 }

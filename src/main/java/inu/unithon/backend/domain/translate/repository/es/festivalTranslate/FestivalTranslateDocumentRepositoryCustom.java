@@ -1,6 +1,6 @@
 package inu.unithon.backend.domain.translate.repository.es.festivalTranslate;
 
-import inu.unithon.backend.domain.festival.document.FestivalTranslateDocument;
+import inu.unithon.backend.domain.translate.document.FestivalTranslateDocument;
 import inu.unithon.backend.domain.translate.entity.TranslateLanguage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

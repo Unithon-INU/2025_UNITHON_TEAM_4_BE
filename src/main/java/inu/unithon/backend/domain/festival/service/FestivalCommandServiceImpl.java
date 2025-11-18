@@ -1,9 +1,14 @@
 package inu.unithon.backend.domain.festival.service;
 
-import inu.unithon.backend.domain.festival.document.FestivalTranslateDocument;
+import inu.unithon.backend.domain.translate.document.FestivalContentTranslateDocument;
+import inu.unithon.backend.domain.translate.document.FestivalTranslateDocument;
+import inu.unithon.backend.domain.translate.entity.FestivalContentTranslate;
 import inu.unithon.backend.domain.translate.entity.FestivalTranslate;
 import inu.unithon.backend.domain.festival.mapper.FestivalMapper;
+import inu.unithon.backend.domain.translate.entity.TranslateLanguage;
+import inu.unithon.backend.domain.translate.repository.es.festivalContentTranslate.FestivalContentTranslateDocumentRepository;
 import inu.unithon.backend.domain.translate.repository.es.festivalTranslate.FestivalTranslateDocumentRepository;
+import inu.unithon.backend.domain.translate.repository.sql.festivalContentTranslate.FestivalContentTranslateRepository;
 import inu.unithon.backend.domain.translate.repository.sql.festivalTranslate.FestivalTranslateRepository;
 import inu.unithon.backend.global.exception.CustomException;
 import inu.unithon.backend.global.exception.FestivalErrorCode;
@@ -18,8 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class FestivalCommandServiceImpl implements FestivalCommandService {
 
-  private final FestivalTranslateRepository jpaRepository;
-  private final FestivalTranslateDocumentRepository esRepository;
+  private final FestivalTranslateDocumentRepository translateDocumentRepository;
+  private final FestivalContentTranslateDocumentRepository contentTranslateDocumentRepository;
   private final FestivalMapper mapper;
 
   /**
@@ -27,33 +32,38 @@ public class FestivalCommandServiceImpl implements FestivalCommandService {
    */
   @Override
   public void createFestivalTranslate(FestivalTranslate entity) {
-    FestivalTranslate saved = jpaRepository.save(entity);
-    FestivalTranslateDocument doc = mapper.toDocumentFromFestivalTranslate(saved);
-    esRepository.save(doc);
+    FestivalTranslateDocument doc = mapper.toDocumentFromFestivalTranslate(entity);
+    translateDocumentRepository.save(doc);
 
-    log.info("Elasticsearch 인덱싱 완료: [title={}, lang={}]", saved.getTitle(), saved.getLanguage());
+    log.info("Elasticsearch 인덱싱 완료(FestivalTranslate): [title={}, lang={}]", entity.getTitle(), entity.getLanguage());
   }
 
   /**
-   * DB + ES 동시 삭제
+   * ES 삭제
    */
   @Override
-  public void deleteFestivalTranslate(Long id) {
-    // DB에서 FestivalTranslate 조회
-    FestivalTranslate festivalTranslate = jpaRepository.findById(id)
-      .orElseThrow(() -> new CustomException(FestivalErrorCode.FESTIVAL_NOT_FOUND));
+  public void deleteFestivalTranslate(Long contentId, TranslateLanguage language) {
+    String esId = contentId + "_" + language;
 
-    // DB 삭제
-    jpaRepository.deleteById(id);
-    log.info("🗑DB FestivalTranslate 삭제 완료: id={}", id);
+    // Elasticsearch 삭제
+    translateDocumentRepository.deleteById(esId);
+    log.info("Elasticsearch Document 삭제 완료(FestivalTranslate) : esId={}", esId);
+  }
 
-    // ES 문서 ID 생성 (festivalId_language 형식)
-    Long festivalId = festivalTranslate.getFestival().getId();
-    String language = festivalTranslate.getLanguage().name();
-    String esId = festivalId + "_" + language;
+  @Override
+  public void createFestivalContentTranslate(FestivalContentTranslate entity) {
+    FestivalContentTranslateDocument doc = mapper.toDocumentFromFestivalContentTranslate(entity);
+    contentTranslateDocumentRepository.save(doc);
 
-    //⃣ Elasticsearch 삭제
-    esRepository.deleteById(esId);
-    log.info("🗑Elasticsearch Document 삭제 완료: esId={}", esId);
+    log.info("Elasticsearch 인덱싱 완료(FestivalContentTranslate): [title={}, lang={}]", entity.getTitle(), entity.getLanguage());
+  }
+
+  @Override
+  public void deleteFestivalContentTranslate(Long contentId, TranslateLanguage language) {
+    String esId = contentId + "_" + language;
+
+    // Elasticsearch 삭제
+    contentTranslateDocumentRepository.deleteById(esId);
+    log.info("Elasticsearch Document 삭제 완료(FestivalContentTranslate) : esId={}", esId);
   }
 }

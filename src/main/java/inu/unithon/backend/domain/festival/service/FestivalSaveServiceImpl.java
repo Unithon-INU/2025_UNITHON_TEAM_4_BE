@@ -31,7 +31,6 @@ public class FestivalSaveServiceImpl implements  FestivalSaveService{
 
   private static final DateTimeFormatter ymeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
   private final RabbitMqProducer rabbitMqProducer;
-  private final TranslationService translationService;
 
   private LocalDateTime parseYmdToDay(String ymd) {
     if (ymd == null || ymd.isBlank()) return null;
