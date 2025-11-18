@@ -23,7 +23,7 @@ public class FestivalContent extends BaseEntity {
   private String address;
   private LocalDateTime startDate;
   private LocalDateTime endDate;
-  @Column(length = 1000)
+  @Lob
   private String overview;
   private String playtime;
   private String mapx;
@@ -37,7 +37,7 @@ public class FestivalContent extends BaseEntity {
   @Column(length = 1000)
   private String tel;
   private String dist;
-  @Column(length = 1000)
+  @Lob
   private String infoText;
 
     @Builder
