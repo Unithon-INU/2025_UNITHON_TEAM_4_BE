@@ -19,7 +19,9 @@ public class FestivalContent extends BaseEntity {
 
   private String title;
 
+  @Column(length = 1000)
   private String address;
+  @Column(length = 1000)
   private String content;
   private LocalDateTime startDate;
   private LocalDateTime endDate;
@@ -34,6 +36,7 @@ public class FestivalContent extends BaseEntity {
   private String firstImage2;
   private String areaCode;
   private String addr1;
+  @Column(length = 1000)
   private String tel;
   private String dist;
   @Column(length = 1000)

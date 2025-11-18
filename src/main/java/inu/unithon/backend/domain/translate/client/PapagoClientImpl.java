@@ -34,8 +34,6 @@ public class PapagoClientImpl implements PapagoClient {
   @Override
   public String translate(String text, String source, String target) {
 
-    log.info("Papago ID: {}, Secret: {}", clientId, clientSecret);
-
     if (text == null || text.isBlank()) return "";
 
     try {
