@@ -71,7 +71,7 @@ public class QuartzConfig {
     public Trigger festivalTrigger(JobDetail festivalJobDetail) {
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
                 // .cronSchedule("0 0 22 ? * MON")
-                .cronSchedule("0 45 16 ? * TUE") // 화요일 16:45 (주석은 15:00인데, 맞게 고쳐줘야 헷갈리지 않음)
+                .cronSchedule("0 10 18 ? * TUE") // 화요일 16:45 (주석은 15:00인데, 맞게 고쳐줘야 헷갈리지 않음)
                 .inTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
                 .withMisfireHandlingInstructionDoNothing();
 
@@ -85,7 +85,7 @@ public class QuartzConfig {
     @Bean
     public Trigger translateTrigger(JobDetail translateJobDetail) {
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
-                .cronSchedule("0 0 17 ? * TUE") // 화 17:00
+                .cronSchedule("0 20 18 ? * TUE") // 화 17:00
                 .inTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
                 .withMisfireHandlingInstructionDoNothing();
 
