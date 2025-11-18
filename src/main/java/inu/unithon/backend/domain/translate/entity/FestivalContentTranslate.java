@@ -25,7 +25,7 @@ public class FestivalContentTranslate extends BaseEntity {
   private String title;
   private String address;
 
-  @Column(length = 1000)
+  @Lob
   private String overview;
 
   private String playtime;
