@@ -11,11 +11,12 @@ import inu.unithon.backend.domain.translate.entity.FestivalTranslate;
 import inu.unithon.backend.domain.translate.entity.TranslateLanguage;
 import inu.unithon.backend.domain.translate.repository.sql.festivalContentTranslate.FestivalContentTranslateRepository;
 import inu.unithon.backend.domain.translate.repository.sql.festivalTranslate.FestivalTranslateRepository;
-import inu.unithon.backend.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,10 +34,15 @@ public class TranslationExecutorService {
   public void translateFestival(Long contentId) {
 
     Festival festival = festivalRepository.findByContentId(contentId)
-      .orElseThrow();
-
+      .orElse(null);
     FestivalContent content = contentRepository.findByContentId(contentId)
-      .orElseThrow();
+      .orElse(null);
+
+    if (festival == null || content == null) {
+      log.warn("원본 축제 정보 부족 → 번역 스킵: contentId={}, festivalExists={}, contentExists={}",
+        contentId, festival != null, content != null);
+      return; // 또는 continue;
+    }
 
     for (TranslateLanguage lang : TranslateLanguage.values()) {
 
