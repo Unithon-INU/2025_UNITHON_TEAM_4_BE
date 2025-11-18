@@ -170,7 +170,7 @@ public class FestivalServiceImplV2 implements FestivalService {
       FestivalDto dto = festivalMapper.toDtoFromFestivalContent(content);
       return festivalMapper.toIntroFromFestivalContent(content);
     } catch (Exception e) {
-      log.error("Festival Intro DB error", e);
+      log.error("Festival Intro DB error : Festival content translate error", e);
       throw new CustomException(FestivalErrorCode.FESTIVAL_DB_SEARCH_ERROR);
     }
   }
