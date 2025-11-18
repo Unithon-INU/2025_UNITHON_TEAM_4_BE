@@ -85,7 +85,7 @@ public class QuartzConfig {
     @Bean
     public Trigger translateTrigger(JobDetail translateJobDetail) {
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
-                .cronSchedule("0 00 19 ? * TUE") // 화 17:00
+                .cronSchedule("0 38 21 ? * TUE") // 화 17:00
                 .inTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
                 .withMisfireHandlingInstructionDoNothing();
 

@@ -40,6 +40,8 @@ public class FestivalContentTranslate extends BaseEntity {
 
   private String areaCode;
   private String addr1;
+
+  @Lob
   private String tel;
   private String dist;
 

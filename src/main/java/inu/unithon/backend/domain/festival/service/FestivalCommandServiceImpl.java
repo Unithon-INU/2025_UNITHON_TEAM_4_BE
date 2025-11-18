@@ -35,7 +35,7 @@ public class FestivalCommandServiceImpl implements FestivalCommandService {
     FestivalTranslateDocument doc = mapper.toDocumentFromFestivalTranslate(entity);
     translateDocumentRepository.save(doc);
 
-    log.info("Elasticsearch 인덱싱 완료(FestivalTranslate): [title={}, lang={}]", entity.getTitle(), entity.getLanguage());
+    log.debug("Elasticsearch 인덱싱 완료(FestivalTranslate): [title={}, lang={}]", entity.getTitle(), entity.getLanguage());
   }
 
   /**
