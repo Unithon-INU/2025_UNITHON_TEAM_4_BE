@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum FestivalErrorCode implements ErrorCode {
   FESTIVAL_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 축제를 찾을 수 없습니다."),
+  FESTIVAL_CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 축제 상세 를 찾을 수 없습니다."),
   FESTIVAL_DB_SEARCH_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Festival DB Search error"),
   FESTIVAL_ES_SEARCH_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Festival DB Search error");
 

@@ -30,14 +30,15 @@ public class Festival extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
     private FestivalContent festivalContent;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
-    private FestivalTranslate festivalTranslates;
+//
+//    @Setter
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "id")
+//    private FestivalTranslate festivalTranslates;
 
     @Builder
     public Festival(String title, String imageUrl, String address, Long contentId,
-                    String content, LocalDateTime startDate, LocalDateTime endDate, FestivalContent festivalContent, FestivalTranslate festivalTranslates) {
+                    String content, LocalDateTime startDate, LocalDateTime endDate) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.address = address;
@@ -45,7 +46,10 @@ public class Festival extends BaseEntity {
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
-//        this.festivalContent = festivalContent;
-//        this.festivalTranslates = festivalTranslates;
+    }
+
+    public void setContent(String content, FestivalContent festivalContent) {
+        this.content = content;
+        this.festivalContent = festivalContent;
     }
 }
