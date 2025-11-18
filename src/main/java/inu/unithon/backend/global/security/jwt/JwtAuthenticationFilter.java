@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     if (token != null && jwtTokenProvider.validateToken(token)) {
       String email = jwtTokenProvider.extractEmail(token);
-      log.info("JWT에서 추출한 email: {}", email);
+      log.debug("JWT에서 추출한 email: {}", email);
 
       CustomUserDetails customUserDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(email);
 
