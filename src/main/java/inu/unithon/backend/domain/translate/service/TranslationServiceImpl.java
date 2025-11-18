@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static inu.unithon.backend.domain.translate.entity.TranslateLanguage.kor;
 import static inu.unithon.backend.global.exception.FestivalErrorCode.FESTIVAL_CONTENT_NOT_FOUND;
 import static inu.unithon.backend.global.exception.FestivalErrorCode.FESTIVAL_NOT_FOUND;
@@ -38,6 +40,27 @@ public class TranslationServiceImpl implements TranslationService{
 
   private final PapagoClient papagoClient;
 
+  @Transactional
+  @Override
+  public void translateAllFestivals() {
+    log.info("[TranslationService] Start batch translation for all festivals");
+
+    // 1. DB에서 모든 Festival + FestivalContent 조회
+    List<Festival> festivals = festivalRepository.findAll();
+
+    for (Festival festival : festivals) {
+      FestivalContent content = contentRepository.findByContentId(festival.getContentId())
+        .orElseThrow(() -> new CustomException(FESTIVAL_CONTENT_NOT_FOUND));
+
+      // TODO 임시 : contentId DB에 있으면 번역 XX
+      if(festivalTranslateRepository.existsByContentIdAndLanguage(festival.getContentId(), kor)) continue;
+
+      // 기존 메서드 재사용: 단일 contentId 번역
+      TranslateFestival(festival.getContentId());
+    }
+
+    log.info("[TranslationService] Completed batch translation for all festivals. Total festivals: {}", festivals.size());
+  }
 
   // todo : ElasticSearch repo 관련 로직도 작성해야됨
   @Transactional
