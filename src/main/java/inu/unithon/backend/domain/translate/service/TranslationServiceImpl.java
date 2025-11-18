@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static inu.unithon.backend.domain.translate.entity.TranslateLanguage.kor;
+import static inu.unithon.backend.global.exception.FestivalErrorCode.FESTIVAL_CONTENT_NOT_FOUND;
 import static inu.unithon.backend.global.exception.FestivalErrorCode.FESTIVAL_NOT_FOUND;
 
 @Slf4j
@@ -49,7 +50,11 @@ public class TranslationServiceImpl implements TranslationService{
     Festival festival = festivalRepository.findByContentId(contentId)
       .orElseThrow(() -> new CustomException(FESTIVAL_NOT_FOUND));
 
-    FestivalContent content = festival.getFestivalContent();
+    FestivalContent content = contentRepository.findByContentId(contentId)
+      .orElseThrow(() -> new CustomException(FESTIVAL_CONTENT_NOT_FOUND));
+
+    // Festival - FestivalContent 관계 설정
+    festival.setContent(content.getContent(), content);
 
     for (TranslateLanguage lang : TranslateLanguage.values()) {
       log.info("[TranslationService] Processing language={} for contentId={}", lang.name(), contentId);
