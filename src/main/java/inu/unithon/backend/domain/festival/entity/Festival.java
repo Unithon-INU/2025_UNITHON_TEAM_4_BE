@@ -23,10 +23,10 @@ public class Festival extends BaseEntity {
     @Column(length = 1000)
     private String address;
     private Long contentId;
-    private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
+    @Setter
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
     private FestivalContent festivalContent;
@@ -38,18 +38,12 @@ public class Festival extends BaseEntity {
 
     @Builder
     public Festival(String title, String imageUrl, String address, Long contentId,
-                    String content, LocalDateTime startDate, LocalDateTime endDate) {
+                    LocalDateTime startDate, LocalDateTime endDate) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.address = address;
         this.contentId = contentId;
-        this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    public void setContent(String content, FestivalContent festivalContent) {
-        this.content = content;
-        this.festivalContent = festivalContent;
     }
 }

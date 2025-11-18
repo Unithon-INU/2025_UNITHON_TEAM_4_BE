@@ -21,8 +21,6 @@ public class FestivalContent extends BaseEntity {
 
   @Column(length = 1000)
   private String address;
-  @Column(length = 1000)
-  private String content;
   private LocalDateTime startDate;
   private LocalDateTime endDate;
   @Column(length = 1000)
@@ -43,13 +41,12 @@ public class FestivalContent extends BaseEntity {
   private String infoText;
 
     @Builder
-    public FestivalContent(String title, String address, String content, long contentId,
+    public FestivalContent(String title, String address, long contentId,
                            LocalDateTime startDate, LocalDateTime endDate, String overview,
                            String playtime, String mapx, String mapy, String firstImage,
                            String firstImage2, String areaCode, String addr1, String tel, String dist, String infoText) {
         this.title = title;
         this.address = address;
-        this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
         this.contentId = contentId;

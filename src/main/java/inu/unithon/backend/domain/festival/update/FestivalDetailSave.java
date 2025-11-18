@@ -8,6 +8,7 @@ import inu.unithon.backend.domain.festival.repository.FestivalRepository;
 import inu.unithon.backend.domain.festival.service.FestivalSaveService;
 import inu.unithon.backend.domain.festival.service.FestivalServiceImpl;
 import inu.unithon.backend.domain.translate.service.TranslationService;
+import inu.unithon.backend.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static inu.unithon.backend.global.exception.FestivalErrorCode.FESTIVAL_NOT_FOUND;
 import static org.hibernate.query.sqm.tree.SqmNode.log;
 
 @Slf4j
@@ -86,12 +88,16 @@ public class FestivalDetailSave {
                 overview, playtime, mapx, mapy,
                 firstImage, firstImage2, areaCode, addr1, tel, infoText
         );
+
+        Festival festival = festivalRepository.findByContentId(entity.getContentId())
+          .orElseThrow(() -> new CustomException(FESTIVAL_NOT_FOUND));
+
+        festival.setFestivalContent(entity);
+
         festivalContentRepository.save(entity);
         log.info("Saved FestivalContent for contentId: {}", contentId);
 
-        translationService.TranslateFestival(contentId);
-        log.info("Translated FestivalContent for contentId: {}", contentId);
-
-        // todo : es save
+//        translationService.TranslateFestival(contentId);
+//        log.info("Translated FestivalContent for contentId: {}", contentId);
     }
 }

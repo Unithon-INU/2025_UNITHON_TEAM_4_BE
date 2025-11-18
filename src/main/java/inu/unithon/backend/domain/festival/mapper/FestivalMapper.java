@@ -36,11 +36,11 @@ public interface FestivalMapper {
    * (축제 기본 정보)
    */
   @Mappings({
-    @Mapping(source = "title", target = "title", defaultValue = " "),
-    @Mapping(source = "address", target = "addr1", defaultValue = " "),
+    @Mapping(source = "festival.title", target = "title", defaultValue = " "),
+    @Mapping(source = "festival.address", target = "addr1", defaultValue = " "),
     @Mapping(target = "addr2", constant = " "),
-    @Mapping(source = "imageUrl", target = "firstimage", defaultValue = " "),
-    @Mapping(source = "contentId", target = "contentid"),
+    @Mapping(source = "festival.imageUrl", target = "firstimage", defaultValue = " "),
+    @Mapping(source = "festival.contentId", target = "contentid"),
     @Mapping(target = "areacode", constant = " "),
     @Mapping(target = "contenttypeid", constant = " "),
     @Mapping(target = "createdtime", constant = " "),
@@ -50,35 +50,34 @@ public interface FestivalMapper {
     @Mapping(target = "modifiedtime", constant = " "),
     @Mapping(target = "tel", constant = " "),
     @Mapping(target = "zipcode", constant = " "),
-    @Mapping(source = "content", target = "overview", defaultValue = " "),
     @Mapping(target = "dist", constant = " "),
-    @Mapping(source = "startDate", target = "eventstartdate", dateFormat = "yyyy-MM-dd"),
-    @Mapping(source = "endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd"),
-//    @Mapping(target = "item", ignore = true)
+    @Mapping(source = "festival.startDate", target = "eventstartdate", dateFormat = "yyyy-MM-dd"),
+    @Mapping(source = "festival.endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd"),
+    @Mapping(source = "festivalContentTranslate.overview", target = "overview")
   })
-  FestivalDto toDtoFromFestival(FestivalTranslate festival);
+  FestivalDto toDtoFromFestival(FestivalTranslate festival, FestivalContentTranslate festivalContentTranslate);
 
   @Mappings({
-    @Mapping(source = "title", target = "title", defaultValue = " "),
-    @Mapping(source = "address", target = "addr1", defaultValue = " "),
+    @Mapping(source = "festival.title", target = "title", defaultValue = " "),
+    @Mapping(source = "festival.address", target = "addr1", defaultValue = " "),
     @Mapping(target = "addr2", constant = " "),
+    @Mapping(source = "festival.imageUrl", target = "firstimage", defaultValue = " "),
+    @Mapping(source = "festival.contentId", target = "contentid"),
     @Mapping(target = "areacode", constant = " "),
-    @Mapping(source = "contentId", target = "contentid", qualifiedByName = "stringToLong"),
     @Mapping(target = "contenttypeid", constant = " "),
     @Mapping(target = "createdtime", constant = " "),
-    @Mapping(source = "imageUrl", target = "firstimage", defaultValue = " "),
     @Mapping(target = "firstimage2", constant = " "),
     @Mapping(target = "mapx", constant = " "),
     @Mapping(target = "mapy", constant = " "),
     @Mapping(target = "modifiedtime", constant = " "),
     @Mapping(target = "tel", constant = " "),
     @Mapping(target = "zipcode", constant = " "),
-    @Mapping(source = "content", target = "overview", defaultValue = " "),
     @Mapping(target = "dist", constant = " "),
-    @Mapping(source = "startDate", target = "eventstartdate", dateFormat = "yyyy-MM-dd"),
-    @Mapping(source = "endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd")
+    @Mapping(source = "festival.startDate", target = "eventstartdate", dateFormat = "yyyy-MM-dd"),
+    @Mapping(source = "festival.endDate", target = "eventenddate", dateFormat = "yyyy-MM-dd"),
+    @Mapping(source = "festivalContentTranslate.overview", target = "overview")
   })
-  FestivalDto toDtoFromFestivalDocument(FestivalTranslateDocument doc);
+  FestivalDto toDtoFromFestivalDocument(FestivalTranslateDocument festival, FestivalContentTranslate festivalContentTranslate);
 
   /**
    * Festival → FestivalDto 변환

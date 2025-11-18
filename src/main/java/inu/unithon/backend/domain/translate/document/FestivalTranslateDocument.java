@@ -40,9 +40,6 @@ public class FestivalTranslateDocument {
   private String title;
 
   @Field(type = FieldType.Text, analyzer = "standard")
-  private String content;
-
-  @Field(type = FieldType.Text, analyzer = "standard")
   private String address;
 
   @Field(type = FieldType.Keyword)
@@ -66,7 +63,6 @@ public class FestivalTranslateDocument {
     String id,
     TranslateLanguage language,
     String title,
-    String content,
     String address,
     String imageUrl,
     String contentId,
@@ -78,7 +74,6 @@ public class FestivalTranslateDocument {
 
     this.language = language;
     this.title = title;
-    this.content = content;
     this.address = address;
     this.imageUrl = imageUrl;
     this.contentId = contentId;

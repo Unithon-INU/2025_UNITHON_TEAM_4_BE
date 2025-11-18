@@ -27,8 +27,7 @@ public class FestivalTranslateRepositoryImpl implements FestivalTranslateReposit
       .where(
         festivalTranslate.language.eq(language)
           .and(festivalTranslate.title.containsIgnoreCase(keyword)
-          .or(festivalTranslate.address.containsIgnoreCase(keyword))
-          .or(festivalTranslate.content.containsIgnoreCase(keyword)))
+          .or(festivalTranslate.address.containsIgnoreCase(keyword)))
       )
       .offset(pageable.getOffset())
       .limit(pageable.getPageSize())
@@ -40,7 +39,6 @@ public class FestivalTranslateRepositoryImpl implements FestivalTranslateReposit
       .where(
         festivalTranslate.title.containsIgnoreCase(keyword)
           .or(festivalTranslate.address.containsIgnoreCase(keyword))
-          .or(festivalTranslate.content.containsIgnoreCase(keyword))
       )
       .fetchOne();
 

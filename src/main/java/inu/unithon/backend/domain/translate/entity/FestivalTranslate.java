@@ -22,7 +22,6 @@ public class FestivalTranslate extends BaseEntity {
     private String imageUrl;
     private String address;
     private Long contentId;
-    private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
@@ -37,7 +36,6 @@ public class FestivalTranslate extends BaseEntity {
                              String imageUrl,
                              String address,
                              Long contentId,
-                             String content,
                              LocalDateTime startDate,
                              LocalDateTime endDate,
                              Festival festival) {
@@ -46,7 +44,6 @@ public class FestivalTranslate extends BaseEntity {
         this.imageUrl = imageUrl;
         this.address = address;
         this.contentId = contentId;
-        this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
         this.festival= festival;
