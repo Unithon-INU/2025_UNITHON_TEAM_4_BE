@@ -62,7 +62,7 @@ public class QuartzConfig {
     public Trigger festivalTrigger() {
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
 //                .cronSchedule("0 0 22 ? * MON") //  월 2200
-                .cronSchedule("0 15 14 ? * TUE") //  월 2200
+                .cronSchedule("0 20 15 ? * TUE") //  화 1500
                 .inTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
                 .withMisfireHandlingInstructionDoNothing();
 
