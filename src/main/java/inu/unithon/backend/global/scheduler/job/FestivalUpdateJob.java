@@ -34,7 +34,7 @@ public class FestivalUpdateJob implements Job{
         try{
             log.info("start@_@_@_@_@");
             String pageNum = "1";
-            String numOfRows = "1";
+            String numOfRows = "100";
             String startDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             log.info("[CALL] before getFestivalList()");
             FestivalResponseDto response = festivalService.getFestivalList("kor", numOfRows, pageNum, startDate, null,null);
