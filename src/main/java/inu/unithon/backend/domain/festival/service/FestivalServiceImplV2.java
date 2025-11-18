@@ -66,8 +66,15 @@ public class FestivalServiceImplV2 implements FestivalService {
 
 
         List<FestivalDto> items = results.getContent().stream()
-                .map(festivalMapper::toDtoFromFestival)
-                .toList();
+          .map(festival -> {
+            // contentId 기준으로 FestivalContentTranslate 조회
+            FestivalContentTranslate content =
+              contentTranslateRepository.findFirstByContentIdAndLanguage(
+                festival.getContentId(), TranslateLanguage.valueOf(lang)
+              ).orElse(null);
+
+            return festivalMapper.toDtoFromFestival(festival, content);
+          }).toList();
         return buildFestivalResponse(items, page, size, (int) results.getTotalElements());
 
       }else{
@@ -139,7 +146,12 @@ public class FestivalServiceImplV2 implements FestivalService {
       Page<FestivalTranslateDocument> docResults = translateDocumentRepository
         .searchByKeyword(TranslateLanguage.valueOf(lang), keyword, pageable);
       List<FestivalDto> docItems = docResults.getContent().stream()
-        .map(festivalMapper::toDtoFromFestivalDocument)
+        .map(doc -> {
+          FestivalContentTranslate content = contentTranslateRepository
+            .findFirstByContentIdAndLanguage(Long.valueOf(doc.getContentId()), TranslateLanguage.valueOf(lang))
+            .orElse(null);  // 없으면 null 처리
+          return festivalMapper.toDtoFromFestivalDocument(doc, content);
+        })
         .toList();
       return buildFestivalResponse(docItems, page, size, (int) docResults.getTotalElements());
     } catch (Exception e) {

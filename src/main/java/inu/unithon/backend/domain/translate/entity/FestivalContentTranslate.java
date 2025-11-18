@@ -24,7 +24,6 @@ public class FestivalContentTranslate extends BaseEntity {
   private Long contentId;
   private String title;
   private String address;
-  private String content;
 
   @Column(length = 1000)
   private String overview;
@@ -56,7 +55,6 @@ public class FestivalContentTranslate extends BaseEntity {
                                   Long contentId,
                                   String title,
                                   String address,
-                                  String content,
                                   String overview,
                                   String playtime,
                                   String mapx,
@@ -74,7 +72,6 @@ public class FestivalContentTranslate extends BaseEntity {
     this.contentId = contentId;
     this.title = title;
     this.address = address;
-    this.content = content;
     this.overview = overview;
     this.playtime = playtime;
     this.mapx = mapx;

@@ -44,9 +44,6 @@ public class FestivalContentTranslateDocument {
   private String address;
 
   @Field(type = FieldType.Text, analyzer = "nori")
-  private String content;
-
-  @Field(type = FieldType.Text, analyzer = "nori")
   private String overview;
 
   @Field(type = FieldType.Keyword)
@@ -93,7 +90,6 @@ public class FestivalContentTranslateDocument {
     TranslateLanguage language,
     String title,
     String address,
-    String content,
     String overview,
     String playtime,
     String mapx,
@@ -115,7 +111,6 @@ public class FestivalContentTranslateDocument {
 
     this.title = title;
     this.address = address;
-    this.content = content;
     this.overview = overview;
     this.playtime = playtime;
     this.mapx = mapx;

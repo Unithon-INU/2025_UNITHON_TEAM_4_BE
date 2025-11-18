@@ -33,8 +33,6 @@ public class TranslationServiceImpl implements TranslationService{
   private final FestivalContentRepository contentRepository;
   private final FestivalTranslateRepository festivalTranslateRepository;
   private final FestivalContentTranslateRepository festivalContentTranslateRepository;
-  private final FestivalTranslateDocumentRepository translateDocumentRepository;
-  private final FestivalContentTranslateDocumentRepository contentTranslateDocumentRepository;
 
   private final FestivalCommandService festivalCommandService;
 
@@ -52,9 +50,6 @@ public class TranslationServiceImpl implements TranslationService{
 
     FestivalContent content = contentRepository.findByContentId(contentId)
       .orElseThrow(() -> new CustomException(FESTIVAL_CONTENT_NOT_FOUND));
-
-    // Festival - FestivalContent 관계 설정
-    festival.setContent(content.getContent(), content);
 
     for (TranslateLanguage lang : TranslateLanguage.values()) {
       log.info("[TranslationService] Processing language={} for contentId={}", lang.name(), contentId);
@@ -100,7 +95,6 @@ public class TranslationServiceImpl implements TranslationService{
       .imageUrl(festival.getImageUrl())
       .address(festival.getAddress())
       .contentId(contentId)
-      .content(festival.getContent())
       .startDate(festival.getStartDate())
       .endDate(festival.getEndDate())
       .festival(festival)
@@ -135,7 +129,6 @@ public class TranslationServiceImpl implements TranslationService{
         .imageUrl(festival.getImageUrl())
         .address(papagoClient.translate(festival.getAddress(), "ko", lang.getCode()))
         .contentId(contentId)
-        .content(papagoClient.translate(festival.getContent(), "ko", lang.getCode()))
         .startDate(festival.getStartDate())
         .endDate(festival.getEndDate())
         .festival(festival)
@@ -174,7 +167,6 @@ public class TranslationServiceImpl implements TranslationService{
       .contentId(contentId)
       .title(translate ? papagoClient.translate(c.getTitle(), "ko", lang.getCode()) : c.getTitle())
       .address(translate ? papagoClient.translate(c.getAddress(), "ko", lang.getCode()) : c.getAddress())
-      .content(translate ? papagoClient.translate(c.getContent(), "ko", lang.getCode()) : c.getContent())
       .overview(translate ? papagoClient.translate(c.getOverview(), "ko", lang.getCode()) : c.getOverview())
       .playtime(c.getPlaytime())
       .mapx(c.getMapx())
