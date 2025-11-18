@@ -40,6 +40,8 @@ public class TranslationServiceImpl implements TranslationService{
 
   private final PapagoClient papagoClient;
 
+  private final TranslationService self;
+
   @Transactional
   @Override
   public void translateAllFestivals() {
@@ -56,7 +58,7 @@ public class TranslationServiceImpl implements TranslationService{
       if(festivalTranslateRepository.existsByContentIdAndLanguage(festival.getContentId(), kor)) continue;
 
       // 기존 메서드 재사용: 단일 contentId 번역
-      TranslateFestival(festival.getContentId());
+      self.TranslateFestival(festival.getContentId());
     }
 
     log.info("[TranslationService] Completed batch translation for all festivals. Total festivals: {}", festivals.size());
