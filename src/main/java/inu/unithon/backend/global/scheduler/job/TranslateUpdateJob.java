@@ -6,21 +6,26 @@ import org.quartz.*;
 import lombok.extern.slf4j.Slf4j;
 import inu.unithon.backend.domain.translate.service.TranslationService;
 import org.springframework.stereotype.Component;
+import inu.unithon.backend.global.rabbitMq.RabbitMqProducer;
 
 
 @Slf4j
 @Component
 public class TranslateUpdateJob implements Job {
     private final TranslationService translationService;
-    public TranslateUpdateJob(TranslationService translationService) {
+    private final RabbitMqProducer rabbitMqProducer;
+    public TranslateUpdateJob(TranslationService translationService , RabbitMqProducer rabbitMqProducer) {
         this.translationService = translationService;
+        this.rabbitMqProducer = rabbitMqProducer;
+
     }
+
 
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
-            translationService.translateAllFestivals();
+            rabbitMqProducer.translateSend();
         } catch (Exception e) {
             JobExecutionException error = new JobExecutionException(e);
             log.error("Translate error: {}", e.getMessage(), e);

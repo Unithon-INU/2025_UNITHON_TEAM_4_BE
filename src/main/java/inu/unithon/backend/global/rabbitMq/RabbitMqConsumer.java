@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import inu.unithon.backend.global.rabbitMq.RabbitMqListnerConfig;
+import inu.unithon.backend.domain.translate.service.TranslationService;
 
 
 @Slf4j
@@ -14,6 +15,7 @@ import inu.unithon.backend.global.rabbitMq.RabbitMqListnerConfig;
 public class RabbitMqConsumer {
 
     private final FestivalDetailSave festivalDetailSave;
+    private final TranslationService translationService;
 
     @RabbitListener(queues = "#{@rabbitMqConfig.detailQueueName}",
     containerFactory = "ListenerFactory")
@@ -27,9 +29,16 @@ public class RabbitMqConsumer {
         }
     }
 
-    @RabbitListener(queues = "#{@rabbitMqConfig.translateQueueName}")
-    public void translateReceive(String contentId){
-        log.info("전달받은 contentId: {}", contentId);
+    @RabbitListener(queues = "#{@rabbitMqConfig.translateQueueName}", containerFactory = "ListenerFactory")
+    public void translateReceive(String message){
+
+
+        log.info("#@$#@$@#!@#!전달받은 메시지: {}", message);
+        try{
+            translationService.translateAllFestivals();
+        } catch (Exception e) {
+            log.error("translate fail: {}", e.getMessage());
+        }
     }
 
     @RabbitListener(queues = "#{@rabbitMqConfig.detailTranslateQueueName}")
