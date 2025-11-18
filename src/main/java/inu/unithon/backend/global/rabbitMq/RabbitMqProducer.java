@@ -21,11 +21,11 @@ public class RabbitMqProducer {
     }
 
 
-    public void translateSend(String contentId){
+    public void translateSend(){
         rabbitTemplate.convertAndSend(
                 rabbitMqConfig.getExchangeName(),
                 rabbitMqConfig.getTranslateRoutingKey(),
-                contentId
+                "Start Translation Task"
         );
     }
 

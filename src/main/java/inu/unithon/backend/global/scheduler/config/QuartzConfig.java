@@ -1,6 +1,7 @@
 package inu.unithon.backend.global.scheduler.config;
 
 import inu.unithon.backend.global.scheduler.job.FestivalUpdateJob;
+import inu.unithon.backend.global.scheduler.job.TranslateUpdateJob;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.quartz.*;
@@ -27,8 +28,8 @@ public class QuartzConfig {
     private final ApplicationContext applicationContext;
 
     @Bean
-    public SchedulerFactoryBean schedulerFactoryBean(JobDetail festivalJobDetail,
-                                                     Trigger festivalTrigger) {
+    public SchedulerFactoryBean schedulerFactoryBean(JobDetail festivalJobDetail, JobDetail translateJobDetail,
+                                                     Trigger festivalTrigger, Trigger translateTrigger) {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
         factory.setDataSource(dataSource);
         factory.setOverwriteExistingJobs(true);
@@ -40,8 +41,8 @@ public class QuartzConfig {
         factory.setJobFactory(new AutowiringSpringBeanJobFactory(applicationContext));
 
         // ✅ 스케줄러가 알도록 명시 등록 (중요!)
-        factory.setJobDetails(festivalJobDetail);
-        factory.setTriggers(festivalTrigger);
+        factory.setJobDetails(festivalJobDetail, translateJobDetail);
+        factory.setTriggers(festivalTrigger, translateTrigger);
 
         return factory;
     }
@@ -59,20 +60,41 @@ public class QuartzConfig {
     }
 
     @Bean
-    public Trigger festivalTrigger() {
+    public JobDetail translateJobDetail() {
+        return JobBuilder.newJob(TranslateUpdateJob.class)
+                .withIdentity("translateUpdateJob", "default")
+                .storeDurably(true)
+                .build();
+    }
+
+    @Bean
+    public Trigger festivalTrigger(JobDetail festivalJobDetail) {
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
-//                .cronSchedule("0 0 22 ? * MON") //  월 2200
-                .cronSchedule("0 45 16 ? * TUE") //  화 1500
+                // .cronSchedule("0 0 22 ? * MON")
+                .cronSchedule("0 10 18 ? * TUE") //
                 .inTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
                 .withMisfireHandlingInstructionDoNothing();
 
         return TriggerBuilder.newTrigger()
-                .forJob(festivalJobDetail())
+                .forJob(festivalJobDetail)
                 .withIdentity("festivalUpdateTrigger", "default")
                 .withSchedule(scheduleBuilder)
                 .build();
     }
 
+    @Bean
+    public Trigger translateTrigger(JobDetail translateJobDetail) {
+        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
+                .cronSchedule("0 20 18 ? * TUE") // 화 17:00
+                .inTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
+                .withMisfireHandlingInstructionDoNothing();
+
+        return TriggerBuilder.newTrigger()
+                .forJob(translateJobDetail)
+                .withIdentity("translateUpdateTrigger", "default")
+                .withSchedule(scheduleBuilder)
+                .build();
+    }
 
     //    @PostConstruct
 //    private void jopProcess() throws SchedulerException {
